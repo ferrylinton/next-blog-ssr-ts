@@ -1,0 +1,3 @@
+type TagType = {
+    name: string
+}
