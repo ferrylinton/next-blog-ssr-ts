@@ -1,3 +1,4 @@
+import Role from "@/models/Role";
 import User from "@/models/User";
 import connect from "@/utils/mongodb";
 import { CreateUserType } from "@/validations/user-schema";
@@ -23,9 +24,10 @@ export const findOneById = async (id: string): Promise<any> => {
     }
 }
 
-export const save = async (input: CreateUserType): Promise<UserType> => {
+export const save = async ({email, password}: CreateUserType): Promise<UserType> => {
     await connect();
-    const user = await User.create(input);
+    const role = await Role.findOne({name : 'Admin'})
+    const user = await User.create({email, password, role});
 
     return user.toJSON();
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TagType, TagSchema, TagFormType } from '@/validations/tag-schema';
+import { CreateTagType, CreateTagSchema } from '@/validations/tag-schema';
 import { Righteous } from 'next/font/google'
 
 const righteous = Righteous({
@@ -10,8 +10,12 @@ const righteous = Righteous({
     weight: '400'
 })
 
+type Props = {
+    id?: string
+} & CreateTagType
 
-const TagForm = ({ id, name }: TagFormType) => {
+
+const TagForm = ({ id, name }: Props) => {
 
     const router = useRouter();
 
@@ -20,21 +24,35 @@ const TagForm = ({ id, name }: TagFormType) => {
         handleSubmit,
         formState: { errors },
     } = useForm<TagType>({
-        resolver: zodResolver(TagSchema),
+        resolver: zodResolver(CreateTagSchema),
         defaultValues: { name }
     });
 
 
 
     const onSubmit: SubmitHandler<TagType> = async (data) => {
-
         console.log(data);
+
+        const res = await fetch('/api/tags', {
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+        });
+
+        const result = await res.json();
+        if (res.status === 200) {
+            router.push("/tag")
+        }else{
+            alert('error');
+        }
     };
 
     return (
         <div className='flex justify-center'>
             <div className='flex justify-center w-full max-w-3xl'>
-                <div className='m-3'>
+                <div className='w-full m-3'>
                     <div className={`mb-9 text-center uppercase text-2xl ` + righteous.className}>Tag - Form</div>
                     <form
                         className='w-[300px] flex flex-col justify-center '
@@ -47,7 +65,7 @@ const TagForm = ({ id, name }: TagFormType) => {
                                 Name
                             </label>
                             <input
-                                className={`w-full p-4 text-sm leading-tight border ${errors.name && "border-red-500" } rounded appearance-none focus:outline-none focus:shadow-outline`}
+                                className={`w-full p-4 text-sm leading-tight border ${errors.name && "border-red-500"} rounded appearance-none focus:outline-none focus:shadow-outline`}
                                 id="name"
                                 type="text"
                                 placeholder="NAME"

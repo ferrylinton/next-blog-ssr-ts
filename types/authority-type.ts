@@ -1,0 +1,3 @@
+type AuthorityType = {
+    name: string
+}

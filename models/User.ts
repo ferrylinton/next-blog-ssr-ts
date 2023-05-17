@@ -1,4 +1,5 @@
 import { models, model, Schema, Types } from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const UserSchema: Schema = new Schema({
     email: {
@@ -12,8 +13,8 @@ const UserSchema: Schema = new Schema({
         required: true
     },
     loginAttempt: {
-        type: Number, 
-        required: true, 
+        type: Number,
+        required: true,
         default: 0
     },
     activated: {
@@ -25,6 +26,10 @@ const UserSchema: Schema = new Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    role: {
+        type: Types.ObjectId,
+        ref: 'Role'
     }
 }, {
     timestamps: true,
@@ -46,6 +51,18 @@ const UserSchema: Schema = new Schema({
         virtuals: true
     }
 });
+
+UserSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        next()
+    }
+    this.password = await bcrypt.hash(this.password, 10)
+    next()
+});
+
+UserSchema.methods.comparePassword = async function(enteredPassword: string){
+    return await bcrypt.compare(enteredPassword, this.password)
+}
 
 const User = models.User || model('User', UserSchema, 'users');
 

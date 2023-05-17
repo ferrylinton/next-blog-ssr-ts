@@ -1,0 +1,3 @@
+type RoleType = {
+    name: string
+}
