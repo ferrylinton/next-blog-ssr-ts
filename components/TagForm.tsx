@@ -33,12 +33,15 @@ const TagForm = ({ id, name }: Props) => {
     const onSubmit: SubmitHandler<TagType> = async (data) => {
         console.log(data);
 
-        const res = await fetch('/api/tags', {
+        const url = id ? `/api/tags/${id}` : '/api/tags';
+        const method = id ? 'PUT' : 'POST';
+
+        const res = await fetch(url, {
             body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json',
             },
-            method: 'POST',
+            method,
         });
 
         const result = await res.json();

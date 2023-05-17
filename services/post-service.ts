@@ -6,6 +6,7 @@ import { Document, Types, isObjectIdOrHexString } from "mongoose";
 
 
 export const find = async () => {
+    await connect();
     return await Post.find().populate('tags');
 }
 

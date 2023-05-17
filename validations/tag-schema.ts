@@ -7,7 +7,7 @@ export const CreateTagSchema = object({
         .max(50, { message: "name min 3 chars and max 50 chars" }),
 });
 
-export interface CreateApiRequest extends NextApiRequest {
+export interface CreateTagApiRequest extends NextApiRequest {
     body: TypeOf<typeof CreateTagSchema>;
 }
 

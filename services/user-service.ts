@@ -6,6 +6,7 @@ import { isObjectIdOrHexString } from "mongoose";
 
 
 export const find = async () => {
+    await connect();
     return await User.find();
 }
 

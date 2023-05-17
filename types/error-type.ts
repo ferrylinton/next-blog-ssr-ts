@@ -1,0 +1,3 @@
+type ErrorResponseType = {
+    message: string
+}
