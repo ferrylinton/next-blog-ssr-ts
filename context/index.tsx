@@ -1,26 +1,45 @@
-import React, { PropsWithChildren, createContext, useContext } from 'react';
-import { ToastContainer } from 'react-toastify'
-import Alerts from "@/context/alerts"
+import { PropsWithChildren, SetStateAction, createContext, useContext, useState } from 'react';
+import ToastRadixUi from '@/components/ToastRadixUi';
 
-type appContextType = {
-    AlertSuccess: (msg: string) => void,
-    AlertWarning: (msg: string) => void,
-    AlertError: (msg: string) => void,
-    AlertInfo: (msg: string) => void,
-};
+type AppContextType = {
+    showSuccessToast: (msg: string) => void,
+    showErrorToast: (msg: string) => void
+}
 
-const appContextDefaultValues: appContextType = Object.assign({}, Alerts);
-
-export const AppContext = createContext<appContextType>(appContextDefaultValues)
+export const AppContext = createContext<AppContextType>({
+    showSuccessToast: (msg: string) => { console.log(msg) },
+    showErrorToast: (msg: string) => { console.log(msg) }
+})
 
 export const AppProvider = ({ children }: PropsWithChildren) => {
 
-    const value = Object.assign({}, Alerts);
+    const [open, setOpen] = useState(false);
+
+    const [status, setStatus] = useState(true);
+
+    const [message, setMessage] = useState('halo');
+
+    const showSuccessToast = (message: string) => {
+        setOpen(true);
+        setStatus(true);
+        setMessage(message);
+    }
+
+    const showErrorToast = (message: string) => {
+        setOpen(true);
+        setStatus(false);
+        setMessage(message);
+    }
+
+    const value: AppContextType = {
+        showSuccessToast,
+        showErrorToast
+    };
 
     return (
         <AppContext.Provider value={value}>
             {children}
-            <ToastContainer />
+            <ToastRadixUi open={open} setOpen={setOpen} message={message} status={status} />
         </AppContext.Provider>
     )
 }

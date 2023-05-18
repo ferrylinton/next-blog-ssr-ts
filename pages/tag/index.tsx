@@ -2,29 +2,19 @@ import DeleteIcon from '@/icons/DeleteIcon';
 import EditIcon from '@/icons/EditIcon';
 import Link from 'next/link';
 import React from 'react';
-import { Righteous } from 'next/font/google'
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import { useAppContext } from '@/context';
 
-const righteous = Righteous({
-  subsets: ['latin'],
-  weight: '400'
-})
-
-
 type Props = {
   tags: TagType[],
   error: ErrorResponseType | null;
-
 }
-
-
 
 const TagPage = ({ tags, error }: Props) => {
 
-  const { AlertSuccess } = useAppContext();
+  const { showSuccessToast, showErrorToast } = useAppContext();
 
   const router = useRouter();
 
@@ -49,10 +39,10 @@ const TagPage = ({ tags, error }: Props) => {
 
     if (response.status === 200) {
       refreshData();
-      AlertSuccess(`Data is deleted`);
+      showSuccessToast(`Data is deleted`);
     } else {
-      let error: ErrorResponseType | null = await response.json();
-      alert(error?.message);
+      let error: ErrorResponseType = await response.json();
+      showErrorToast(error?.message);
     }
 
   }
@@ -64,7 +54,7 @@ const TagPage = ({ tags, error }: Props) => {
   if (error) {
     return (
       <div className='flex flex-col justify-center items-center px-4 sm:px-0'>
-        <div className={`mt-3 mb-9 text-center uppercase text-2xl ` + righteous.className}>Tag - List</div>
+        <div className={`mt-3 mb-9 text-center uppercase text-2xl font-righteous`}>Tag - List</div>
         <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-600">
           <span className="inline-block align-middle mr-8">{error.message}</span>
         </div>
@@ -75,7 +65,7 @@ const TagPage = ({ tags, error }: Props) => {
       <>
 
         <div className='flex flex-col justify-center items-center px-4 sm:px-0'>
-          <div className={`mt-3 mb-9 text-center uppercase text-2xl ` + righteous.className}>Tag - List</div>
+          <div className={`mt-3 mb-9 text-center uppercase text-2xl font-righteous`}>Tag - List</div>
           <table className='table-responsive w-full max-w-2xl'>
             <thead>
               <tr>
@@ -105,7 +95,7 @@ const TagPage = ({ tags, error }: Props) => {
           <div className='w-full max-w-2xl flex justify-between items-center my-3'>
             <div>Total data : 15</div>
             <Link href="/tag/form">
-              <span className={`inline-block w-[100px] py-2 text-center text-gray-600 hover:text-gray-600 border border-gray-300  rounded cursor-pointer transition duration-500 bg-gradient-to-tl from-gray-100 via-gray-50 to-white bg-size-200 bg-pos-0 hover:bg-pos-100 uppercase font-bold tracking-wide ${righteous.className}`}>ADD</span>
+              <span className='inline-block w-[100px] py-2 text-center text-gray-600 hover:text-gray-600 border border-gray-300  rounded cursor-pointer transition duration-500 bg-gradient-to-tl from-gray-100 via-gray-50 to-white bg-size-200 bg-pos-0 hover:bg-pos-100 uppercase font-bold tracking-wide font-righteous'>ADD</span>
             </Link>
           </div>
         </div>

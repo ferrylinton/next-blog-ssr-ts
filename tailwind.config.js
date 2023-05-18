@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'orbitron': ['Orbitron', 'sans-serif'],
+        'righteous': ['Righteous', 'cursive'],
+      },
       backgroundSize: {
         'size-200': '200% 200%',
       },

@@ -30,6 +30,11 @@ const TagSchema: Schema = new Schema({
     }
 });
 
+TagSchema.pre('save', function (next) {
+    this.increment();
+    return next();
+});
+
 const Tag: Model<TagType> = models.Tag || model('Tag', TagSchema, 'tags');
 
 export default Tag
