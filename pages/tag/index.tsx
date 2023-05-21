@@ -6,6 +6,8 @@ import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import ConfirmDialog from '@/components/ConfirmDialog';
 import { useAppContext } from '@/context';
+import HomeIcon from '@/icons/HomeIcon';
+import ArrowRightIcon from '@/icons/ArrowRightIcon';
 
 type Props = {
   tags: TagType[],
@@ -64,39 +66,44 @@ const TagPage = ({ tags, error }: Props) => {
     return (
       <>
 
-        <div className='flex flex-col justify-center items-center px-4 sm:px-0'>
-          <div className={`mt-3 mb-9 text-center uppercase text-2xl font-righteous`}>Tag - List</div>
-          <table className='table-responsive w-full max-w-2xl'>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                tags.map((tag, index) => {
-                  return <tr key={tag.id}>
-                    <td data-label="#">{index + 1}</td>
-                    <td data-label="Name">{tag.name}</td>
-                    <td className='actions'>
-                      <div className='btn-box'>
-                        <button className='btn-edit' onClick={() => onClickEditHandler(tag.id)}><EditIcon /></button>
-                        <button className='btn-delete' onClick={() => onClickDeleteHandler(tag.id)}><DeleteIcon /></button>
-                      </div>
-                    </td>
+        <div className='w-full max-w-4xl h-full flex flex-col'>
+          <div className='breadcrumb flex-none flex justify-center items-center gap-3 uppercase py-2'>
+            <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
+            <ArrowRightIcon className='w-3 h-3' />
+            <span>Tag</span>
+          </div>
+          <div className='grow flex flex-col justify-center items-center w-full px-3 lg:px-0 py-8'>
+            <div className='w-full p-0 sm:p-3  rounded sm:border border-slate-400 sm:bg-white'>
+              <table className='table-responsive w-full'>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Action</th>
                   </tr>
-                })
-              }
-            </tbody>
-          </table>
-
-          <div className='w-full max-w-2xl flex justify-between items-center my-3'>
-            <div>Total data : 15</div>
-            <Link href="/tag/form">
-              <span className='inline-block w-[100px] py-2 text-center text-gray-600 hover:text-gray-600 border border-gray-300  rounded cursor-pointer transition duration-500 bg-gradient-to-tl from-gray-100 via-gray-50 to-white bg-size-200 bg-pos-0 hover:bg-pos-100 uppercase font-bold tracking-wide font-righteous'>ADD</span>
-            </Link>
+                </thead>
+                <tbody>
+                  {
+                    tags.map((tag, index) => {
+                      return <tr key={tag.id}>
+                        <td data-label="#">{index + 1}</td>
+                        <td data-label="Name">{tag.name}</td>
+                        <td className='actions'>
+                          <div className='btn-box'>
+                            <button className='btn-edit' onClick={() => onClickEditHandler(tag.id)}><EditIcon /></button>
+                            <button className='btn-delete' onClick={() => onClickDeleteHandler(tag.id)}><DeleteIcon /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    })
+                  }
+                </tbody>
+              </table>
+            </div>
+            <div className='w-full flex justify-between items-center my-3'>
+              <div>Total data : 15</div>
+              <Link href="/tag/form" className='btn btn-default  w-[120px]'>ADD</Link>
+            </div>
           </div>
         </div>
         <ConfirmDialog open={open} setOpen={setOpen} message={message} callback={callDeleteApi} />

@@ -1,3 +1,5 @@
+const { blackA, mauve, violet } = require('@radix-ui/colors');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -7,6 +9,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        ...blackA,
+        ...mauve,
+        ...violet,
+      },
       fontFamily: {
         'orbitron': ['Orbitron', 'sans-serif'],
         'righteous': ['Righteous', 'cursive'],
@@ -19,6 +26,9 @@ module.exports = {
         'pos-100': '100% 100%',
       },
     },
+  },
+  images: {
+    domains: ['images.unsplash.com'],
   },
   plugins: [
     require('@tailwindcss/typography'),
