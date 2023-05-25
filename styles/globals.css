@@ -11,6 +11,11 @@ svg {
     height: 100%;
 }
 
+.navbar .logo{
+    text-shadow: 2px 2px 1px #ffffff;
+}
+
+
 .table-responsive thead {
     display: none;
 }
@@ -40,6 +45,31 @@ svg {
     transform: translateY(-50%);
 }
 
+.menu-open{
+    opacity:1;
+    height: auto;
+    transform: translateY(0);
+}
+
+.menu-close{
+    opacity:0;
+    height: 0;
+    transform: translateY(-10%);
+}
+
+.parent.active .child {
+    opacity: 1;
+    height: auto;
+    overflow: none;
+    transform: translateY(0);
+}
+
+.child {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    transform: translateY(-10%);
+}
 
 
 @media (min-width: 640px) {
@@ -61,6 +91,16 @@ svg {
     
     .table-responsive td::before {
         display: none;
+    }
+
+}
+
+@media (min-width: 768px) {
+
+    .menu-close, .menu-open{
+        opacity:1;
+        height: auto;
+        transform: none;
     }
 
 }

@@ -65,44 +65,45 @@ const TagPage = ({ tags, error }: Props) => {
   } else {
     return (
       <>
-
-        <div className='w-full max-w-4xl h-full flex flex-col'>
-          <div className='breadcrumb flex-none flex justify-center items-center gap-3 uppercase py-2'>
-            <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
-            <ArrowRightIcon className='w-3 h-3' />
-            <span>Tag</span>
-          </div>
+        <div className='breadcrumb flex-none flex justify-start items-center gap-3 ps-5 uppercase py-2 bg-slate-100 border-b border-slate-200 mt-[50px] lg:mt-0'>
+          <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
+          <ArrowRightIcon className='w-3 h-3' />
+          <span>Tag</span>
+        </div>
+        <div className='w-full h-full flex flex-col'>
           <div className='grow flex flex-col justify-center items-center w-full px-3 lg:px-0 py-8'>
-            <div className='w-full p-0 sm:p-3  rounded sm:border border-slate-400 sm:bg-white'>
-              <table className='table-responsive w-full'>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    tags.map((tag, index) => {
-                      return <tr key={tag.id}>
-                        <td data-label="#">{index + 1}</td>
-                        <td data-label="Name">{tag.name}</td>
-                        <td className='actions'>
-                          <div className='btn-box'>
-                            <button className='btn-edit' onClick={() => onClickEditHandler(tag.id)}><EditIcon /></button>
-                            <button className='btn-delete' onClick={() => onClickDeleteHandler(tag.id)}><DeleteIcon /></button>
-                          </div>
-                        </td>
-                      </tr>
-                    })
-                  }
-                </tbody>
-              </table>
-            </div>
-            <div className='w-full flex justify-between items-center my-3'>
-              <div>Total data : 15</div>
-              <Link href="/tag/form" className='btn btn-default  w-[120px]'>ADD</Link>
+            <div className='flex flex-col justify-center items-center w-full max-w-3xl px-0 sm:px-5'>
+              <div className='w-full  p-0 sm:p-3  rounded sm:border border-slate-400 sm:bg-white'>
+                <table className='table-responsive w-full'>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      tags.map((tag, index) => {
+                        return <tr key={tag.id}>
+                          <td data-label="#">{index + 1}</td>
+                          <td data-label="Name">{tag.name}</td>
+                          <td className='actions'>
+                            <div className='btn-box'>
+                              <button className='btn-edit' onClick={() => onClickEditHandler(tag.id)}><EditIcon /></button>
+                              <button className='btn-delete' onClick={() => onClickDeleteHandler(tag.id)}><DeleteIcon /></button>
+                            </div>
+                          </td>
+                        </tr>
+                      })
+                    }
+                  </tbody>
+                </table>
+              </div>
+              <div className='w-full flex justify-between items-center my-3'>
+                <div>Total data : 15</div>
+                <Link href="/tag/form" className='btn btn-default  w-[120px]'>ADD</Link>
+              </div>
             </div>
           </div>
         </div>

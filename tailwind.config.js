@@ -9,6 +9,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        sidebar: "300px auto", //for sidebar layout
+      },
+      gridTemplateRows: {
+        header: "64px auto", //for the navbar layout
+      },
       colors: {
         ...blackA,
         ...mauve,
@@ -17,6 +23,7 @@ module.exports = {
       fontFamily: {
         'orbitron': ['Orbitron', 'sans-serif'],
         'righteous': ['Righteous', 'cursive'],
+        'alkatra': ['Alkatra', 'cursive'],
       },
       backgroundSize: {
         'size-200': '200% 200%',
