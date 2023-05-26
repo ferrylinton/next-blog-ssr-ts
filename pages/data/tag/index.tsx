@@ -65,7 +65,7 @@ const TagPage = ({ tags, error }: Props) => {
   } else {
     return (
       <>
-        <div className='breadcrumb flex-none flex justify-start items-center gap-3 ps-5 uppercase py-2 bg-slate-100 border-b border-slate-200 mt-[50px] lg:mt-0'>
+        <div className='breadcrumb flex-none flex justify-start items-center gap-3 ps-5 uppercase py-1 bg-slate-200 mt-[50px] lg:mt-0'>
           <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
           <ArrowRightIcon className='w-3 h-3' />
           <span>Tag</span>

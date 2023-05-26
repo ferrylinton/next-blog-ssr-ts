@@ -109,7 +109,7 @@ svg {
 @layer components {
 
     body{
-        @apply text-slate-600
+        @apply text-slate-600 bg-slate-200
     }
 
     a{
