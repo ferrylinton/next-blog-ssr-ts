@@ -1,23 +1,23 @@
 import React from 'react';
-import TagForm from '@/components/forms/TagForm';
+import AuthorityForm from '@/components/forms/AuthorityForm';
 import { GetServerSideProps } from 'next';
-import * as tagService from "@/services/tag-service";
+import * as authorityService from "@/services/authority-service";
 
 type Props = {
   id: string,
   name: string
 }
 
-const TagFormPage = ({id, name} : Props) => {
+const AuthorityFormPage = ({id, name} : Props) => {
 
   return (
-    <TagForm id={id} name={name} />
+    <AuthorityForm id={id} name={name} />
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
-  const { name } = await tagService.findOneById(id);
+  const { name } = await authorityService.findOneById(id);
   return {
       props: {
           id,
@@ -26,4 +26,4 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   }
 }
 
-export default TagFormPage
+export default AuthorityFormPage

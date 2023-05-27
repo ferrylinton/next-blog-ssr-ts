@@ -11,11 +11,11 @@ import ArrowRightIcon from '@/icons/ArrowRightIcon';
 import DataContainer from '@/components/DataContainer';
 
 type Props = {
-  posts: PostType[],
+  users: UserType[],
   error: ErrorResponseType | null;
 }
 
-const PostPage = ({ posts, error }: Props) => {
+const UserPage = ({ users, error }: Props) => {
 
   const { showSuccessToast, showErrorToast } = useAppContext();
 
@@ -28,17 +28,17 @@ const PostPage = ({ posts, error }: Props) => {
   const [message, setMessage] = React.useState('');
 
   const onClickEditHandler = (id: string) => {
-    router.push(`${process.env.HOST}/post/form/${id}`)
+    router.push(`${process.env.HOST}/user/form/${id}`)
   }
 
   const onClickDeleteHandler = (id: string) => {
-    setMessage(`Delete post with id = ${id}`);
+    setMessage(`Delete user with id = ${id}`);
     setId(id);
     setOpen(true);
   }
 
   const callDeleteApi = async () => {
-    const response = await fetch(`${process.env.HOST}/api/posts/${id}`, { method: 'DELETE' });
+    const response = await fetch(`${process.env.HOST}/api/users/${id}`, { method: 'DELETE' });
 
     if (response.status === 200) {
       refreshData();
@@ -57,7 +57,7 @@ const PostPage = ({ posts, error }: Props) => {
   if (error) {
     return (
       <div className='flex flex-col justify-center items-center px-4 sm:px-0'>
-        <div className={`mt-3 mb-9 text-center uppercase text-2xl font-righteous`}>Post - List</div>
+        <div className={`mt-3 mb-9 text-center uppercase text-2xl font-righteous`}>User - List</div>
         <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-600">
           <span className="inline-block align-middle mr-8">{error.message}</span>
         </div>
@@ -69,7 +69,7 @@ const PostPage = ({ posts, error }: Props) => {
         <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
           <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
           <ArrowRightIcon className='w-3 h-3' />
-          <span>Post</span>
+          <span>User</span>
         </div>
         <DataContainer>
           <div className='w-full p-0 sm:p-3 rounded sm:border sm:bg-slate-50 border-slate-300'>
@@ -83,14 +83,14 @@ const PostPage = ({ posts, error }: Props) => {
               </thead>
               <tbody>
                 {
-                  posts.map((post, index) => {
-                    return <tr key={post.id}>
+                  users.map((user, index) => {
+                    return <tr key={user.id}>
                       <td data-label="#">{index + 1}</td>
-                      <td data-label="Title">{post.title}</td>
+                      <td data-label="Email">{user.email}</td>
                       <td className='actions'>
                         <div className='btn-box'>
-                          <button className='btn-edit' onClick={() => onClickEditHandler(post.id)}><EditIcon /></button>
-                          <button className='btn-delete' onClick={() => onClickDeleteHandler(post.id)}><DeleteIcon /></button>
+                          <button className='btn-edit' onClick={() => onClickEditHandler(user.id)}><EditIcon /></button>
+                          <button className='btn-delete' onClick={() => onClickDeleteHandler(user.id)}><DeleteIcon /></button>
                         </div>
                       </td>
                     </tr>
@@ -101,7 +101,7 @@ const PostPage = ({ posts, error }: Props) => {
           </div>
           <div className='w-full flex justify-between items-center px-5 my-3'>
             <div>Total data : 15</div>
-            <Link href="/post/form"
+            <Link href="/user/form"
               className="group text-center w-[150px] bg-white hover:bg-slate-100 py-2 px-4 border border-slate-400 rounded">
               <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Add</span>
             </Link>
@@ -115,19 +115,19 @@ const PostPage = ({ posts, error }: Props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   try {
-    let posts: PostType[] = [];
+    let users: UserType[] = [];
     let error: ErrorResponseType | null = null;
 
-    const response = await fetch(`${process.env.HOST}/api/posts`);
+    const response = await fetch(`${process.env.HOST}/api/users`);
 
     if (response.status === 200) {
-      posts = await response.json();
+      users = await response.json();
     } else {
       error = await response.json();
     }
 
     return {
-      props: { posts, error }
+      props: { users, error }
     };
   } catch {
     res.statusCode = 404;
@@ -137,4 +137,4 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   }
 };
 
-export default PostPage
+export default UserPage
