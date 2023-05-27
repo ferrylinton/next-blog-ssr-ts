@@ -7,6 +7,7 @@ import { useAppContext } from '@/context';
 import Link from 'next/link';
 import ArrowRightIcon from '@/icons/ArrowRightIcon';
 import HomeIcon from '@/icons/HomeIcon';
+import DataContainer from './DataContainer';
 
 
 type Props = {
@@ -54,16 +55,16 @@ const TagForm = ({ id, name }: Props) => {
     };
 
     return (
-        <div className='w-full max-w-4xl h-full flex flex-col'>
-            <div className='breadcrumb flex-none flex justify-center items-center gap-3 uppercase py-2'>
+        <>
+            <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
                 <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
                 <ArrowRightIcon className='w-3 h-3' />
                 <Link href="/tag">Tag</Link>
                 <ArrowRightIcon className='w-3 h-3' />
                 <span>Form</span>
             </div>
-            <div className='grow flex justify-center items-center w-full'>
-                <div className='flex justify-center items-center w-full max-w-md bg-white border border-slate-400 rounded-lg mx-4 my-8 sm:mx-0 px-5 py-14 '>
+            <DataContainer>
+                <div className='flex justify-center items-center w-full max-w-md sm:bg-slate-50 sm:border border-slate-300 rounded-lg mx-4 my-8 sm:mx-0 px-5 py-14 '>
                     <form
                         className='flex-1'
                         onSubmit={handleSubmit(onSubmit)}
@@ -86,13 +87,23 @@ const TagForm = ({ id, name }: Props) => {
                             )}
                         </div>
                         <div className="mt-5 text-center flex gap-1">
-                            <button onClick={() => router.back()} className='w-full py-2 btn btn-default' type="button">Cancel</button>
-                            <button className="w-full py-2 btn btn-primary" type="submit">Save</button>
+                            <button 
+                                onClick={() => router.back()}
+                                type='button'
+                                className="group w-full bg-white hover:bg-slate-100 py-2 px-4 border border-slate-400 rounded">
+                                    <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Cancel</span>
+                            </button>
+                            
+                            <button
+                                type="submit"
+                                className="group w-full bg-blue-600 hover:bg-blue-700 py-2 px-4 border border-blue-800 rounded">
+                                    <span className='font-semibold text-slate-200 group-hover:text-white'>Save</span>
+                            </button>
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
+            </DataContainer>
+        </>
     )
 }
 
