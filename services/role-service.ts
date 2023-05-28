@@ -1,7 +1,6 @@
 import Authority from "@/models/Authority";
 import Role from "@/models/Role";
 import connect from "@/utils/mongodb";
-import { CreateRoleType } from "@/validations/role-schema";
 import { isObjectIdOrHexString } from "mongoose";
 
 
@@ -25,17 +24,19 @@ export const findOneById = async (id: string): Promise<any> => {
     }
 }
 
-export const save = async (input: CreateRoleType): Promise<RoleType> => {
+export const save = async (input: RoleType): Promise<RoleType> => {
     await connect();
 
     const { name } = input;
-    let authorities: AuthorityType[] = [];
+    let authorities: AuthorityType[] = input.authorities.map(fields => {
+        return new Authority(fields);
+    });
 
-    if (input.authorities) {
-        authorities = await Authority.find({ name: { "$in": input.authorities } });
-    }
+    // if (input.authorities) {
+    //     authorities = await Authority.find({ name: { "$in": input.authorities } });
+    // }
 
-    const role = await Role.create({name, authorities});
+    const role = await Role.create({ name, authorities });
 
     return role.toJSON();
 }

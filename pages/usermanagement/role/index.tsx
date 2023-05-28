@@ -9,11 +9,18 @@ import { useAppContext } from '@/context';
 import HomeIcon from '@/icons/HomeIcon';
 import ArrowRightIcon from '@/icons/ArrowRightIcon';
 import DataContainer from '@/components/DataContainer';
+import ErrorContainer from '@/components/ErrorContainer';
 
 type Props = {
   roles: RoleType[],
   error: ErrorResponseType | null;
 }
+
+const Breadcrumb = <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
+  <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
+  <ArrowRightIcon className='w-3 h-3' />
+  <span>Role</span>
+</div>
 
 const RolePage = ({ roles, error }: Props) => {
 
@@ -27,18 +34,18 @@ const RolePage = ({ roles, error }: Props) => {
 
   const [message, setMessage] = React.useState('');
 
-  const onClickEditHandler = (id: string) => {
-    router.push(`${process.env.HOST}/role/form/${id}`)
+  const onClickEditHandler = (id: string = '') => {
+    router.push(`${process.env.NEXT_PUBLIC_HOST}/usermanagement/role/form/${id}`)
   }
 
-  const onClickDeleteHandler = (id: string) => {
+  const onClickDeleteHandler = (id: string = '') => {
     setMessage(`Delete role with id = ${id}`);
     setId(id);
     setOpen(true);
   }
 
   const callDeleteApi = async () => {
-    const response = await fetch(`${process.env.HOST}/api/roles/${id}`, { method: 'DELETE' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/roles/${id}`, { method: 'DELETE' });
 
     if (response.status === 200) {
       refreshData();
@@ -56,21 +63,16 @@ const RolePage = ({ roles, error }: Props) => {
 
   if (error) {
     return (
-      <div className='flex flex-col justify-center items-center px-4 sm:px-0'>
-        <div className={`mt-3 mb-9 text-center uppercase text-2xl font-righteous`}>Role - List</div>
-        <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-600">
-          <span className="inline-block align-middle mr-8">{error.message}</span>
-        </div>
-      </div>
+      <>
+        {Breadcrumb}
+        <ErrorContainer code={error.code} message={error.message} />
+      </>
+
     )
   } else {
     return (
       <>
-        <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
-          <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
-          <ArrowRightIcon className='w-3 h-3' />
-          <span>Role</span>
-        </div>
+        {Breadcrumb}
         <DataContainer>
           <div className='w-full p-0 sm:p-3 rounded sm:border sm:bg-slate-50 border-slate-300'>
             <table className='table-responsive w-full'>
@@ -101,7 +103,7 @@ const RolePage = ({ roles, error }: Props) => {
           </div>
           <div className='w-full flex justify-between items-center px-5 my-3'>
             <div>Total data : 15</div>
-            <Link href="/role/form"
+            <Link href="/usermanagement/role/form"
               className="group text-center w-[150px] bg-white hover:bg-slate-100 py-2 px-4 border border-slate-400 rounded">
               <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Add</span>
             </Link>
@@ -118,21 +120,27 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     let roles: RoleType[] = [];
     let error: ErrorResponseType | null = null;
 
-    const response = await fetch(`${process.env.HOST}/api/roles`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/roles`);
 
-    if (response.status === 200) {
+    if (response.ok) {
       roles = await response.json();
-    } else {
-      error = await response.json();
     }
 
     return {
       props: { roles, error }
     };
-  } catch {
-    res.statusCode = 404;
+  } catch (e: any) {
+    console.log('error.................');
+    console.log(e);
+
     return {
-      props: {}
+      props: {
+        error: {
+          message: e.message,
+          code: e.statusCode ?? 500
+        },
+        roles: []
+      }
     };
   }
 };

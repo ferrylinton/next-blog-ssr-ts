@@ -48,6 +48,11 @@ const PostSchema: Schema = new Schema({
     }
 });
 
+PostSchema.pre('save', function (next) {
+    this.increment();
+    return next();
+});
+
 const Post = models.Post || model('Post', PostSchema, 'posts');
 
 export default Post

@@ -9,11 +9,18 @@ import { useAppContext } from '@/context';
 import HomeIcon from '@/icons/HomeIcon';
 import ArrowRightIcon from '@/icons/ArrowRightIcon';
 import DataContainer from '@/components/DataContainer';
+import ErrorContainer from '@/components/ErrorContainer';
 
 type Props = {
   authorities: AuthorityType[],
   error: ErrorResponseType | null;
 }
+
+const Breadcrumb = <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
+  <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
+  <ArrowRightIcon className='w-3 h-3' />
+  <span>Authority</span>
+</div>
 
 const AuthorityPage = ({ authorities, error }: Props) => {
 
@@ -27,11 +34,11 @@ const AuthorityPage = ({ authorities, error }: Props) => {
 
   const [message, setMessage] = React.useState('');
 
-  const onClickEditHandler = (id: string) => {
+  const onClickEditHandler = (id?: string) => {
     router.push(`${process.env.NEXT_PUBLIC_HOST}/usermanagement/authority/form/${id}`)
   }
 
-  const onClickDeleteHandler = (id: string) => {
+  const onClickDeleteHandler = (id: string = '') => {
     setMessage(`Delete authority with id = ${id}`);
     setId(id);
     setOpen(true);
@@ -56,21 +63,15 @@ const AuthorityPage = ({ authorities, error }: Props) => {
 
   if (error) {
     return (
-      <div className='flex flex-col justify-center items-center px-4 sm:px-0'>
-        <div className={`mt-3 mb-9 text-center uppercase text-2xl font-righteous`}>Authority - List</div>
-        <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-600">
-          <span className="inline-block align-middle mr-8">{error.message}</span>
-        </div>
-      </div>
+      <>
+        {Breadcrumb}
+        <ErrorContainer code={error.code} message={error.message} />
+      </>
     )
   } else {
     return (
       <>
-        <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
-          <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
-          <ArrowRightIcon className='w-3 h-3' />
-          <span>Authority</span>
-        </div>
+        {Breadcrumb}
         <DataContainer>
           <div className='w-full p-0 sm:p-3 rounded sm:border border-slate-300'>
             <table className='table-responsive w-full'>

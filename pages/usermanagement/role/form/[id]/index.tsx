@@ -1,29 +1,35 @@
 import React from 'react';
-import TagForm from '@/components/forms/TagForm';
+import RoleForm from '@/components/forms/RoleForm';
 import { GetServerSideProps } from 'next';
-import * as tagService from "@/services/tag-service";
+import * as authorityService from "@/services/authority-service";
+import * as roleService from "@/services/role-service";
 
 type Props = {
   id: string,
-  name: string
+  name: string,
+  authorities: AuthorityType[]
 }
 
-const TagFormPage = ({id, name} : Props) => {
+const RoleFormPage = ({id, name, authorities} : Props) => {
 
   return (
-    <TagForm id={id} name={name} />
+    <RoleForm id={id} name={name} authorities={authorities} />
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
-  const { name } = await tagService.findOneById(id);
+  const role = await roleService.findOneById(id);
+  const authoritiesObject = await authorityService.find();
+  const authorities  = authoritiesObject.map(obj => obj.toJSON());
+  
   return {
       props: {
           id,
-          name
+          name : role ?? '',
+          authorities
       }
   }
 }
 
-export default TagFormPage
+export default RoleFormPage

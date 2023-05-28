@@ -33,6 +33,11 @@ const RoleSchema: Schema = new Schema({
     }
 });
 
+RoleSchema.pre('save', function (next) {
+    this.increment();
+    return next();
+});
+
 const Role: Model<RoleType> = models.Role || model('Role', RoleSchema, 'roles');
 
 export default Role

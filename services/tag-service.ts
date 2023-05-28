@@ -1,12 +1,17 @@
 import Tag from "@/models/Tag";
 import connect from "@/utils/mongodb";
-import { CreateTagType } from "@/validations/tag-schema";
 import { isObjectIdOrHexString } from "mongoose";
 
+export const findAllJson = async () => {
+    await connect();
+    const tags = await Tag.find();
+
+    return tags.map(tag =>JSON.parse(JSON.stringify(tag.toJSON())))
+}
 
 export const find = async () => {
     await connect();
-    return await Tag.find();
+    return await Tag.find().lean();
 }
 
 export const findOneById = async (id: string): Promise<any> => {
@@ -24,7 +29,7 @@ export const findOneById = async (id: string): Promise<any> => {
     }
 }
 
-export const save = async (input: CreateTagType): Promise<TagType> => {
+export const save = async (input: TagType): Promise<TagType> => {
     await connect();
     const tag = await Tag.create(input);
 

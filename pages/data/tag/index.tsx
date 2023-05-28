@@ -9,11 +9,19 @@ import { useAppContext } from '@/context';
 import HomeIcon from '@/icons/HomeIcon';
 import ArrowRightIcon from '@/icons/ArrowRightIcon';
 import DataContainer from '@/components/DataContainer';
+import * as tagService from "@/services/tag-service";
+import ErrorContainer from '@/components/ErrorContainer';
 
 type Props = {
   tags: TagType[],
   error: ErrorResponseType | null;
 }
+
+const Breadcrumb = <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
+  <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
+  <ArrowRightIcon className='w-3 h-3' />
+  <span>Tag</span>
+</div>
 
 const TagPage = ({ tags, error }: Props) => {
 
@@ -38,7 +46,7 @@ const TagPage = ({ tags, error }: Props) => {
   }
 
   const callDeleteApi = async () => {
-    const response = await fetch(`http://localhost:3000/api/tags/${id}`, { method: 'DELETE' });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/tags/${id}`, { method: 'DELETE' });
 
     if (response.status === 200) {
       refreshData();
@@ -56,21 +64,15 @@ const TagPage = ({ tags, error }: Props) => {
 
   if (error) {
     return (
-      <div className='flex flex-col justify-center items-center px-4 sm:px-0'>
-        <div className={`mt-3 mb-9 text-center uppercase text-2xl font-righteous`}>Tag - List</div>
-        <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-600">
-          <span className="inline-block align-middle mr-8">{error.message}</span>
-        </div>
-      </div>
+      <>
+        {Breadcrumb}
+        <ErrorContainer code={error.code} message={error.message} />
+      </>
     )
   } else {
     return (
       <>
-        <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
-          <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
-          <ArrowRightIcon className='w-3 h-3' />
-          <span>Tag</span>
-        </div>
+        {Breadcrumb}
         <DataContainer>
           <div className='w-full p-0 sm:p-3 rounded sm:border sm:bg-slate-50 border-slate-300'>
             <table className='table-responsive w-full'>
@@ -83,26 +85,32 @@ const TagPage = ({ tags, error }: Props) => {
               </thead>
               <tbody>
                 {
-                  tags.map((tag, index) => {
-                    return <tr key={tag.id}>
-                      <td data-label="#">{index + 1}</td>
-                      <td data-label="Name">{tag.name}</td>
-                      <td className='actions'>
-                        <div className='btn-box'>
-                          <button className='btn-edit' onClick={() => onClickEditHandler(tag.id)}><EditIcon /></button>
-                          <button className='btn-delete' onClick={() => onClickDeleteHandler(tag.id)}><DeleteIcon /></button>
-                        </div>
+                  tags.length === 0 ?
+                    <tr>
+                      <td className='actions' colSpan={3}>
+                        <div className='mx-2 sm:mx-0 mt-10 sm:mt-2 py-2 text-center bg-red-50 text-red-700 border border-red-300'>Data is not found</div>
                       </td>
-                    </tr>
-                  })
+                    </tr> :
+                    tags.map((tag, index) => {
+                      return <tr key={tag.id}>
+                        <td data-label="#">{index + 1}</td>
+                        <td data-label="Name">{tag.name}</td>
+                        <td className='actions'>
+                          <div className='btn-box'>
+                            <button className='btn-edit' onClick={() => onClickEditHandler(tag.id)}><EditIcon /></button>
+                            <button className='btn-delete' onClick={() => onClickDeleteHandler(tag.id)}><DeleteIcon /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    })
                 }
               </tbody>
             </table>
           </div>
-          <div className='w-full flex justify-between items-center px-5 my-3'>
-            <div>Total data : 15</div>
-            <Link href="/tag/form"
-              className="group text-center w-[150px] bg-white hover:bg-slate-100 py-2 px-4 border border-slate-400 rounded">
+          <div className='w-full flex justify-between items-center px-3 sm:px-0 my-3'>
+            <div>Total data : {tags.length}</div>
+            <Link href={`${process.env.NEXT_PUBLIC_HOST}/data/tag/form`}
+              className="group text-center w-[120px] bg-white hover:bg-slate-100 py-2 leading-none border border-slate-400 rounded">
               <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Add</span>
             </Link>
           </div>
@@ -113,26 +121,25 @@ const TagPage = ({ tags, error }: Props) => {
   }
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+export const getServerSideProps: GetServerSideProps = async () => {
   try {
-    let tags: TagType[] = [];
-    let error: ErrorResponseType | null = null;
 
-    const response = await fetch(`http://localhost:3000/api/tags`);
-
-    if (response.status === 200) {
-      tags = await response.json();
-    } else {
-      error = await response.json();
-    }
+    const tags = await tagService.findAllJson();
 
     return {
-      props: { tags, error }
+      props: {
+        tags
+      }
     };
-  } catch {
-    res.statusCode = 404;
+  } catch (error: any) {
+    console.log(error.message);
     return {
-      props: {}
+      props: {
+        error: {
+          code: 500,
+          message: error.message
+        }
+      }
     };
   }
 };

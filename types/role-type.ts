@@ -1,4 +1,5 @@
 type RoleType = {
-    id: string,
-    name: string
+    id?: string,
+    name: string,
+    authorities: AuthorityType[]
 }

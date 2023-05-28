@@ -1,21 +1,16 @@
 import React from 'react';
 import { useRouter } from "next/router";
+import Link from 'next/link';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateTagType, CreateTagSchema } from '@/validations/tag-schema';
+import { CreateTagSchema } from '@/validations/tag-schema';
 import { useAppContext } from '@/context';
-import Link from 'next/link';
 import ArrowRightIcon from '@/icons/ArrowRightIcon';
 import HomeIcon from '@/icons/HomeIcon';
-import FormContainer from './FormContainer';
+import FormContainer from '@/components/forms/FormContainer';
 
 
-type Props = {
-    id?: string
-} & CreateTagType
-
-
-const TagForm = ({ id, name }: Props) => {
+const TagForm = ({ id, name }: TagType) => {
 
     const router = useRouter();
 
@@ -31,9 +26,7 @@ const TagForm = ({ id, name }: Props) => {
     });
 
     const onSubmit: SubmitHandler<TagType> = async (data) => {
-        console.log(data);
-
-        const url = id ? `${process.env.HOST}/api/tags/${id}` : `${process.env.HOST}/api/tags`;
+        const url = id ? `${process.env.NEXT_PUBLIC_HOST}/api/tags/${id}` : `${process.env.NEXT_PUBLIC_HOST}/api/tags`;
         const method = id ? 'PUT' : 'POST';
 
         const res = await fetch(url, {
@@ -47,7 +40,7 @@ const TagForm = ({ id, name }: Props) => {
 
         if (res.status === 200) {
             showSuccessToast('Data is saved');
-            router.push("/tag");
+            router.push(`${process.env.NEXT_PUBLIC_HOST}/data/tag`);
         } else {
             const result = await res.json();
             showErrorToast(result.message);
@@ -59,7 +52,7 @@ const TagForm = ({ id, name }: Props) => {
             <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
                 <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
                 <ArrowRightIcon className='w-3 h-3' />
-                <Link href="/tag">Tag</Link>
+                <Link href={`${process.env.NEXT_PUBLIC_HOST}/data/tag`}>Tag</Link>
                 <ArrowRightIcon className='w-3 h-3' />
                 <span>Form</span>
             </div>
@@ -88,7 +81,7 @@ const TagForm = ({ id, name }: Props) => {
                         </div>
                         <div className="mt-5 text-center flex gap-1">
                             <button 
-                                onClick={() => router.back()}
+                                onClick={() => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/tag`)}
                                 type='button'
                                 className="group w-full bg-white hover:bg-slate-100 py-2 px-4 border border-slate-400 rounded">
                                     <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Cancel</span>

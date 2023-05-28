@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateRoleType, CreateRoleSchema } from '@/validations/role-schema';
+import { CreateRoleSchema } from '@/validations/role-schema';
 import { useAppContext } from '@/context';
 import Link from 'next/link';
 import ArrowRightIcon from '@/icons/ArrowRightIcon';
@@ -10,12 +10,8 @@ import HomeIcon from '@/icons/HomeIcon';
 import FormContainer from './FormContainer';
 
 
-type Props = {
-    id?: string
-} & CreateRoleType
 
-
-const RoleForm = ({ id, name }: Props) => {
+const RoleForm = ({ id, name, authorities }: RoleType) => {
 
     const router = useRouter();
 
@@ -33,7 +29,7 @@ const RoleForm = ({ id, name }: Props) => {
     const onSubmit: SubmitHandler<RoleType> = async (data) => {
         console.log(data);
 
-        const url = id ? `${process.env.HOST}/api/roles/${id}` : `${process.env.HOST}/api/roles`;
+        const url = id ? `${process.env.NEXT_PUBLIC_HOST}/api/roles/${id}` : `${process.env.NEXT_PUBLIC_HOST}/api/roles`;
         const method = id ? 'PUT' : 'POST';
 
         const res = await fetch(url, {
@@ -47,7 +43,7 @@ const RoleForm = ({ id, name }: Props) => {
 
         if (res.status === 200) {
             showSuccessToast('Data is saved');
-            router.push("/role");
+            router.push("/usermanagement/role");
         } else {
             const result = await res.json();
             showErrorToast(result.message);
@@ -59,7 +55,7 @@ const RoleForm = ({ id, name }: Props) => {
             <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
                 <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
                 <ArrowRightIcon className='w-3 h-3' />
-                <Link href="/role">Role</Link>
+                <Link href="/usermanagement/role">Role</Link>
                 <ArrowRightIcon className='w-3 h-3' />
                 <span>Form</span>
             </div>
@@ -86,18 +82,35 @@ const RoleForm = ({ id, name }: Props) => {
                                 </p>
                             )}
                         </div>
+                        <div className="mb-8 uppercase">
+                            <div>
+                            {
+                                authorities?.map((authority, index) => {
+                                    return <div key={authority.id}>
+                                    {authority.name}
+                                    <input  type="checkbox" {...register("authorities")} value={authority.id} />
+                                  </div>
+                                })
+                            }
+                            </div>
+                            {errors.authorities && (
+                                <p className="text-xs text-red-500 mt-2">
+                                    {errors.authorities?.message}
+                                </p>
+                            )}
+                        </div>
                         <div className="mt-5 text-center flex gap-1">
-                            <button 
-                                onClick={() => router.back()}
+                            <button
+                                onClick={() => router.push("/usermanagement/role")}
                                 type='button'
                                 className="group w-full bg-white hover:bg-slate-100 py-2 px-4 border border-slate-400 rounded">
-                                    <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Cancel</span>
+                                <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Cancel</span>
                             </button>
-                            
+
                             <button
                                 type="submit"
                                 className="group w-full bg-blue-600 hover:bg-blue-700 py-2 px-4 border border-blue-800 rounded">
-                                    <span className='font-semibold text-slate-200 group-hover:text-white'>Save</span>
+                                <span className='font-semibold text-slate-200 group-hover:text-white'>Save</span>
                             </button>
                         </div>
                     </form>

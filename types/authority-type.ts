@@ -1,4 +1,4 @@
 type AuthorityType = {
-    id: string
+    id?: string
     name: string
 }
