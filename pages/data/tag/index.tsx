@@ -46,16 +46,30 @@ const TagPage = ({ tags, error }: Props) => {
   }
 
   const callDeleteApi = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/tags/${id}`, { method: 'DELETE' });
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/tagss/${id}`, { method: 'DELETE' });
+      const contentType = response.headers.get("content-type");
 
-    if (response.status === 200) {
-      refreshData();
-      showSuccessToast(`Data is deleted`);
-    } else {
-      let error: ErrorResponseType = await response.json();
+      console.log(contentType);
+
+      if (response.status === 200) {
+        refreshData();
+        showSuccessToast(`Data is deleted`);
+      } else {
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+          let error = await response.json();
+          console.log(error.message);
+          showErrorToast(error.message);
+        } else {
+          let error = await response.text();
+          showErrorToast(error);
+        }
+      }
+
+    } catch (error: any) {
+      console.log(error.message);
       showErrorToast(error?.message);
     }
-
   }
 
   const refreshData = () => {
@@ -111,7 +125,7 @@ const TagPage = ({ tags, error }: Props) => {
             <div>Total data : {tags.length}</div>
             <Link href={`${process.env.NEXT_PUBLIC_HOST}/data/tag/form`}
               className="group text-center w-[120px] bg-white hover:bg-slate-100 py-2 leading-none border border-slate-400 rounded">
-              <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Add</span>
+              <span className='text-slate-500 group-hover:text-slate-700'>Add</span>
             </Link>
           </div>
         </DataContainer>

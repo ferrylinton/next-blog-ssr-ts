@@ -80,11 +80,11 @@
     }
 
     .table-responsive tbody tr td:first-child{
-        @apply sm:w-[50px] 
+        @apply sm:w-[40px] 
     }
 
     .table-responsive td.actions {
-        @apply p-0 sm:w-[100px]
+        @apply p-0 sm:w-[75px]
     }
 
     .table-responsive .btn-box {
