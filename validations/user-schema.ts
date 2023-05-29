@@ -2,6 +2,7 @@ import { NextApiRequest } from 'next';
 import { object, string, TypeOf } from 'zod';
 
 export const CreateUserSchema = object({
+    id: string().optional(),
     email: string({ required_error: 'Email is required' }).email(
         'Invalid email'
     ),

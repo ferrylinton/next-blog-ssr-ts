@@ -11,3 +11,5 @@ export const CreateAuthoritySchema = object({
 export interface CreateAuthorityApiRequest extends NextApiRequest {
     body: TypeOf<typeof CreateAuthoritySchema>;
 }
+
+export type CreateAuthorityType = z.infer <typeof CreateAuthoritySchema>;

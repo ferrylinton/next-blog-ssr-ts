@@ -10,3 +10,5 @@ export const CreateTagSchema = object({
 export interface CreateTagApiRequest extends NextApiRequest {
     body: TypeOf<typeof CreateTagSchema>;
 }
+
+export type CreateTagType = z.infer <typeof CreateTagSchema>;

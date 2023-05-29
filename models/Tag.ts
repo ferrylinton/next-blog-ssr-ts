@@ -1,6 +1,5 @@
-import { models, model, Schema, Types, Model } from 'mongoose';
-
-
+import { DuplicationError } from '@/errors/DuplicationError';
+import { models, model, Schema, Model } from 'mongoose';
 
 const TagSchema: Schema = new Schema({
     name: {
@@ -21,7 +20,7 @@ const TagSchema: Schema = new Schema({
     toJSON: {
         virtuals: true,
         versionKey: false,
-        transform: function (doc, ret) {
+        transform: function (_doc, ret) {
             delete ret._id;
         }
     },
@@ -33,6 +32,22 @@ const TagSchema: Schema = new Schema({
 TagSchema.pre('save', function (next) {
     this.increment();
     return next();
+});
+
+TagSchema.post('save', function (error: any, _doc: any, next: any) {
+    if (error.name === 'MongoServerError' && error.code === 11000) {
+        next(new DuplicationError());
+    } else {
+        next();
+    }
+});
+
+TagSchema.post('updateOne', function (error: any, _doc: any, next: any) {
+    if (error.name === 'MongoServerError' && error.code === 11000) {
+        next(new DuplicationError());
+    } else {
+        next();
+    }
 });
 
 const Tag: Model<TagType> = models.Tag || model('Tag', TagSchema, 'tags');

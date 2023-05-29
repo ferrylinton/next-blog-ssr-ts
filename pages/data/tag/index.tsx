@@ -88,7 +88,7 @@ const TagPage = ({ tags, error }: Props) => {
       <>
         {Breadcrumb}
         <DataContainer>
-          <div className='w-full p-0 sm:p-3 rounded sm:border sm:bg-slate-50 border-slate-300'>
+          <div className='w-full p-0 sm:p-3 rounded sm:border border-slate-300'>
             <table className='table-responsive w-full'>
               <thead>
                 <tr>

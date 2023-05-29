@@ -1,17 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import * as tagService from "@/services/tag-service";
 import { CreateTagApiRequest, CreateTagSchema } from "@/validations/tag-schema";
+import { getLogger } from "@/utils/logger";
+import { DuplicationError } from "@/errors/DuplicationError";
+
+const logger = getLogger("TagController");
 
 export const find = async (req: NextApiRequest,
     res: NextApiResponse) => {
     try {
-        const keyword = req.query.keyword as string;
-        const page = req.query.page as string;
-
-        const tags = await tagService.find();
+        const tags = await tagService.findAllJson();
         res.status(200).json(tags);
     } catch (err: any) {
-        console.error(err);
+        logger.error(err);
         const message = err.message;
         res.status(500).send({ message });
     }
@@ -30,7 +31,7 @@ export const findOneById = async (req: NextApiRequest,
         }
 
     } catch (err: any) {
-        console.error(err);
+        logger.error(err);
         const message = err.message;
         res.status(500).send({ message });
     }
@@ -42,7 +43,7 @@ export const save = async (req: CreateTagApiRequest,
         const result = CreateTagSchema.safeParse(req.body);
 
         if (result.success) {
-            const authority = await tagService.save(req.body);
+            const authority = await tagService.save(result.data);
             res.status(200).json(authority);
         } else {
             const code = 400;
@@ -54,9 +55,14 @@ export const save = async (req: CreateTagApiRequest,
         }
 
     } catch (err: any) {
-        console.error(err);
+        logger.error(err);
         const message = err.message;
-        res.status(500).send({ message });
+
+        if(err instanceof DuplicationError){
+            res.status(400).send({ message });
+        }else{
+            res.status(500).send({ message });
+        }
     }
 }
 
@@ -72,7 +78,7 @@ export const update = async (req: NextApiRequest,
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
     } catch (err: any) {
-        console.error(err);
+        logger.error(err);
         const message = err.message;
         res.status(500).send({ message });
     }
@@ -91,7 +97,7 @@ export const deleteOneById = async (req: NextApiRequest,
         }
 
     } catch (err: any) {
-        console.error(err);
+        logger.error(err);
         const message = err.message;
         res.status(500).send({ message });
     }

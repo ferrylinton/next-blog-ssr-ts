@@ -1,5 +1,6 @@
 import Tag from "@/models/Tag";
 import connect from "@/utils/mongodb";
+import { CreateTagType } from "@/validations/tag-schema";
 import { isObjectIdOrHexString } from "mongoose";
 
 export const findAllJson = async () => {
@@ -29,7 +30,7 @@ export const findOneById = async (id: string): Promise<any> => {
     }
 }
 
-export const save = async (input: TagType): Promise<TagType> => {
+export const save = async (input: CreateTagType): Promise<TagType> => {
     await connect();
     const tag = await Tag.create(input);
 
@@ -44,9 +45,9 @@ export const update = async (id: string, body: any): Promise<any> => {
 
     if (tag) {
         tag.name = name;
-        tag.save();
+        const newTag = await Tag.updateOne({_id: tag._id}, {name});
 
-        return tag;
+        return newTag;
     } else {
         return null;
     }
