@@ -5,29 +5,29 @@ import * as authorityService from "@/services/authority-service";
 import * as roleService from "@/services/role-service";
 
 type Props = {
-  id: string,
-  name: string,
-  authorities: AuthorityType[]
-}
+  authorityNames: string[]
+} & CreateRoleType
 
-const RoleFormPage = ({id, name, authorities} : Props) => {
+const RoleFormPage = ({id, name, authorities, authorityNames} : Props) => {
 
   return (
-    <RoleForm id={id} name={name} authorities={authorities} />
+    <RoleForm id={id} name={name} authorities={authorities} authorityNames={authorityNames} />
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
-  const role = await roleService.findOneById(id);
-  const authoritiesObject = await authorityService.find();
-  const authorities  = authoritiesObject.map(obj => obj.toJSON());
+  const role = await roleService.findByIdJson(id);
+  const name = role ? role.name : '';
+  const authorities = role ? role.authorities.map((authority: { name: any; }) => authority.name) : [];
+  const authorityNames = await authorityService.findAllNamesJson();
   
   return {
       props: {
           id,
-          name : role ?? '',
-          authorities
+          name,
+          authorities,
+          authorityNames
       }
   }
 }

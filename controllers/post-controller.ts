@@ -17,11 +17,11 @@ export const find = async (req: NextApiRequest,
     }
 }
 
-export const findOneById = async (req: NextApiRequest,
+export const findById = async (req: NextApiRequest,
     res: NextApiResponse) => {
     try {
         const id = req.query.id as string;
-        const post = await postService.findOneById(id);
+        const post = await postService.findById(id);
 
         if (post) {
             res.status(200).json(post);
@@ -78,11 +78,11 @@ export const update = async (req: NextApiRequest,
     }
 }
 
-export const deleteOneById = async (req: NextApiRequest,
+export const deleteById = async (req: NextApiRequest,
     res: NextApiResponse) => {
     try {
         const { id } = req.query;
-        const post = await postService.deleteOneById(id as string);
+        const post = await postService.deleteById(id as string);
 
         if (post) {
             res.status(200).json({ message: `Data with id=${id} is deleted`, post });

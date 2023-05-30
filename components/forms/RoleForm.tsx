@@ -9,9 +9,12 @@ import ArrowRightIcon from '@/icons/ArrowRightIcon';
 import HomeIcon from '@/icons/HomeIcon';
 import FormContainer from './FormContainer';
 
+type Props = {
+    authorityNames: string[]
+} & CreateRoleType
 
 
-const RoleForm = ({ id, name, authorities }: RoleType) => {
+const RoleForm = ({ id, name, authorities, authorityNames }: Props) => {
 
     const router = useRouter();
 
@@ -21,12 +24,12 @@ const RoleForm = ({ id, name, authorities }: RoleType) => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<RoleType>({
+    } = useForm<CreateRoleType>({
         resolver: zodResolver(CreateRoleSchema),
-        defaultValues: { name }
+        defaultValues: { name, authorities }
     });
 
-    const onSubmit: SubmitHandler<RoleType> = async (data) => {
+    const onSubmit: SubmitHandler<CreateRoleType> = async (data) => {
         console.log(data);
 
         const url = id ? `${process.env.NEXT_PUBLIC_HOST}/api/roles/${id}` : `${process.env.NEXT_PUBLIC_HOST}/api/roles`;
@@ -84,14 +87,14 @@ const RoleForm = ({ id, name, authorities }: RoleType) => {
                         </div>
                         <div className="mb-8 uppercase">
                             <div>
-                            {
-                                authorities?.map((authority, index) => {
-                                    return <div key={authority.id}>
-                                    {authority.name}
-                                    <input  type="checkbox" {...register("authorities")} value={authority.id} />
-                                  </div>
-                                })
-                            }
+                                {
+                                    authorityNames?.map((authorityName, _index) => {
+                                        return <div key={authorityName}>
+                                            {authorityName}
+                                            <input type="checkbox" {...register("authorities")} value={authorityName} />
+                                        </div>
+                                    })
+                                }
                             </div>
                             {errors.authorities && (
                                 <p className="text-xs text-red-500 mt-2">

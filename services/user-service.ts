@@ -10,7 +10,7 @@ export const find = async () => {
     return await User.find();
 }
 
-export const findOneById = async (id: string): Promise<any> => {
+export const findById = async (id: string): Promise<any> => {
     if (!isObjectIdOrHexString(id)) {
         return null;
     }
@@ -49,6 +49,6 @@ export const update = async (id: string, body: any): Promise<any> => {
     }
 }
 
-export const deleteOneById = async (id: string) => {
+export const deleteById = async (id: string) => {
     return await User.findByIdAndRemove(id);
 }

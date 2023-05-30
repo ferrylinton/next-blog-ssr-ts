@@ -3,52 +3,60 @@ import Role from "@/models/Role";
 import connect from "@/utils/mongodb";
 import { isObjectIdOrHexString } from "mongoose";
 
+export const findAllJson = async (): Promise<any> => {
+    const roles = await find();
+    return roles.map(role => JSON.parse(JSON.stringify(role.toJSON())))
+}
+
+export const findByIdJson = async (id: string): Promise<any> => {
+    const role = await findById(id);
+
+    if (role) {
+        return JSON.parse(JSON.stringify(role.toJSON()));
+    } else {
+        return null;
+    }
+}
 
 export const find = async () => {
     await connect();
     return await Role.find();
 }
 
-export const findOneById = async (id: string): Promise<any> => {
+export const findById = async (id: string): Promise<any> => {
     if (!isObjectIdOrHexString(id)) {
         return null;
     }
 
     await connect();
-    const role = await Role.findById(id);
+    return await Role.findById(id).populate({ path: 'authorities', select: 'name' });
+}
 
-    if (role) {
-        return role.toJSON();
-    } else {
-        return null;
+export const save = async (input: CreateRoleType): Promise<any> => {
+    await connect();
+
+    let authorities: any = [];
+
+    if (input.authorities) {
+        authorities = await Authority.find({ name: { "$in": input.authorities } });
     }
+
+    return await Role.create({ name: input.name, authorities });
 }
 
-export const save = async (input: RoleType): Promise<RoleType> => {
+export const update = async (id: string, input: CreateRoleType): Promise<any> => {
     await connect();
+    let authorities: any = [];
 
-    const { name } = input;
-    let authorities: AuthorityType[] = input.authorities.map(fields => {
-        return new Authority(fields);
-    });
-
-    // if (input.authorities) {
-    //     authorities = await Authority.find({ name: { "$in": input.authorities } });
-    // }
-
-    const role = await Role.create({ name, authorities });
-
-    return role.toJSON();
-}
-
-export const update = async (id: string, body: any): Promise<any> => {
-    await connect();
-    const { name } = body;
+    if (input.authorities) {
+        authorities = await Authority.find({ name: { "$in": input.authorities } });
+    }
 
     const role = await Role.findById(id);
 
     if (role) {
-        role.name = name;
+        role.name = input.name;
+        role.authorities = authorities;
         role.save();
 
         return role;
@@ -57,6 +65,6 @@ export const update = async (id: string, body: any): Promise<any> => {
     }
 }
 
-export const deleteOneById = async (id: string) => {
+export const deleteById = async (id: string) => {
     return await Role.findByIdAndRemove(id);
 }

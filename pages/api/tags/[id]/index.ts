@@ -11,7 +11,7 @@ const handler = async (
 
     switch (method) {
         case 'GET':
-            await tagController.findOneById(req, res);
+            await tagController.findById(req, res);
             break;
 
         case 'PUT':
@@ -19,7 +19,7 @@ const handler = async (
             break;
 
         case 'DELETE':
-            await tagController.deleteOneById(req, res);
+            await tagController.deleteById(req, res);
             break;
 
         default:

@@ -7,7 +7,7 @@ export const CreateRoleSchema = object({
     name: string({ required_error: "name is required" })
         .min(3, { message: "name min 3 chars and max 50 chars" })
         .max(50, { message: "name min 3 chars and max 50 chars" }),
-    authorities: array(CreateAuthoritySchema).nonempty({
+    authorities: string().array().nonempty({
         message: "authorities can't be empty",
     })
 });
@@ -15,3 +15,5 @@ export const CreateRoleSchema = object({
 export interface CreateRoleApiRequest extends NextApiRequest {
     body: TypeOf<typeof CreateRoleSchema>;
 }
+
+//export type CreateRoleType = z.infer <typeof CreateRoleSchema>;

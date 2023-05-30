@@ -11,7 +11,7 @@ const handler = async (
 
     switch (method) {
         case 'GET':
-            await postController.findOneById(req, res);
+            await postController.findById(req, res);
             break;
 
         case 'PUT':
@@ -19,7 +19,7 @@ const handler = async (
             break;
 
         case 'DELETE':
-            await postController.deleteOneById(req, res);
+            await postController.deleteById(req, res);
             break;
 
         default:

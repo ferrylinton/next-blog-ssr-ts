@@ -3,13 +3,32 @@ import connect from "@/utils/mongodb";
 import { CreateAuthorityType } from "@/validations/authority-schema";
 import { isObjectIdOrHexString } from "mongoose";
 
+export const findAllJson = async (): Promise<any> => {
+    const authorities = await find();
+    return authorities.map(authority => JSON.parse(JSON.stringify(authority.toJSON())))
+}
+
+export const findAllNamesJson = async (): Promise<any> => {
+    const authorities = await find();
+    return authorities.map(authority => authority.name)
+}
+
+export const findByIdJson = async (id: string): Promise<any> => {
+    const tag = await findById(id);
+
+    if (tag) {
+        return JSON.parse(JSON.stringify(tag.toJSON()));
+    } else {
+        return null;
+    }
+}
 
 export const find = async () => {
     await connect();
     return await Authority.find();
 }
 
-export const findOneById = async (id: string): Promise<any> => {
+export const findById = async (id: string): Promise<any> => {
     if (!isObjectIdOrHexString(id)) {
         return null;
     }
@@ -28,7 +47,7 @@ export const save = async (input: CreateAuthorityType): Promise<AuthorityType> =
     await connect();
     const authority = await Authority.create(input);
 
-    return authority.toJSON();
+    return authority;
 }
 
 export const update = async (id: string, body: any): Promise<any> => {
@@ -39,14 +58,12 @@ export const update = async (id: string, body: any): Promise<any> => {
 
     if (authority) {
         authority.name = name;
-        authority.save();
-
-        return authority;
+        return await authority.save();
     } else {
         return null;
     }
 }
 
-export const deleteOneById = async (id: string) => {
+export const deleteById = async (id: string) => {
     return await Authority.findByIdAndRemove(id);
 }

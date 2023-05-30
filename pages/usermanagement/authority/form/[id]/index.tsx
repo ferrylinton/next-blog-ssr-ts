@@ -17,7 +17,7 @@ const AuthorityFormPage = ({id, name} : Props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
-  const { name } = await authorityService.findOneById(id);
+  const { name } = await authorityService.findById(id);
   return {
       props: {
           id,

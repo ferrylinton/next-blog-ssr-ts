@@ -17,7 +17,7 @@ const TagFormPage = ({id, name} : Props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
-  const { name } = await tagService.findOneById(id);
+  const { name } = await tagService.findById(id);
   return {
       props: {
           id,

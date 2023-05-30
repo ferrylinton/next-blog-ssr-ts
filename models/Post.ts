@@ -53,22 +53,6 @@ PostSchema.pre('save', function (next) {
     return next();
 });
 
-PostSchema.post('save', function (error: any, _doc: any, next: any) {
-    if (error.name === 'MongoServerError' && error.code === 11000) {
-        next(new Error(`Duplicate data`));
-    } else {
-        next();
-    }
-});
-
-PostSchema.post('updateOne', function (error: any, _doc: any, next: any) {
-    if (error.name === 'MongoServerError' && error.code === 11000) {
-        next(new Error(`Duplicate data`));
-    } else {
-        next();
-    }
-});
-
 const Post = models.Post || model('Post', PostSchema, 'posts');
 
 export default Post

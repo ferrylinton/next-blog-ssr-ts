@@ -1,27 +1,27 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import * as roleService from "@/services/role-service";
 import { CreateRoleApiRequest, CreateRoleSchema } from "@/validations/role-schema";
+import { getLogger } from "@/utils/logger";
+import { errorResponse, errorValidation } from "@/utils/response";
 
-export const find = async (req: NextApiRequest,
-    res: NextApiResponse) => {
+const logger = getLogger('role-controller');
+
+export const find = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const keyword = req.query.keyword as string;
         const page = req.query.page as string;
 
         const roles = await roleService.find();
         res.status(200).json(roles);
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }
 
-export const findOneById = async (req: NextApiRequest,
-    res: NextApiResponse) => {
+export const findById = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const id = req.query.id as string;
-        const role = await roleService.findOneById(id);
+        const role = await roleService.findById(id);
 
         if (role) {
             res.status(200).json(role);
@@ -29,15 +29,12 @@ export const findOneById = async (req: NextApiRequest,
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
 
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }
 
-export const save = async (req: CreateRoleApiRequest,
-    res: NextApiResponse) => {
+export const save = async (req: CreateRoleApiRequest, res: NextApiResponse) => {
     try {
         const result = CreateRoleSchema.safeParse(req.body);
 
@@ -53,15 +50,12 @@ export const save = async (req: CreateRoleApiRequest,
             res.status(400).send({ code, errors });
         }
 
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorValidation(logger, res, error);
     }
 }
 
-export const update = async (req: NextApiRequest,
-    res: NextApiResponse) => {
+export const update = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const { id } = req.query;
         const role = await roleService.update(id as string, req.body);
@@ -71,18 +65,15 @@ export const update = async (req: NextApiRequest,
         } else {
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorValidation(logger, res, error);
     }
 }
 
-export const deleteOneById = async (req: NextApiRequest,
-    res: NextApiResponse) => {
+export const deleteById = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const { id } = req.query;
-        const role = await roleService.deleteOneById(id as string);
+        const role = await roleService.deleteById(id as string);
 
         if (role) {
             res.status(200).json({ message: `Data with id=${id} is deleted`, role });
@@ -90,9 +81,7 @@ export const deleteOneById = async (req: NextApiRequest,
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
 
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }
