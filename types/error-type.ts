@@ -1,4 +1,5 @@
-type ErrorResponseType = {
+type ErrorInfoType = {
     code: number,
-    message: string
+    message: string,
+    items?: string | BreadcrumbItem[]
 }

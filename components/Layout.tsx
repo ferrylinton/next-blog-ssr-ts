@@ -15,7 +15,7 @@ const Layout = (props: PropsWithChildren) => {
                         {props.children}
                     </div>
                     <footer className="w-full flex-none pt-4 ">
-                        <div className="w-full bg-slate-100 border-t border-slate-300">
+                        <div className="w-full bg-white border-t border-slate-300">
                             <div className="text-center p-3">&copy; Copyright 2023 marmeam.com</div>
                         </div>
                     </footer>

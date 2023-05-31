@@ -41,7 +41,7 @@ const TagForm = ({ id, name = '' }: TagFromType) => {
         <>
             <Breadcrumb items={breadcrumbItems} />
             <FormContainer>
-                <div className='flex justify-center items-center w-full max-w-md sm:bg-slate-50 sm:border border-slate-300 rounded-lg mx-4 my-8 sm:mx-0 px-5 py-14 '>
+                <div className='flex justify-center items-center w-full max-w-md sm:bg-slate-200 sm:border border-slate-400 rounded-lg mx-4 my-8 sm:mx-0 px-5 py-14 '>
                     <form
                         className='flex-1'
                         onSubmit={handleSubmit(onSubmit)}

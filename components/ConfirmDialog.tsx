@@ -2,9 +2,9 @@ import React from 'react';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { ConfirmType } from '@/types/confirm-type';
 
-const ConfirmDialog = ({ open, setOpen, message, callback }: ConfirmType) => {
+const ConfirmDialog = ({ showConfirm, setShowConfirm, message, callback }: ConfirmType) => {
     return (
-        <AlertDialog.Root open={open} onOpenChange={setOpen}>
+        <AlertDialog.Root open={showConfirm} onOpenChange={setShowConfirm}>
             <AlertDialog.Portal>
                 <AlertDialog.Overlay className="z-20 bg-slate-500 opacity-50 data-[state=open]:animate-overlayShow fixed inset-0" />
                 <AlertDialog.Content className="z-30 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-white p-[25px] focus:outline-none border border-slate-500">

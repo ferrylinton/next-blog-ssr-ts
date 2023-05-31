@@ -56,7 +56,7 @@
 @layer components {
 
     .table-responsive thead tr{
-        @apply border-b-2 border-slate-200 bg-white
+        @apply border-b-2 border-slate-400
     }
 
     .table-responsive thead th{
@@ -76,7 +76,7 @@
     }
 
     .table-responsive tbody tr:last-child{
-        @apply sm:border-b-0
+        @apply border-b-2 border-slate-400
     }
 
     .table-responsive tbody tr td:first-child{

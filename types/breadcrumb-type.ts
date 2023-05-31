@@ -4,5 +4,5 @@ type BreadcrumbItem = {
 }
 
 type BreadcrumbItems = {
-    items: BreadcrumbItem[]
+    items: string | BreadcrumbItem[]
 }

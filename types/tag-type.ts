@@ -5,7 +5,7 @@ type TagType = {
     updatedAt: string
 }
 
-type TagFromType = {
+type TagFormType = {
     id?: string,
     name?: string
 }

@@ -4,8 +4,9 @@ import Link from 'next/link'
 import React from 'react'
 
 const Breadcrumb = ({ items }: BreadcrumbItems) => {
-    return (
-        <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
+
+    if (Array.isArray(items))
+        return <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
             <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
             {
                 items.map((item, index) => {
@@ -24,7 +25,17 @@ const Breadcrumb = ({ items }: BreadcrumbItems) => {
                 })
             }
         </div>
-    )
+    else
+        return (
+            <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
+                <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
+                <div className='flex justify-start items-center gap-2'>
+                    <ArrowRightIcon className='w-3 h-3' />
+                    <span>{items}</span>
+                </div>
+            </div>
+        )
+
 }
 
 export default Breadcrumb
