@@ -1,61 +1,45 @@
 import React from 'react';
 import { useRouter } from "next/router";
-import Link from 'next/link';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateTagSchema } from '@/validations/tag-schema';
 import { useAppContext } from '@/context';
-import ArrowRightIcon from '@/icons/ArrowRightIcon';
-import HomeIcon from '@/icons/HomeIcon';
 import FormContainer from '@/components/forms/FormContainer';
+import { createOrUpdateClientApi } from '@/services/tag-http-client';
+import Breadcrumb from '@/components/Breadcrumb';
 
+const breadcrumbItems: BreadcrumbItem[] = [
+    {
+        label: 'Tag',
+        link: `${process.env.NEXT_PUBLIC_HOST}/data/tag`
+    },
+    {
+        label: 'Form'
+    }
+]
 
-const TagForm = ({ id, name }: TagType) => {
+const TagForm = ({ id, name = '' }: TagFromType) => {
 
     const router = useRouter();
 
-    let { showSuccessToast, showErrorToast } = useAppContext();
+    const { showSuccessToast, showErrorToast } = useAppContext();
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<TagType>({
+    } = useForm<TagFromType>({
         resolver: zodResolver(CreateTagSchema),
         defaultValues: { name }
     });
 
-    const onSubmit: SubmitHandler<TagType> = async (data) => {
-        const url = id ? `${process.env.NEXT_PUBLIC_HOST}/api/tags/${id}` : `${process.env.NEXT_PUBLIC_HOST}/api/tags`;
-        const method = id ? 'PUT' : 'POST';
-
-        const res = await fetch(url, {
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            method,
-        });
-
-
-        if (res.status === 200) {
-            showSuccessToast('Data is saved');
-            router.push(`${process.env.NEXT_PUBLIC_HOST}/data/tag`);
-        } else {
-            const result = await res.json();
-            showErrorToast(result.message);
-        }
+    const onSubmit: SubmitHandler<TagFromType> = async (data) => {
+        createOrUpdateClientApi({ id, data, refreshData: () => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/tag`), showSuccessToast, showErrorToast });
     };
 
     return (
         <>
-            <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
-                <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
-                <ArrowRightIcon className='w-3 h-3' />
-                <Link href={`${process.env.NEXT_PUBLIC_HOST}/data/tag`}>Tag</Link>
-                <ArrowRightIcon className='w-3 h-3' />
-                <span>Form</span>
-            </div>
+            <Breadcrumb items={breadcrumbItems} />
             <FormContainer>
                 <div className='flex justify-center items-center w-full max-w-md sm:bg-slate-50 sm:border border-slate-300 rounded-lg mx-4 my-8 sm:mx-0 px-5 py-14 '>
                     <form
@@ -80,17 +64,17 @@ const TagForm = ({ id, name }: TagType) => {
                             )}
                         </div>
                         <div className="mt-5 text-center flex gap-1">
-                            <button 
+                            <button
                                 onClick={() => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/tag`)}
                                 type='button'
                                 className="group w-full bg-white hover:bg-slate-100 py-2 px-4 border border-slate-400 rounded">
-                                    <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Cancel</span>
+                                <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Cancel</span>
                             </button>
-                            
+
                             <button
                                 type="submit"
                                 className="group w-full bg-blue-600 hover:bg-blue-700 py-2 px-4 border border-blue-800 rounded">
-                                    <span className='font-semibold text-slate-200 group-hover:text-white'>Save</span>
+                                <span className='font-semibold text-slate-200 group-hover:text-white'>Save</span>
                             </button>
                         </div>
                     </form>

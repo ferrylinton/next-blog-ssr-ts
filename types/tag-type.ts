@@ -4,3 +4,8 @@ type TagType = {
     createdAt: string,
     updatedAt: string
 }
+
+type TagFromType = {
+    id?: string,
+    name?: string
+}

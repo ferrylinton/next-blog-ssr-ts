@@ -12,6 +12,7 @@ import PasswordIcon from "@/icons/PasswordIcon";
 import RoleIcon from "@/icons/RoleIcon";
 import AuthorityIcon from "@/icons/AuthorityIcon";
 import LogoutIcon from "@/icons/LogoutIcon";
+import Link from "next/link";
 
 type Props = {
     open: boolean;
@@ -34,16 +35,16 @@ const Sidebar = ({ open }: Props) => {
                 </div>
                 <ul className="flex flex-col py-4 space-y-1">
                     <li>
-                        <a href="/" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <HomeIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Home</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="/about" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/about" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <InfoIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">About</span>
-                        </a>
+                        </Link>
                     </li>
                     <li className="px-5">
                         <div className="flex flex-row items-center h-8">
@@ -51,16 +52,16 @@ const Sidebar = ({ open }: Props) => {
                         </div>
                     </li>
                     <li>
-                        <a href="/data/post" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/data/post" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <PostIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Post</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="/data/tag" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/data/tag" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <TagIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Tag</span>
-                        </a>
+                        </Link>
                     </li>
                     <li className="px-5">
                         <div className="flex flex-row items-center h-8">
@@ -68,22 +69,22 @@ const Sidebar = ({ open }: Props) => {
                         </div>
                     </li>
                     <li>
-                        <a href="/usermanagement/user" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/usermanagement/user" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <UsersIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">User</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="/usermanagement/role" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/usermanagement/role" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <RoleIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Role</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="/usermanagement/authority" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/usermanagement/authority" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <AuthorityIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Authority</span>
-                        </a>
+                        </Link>
                     </li>
                     <li className="px-5">
                         <div className="flex flex-row items-center h-8">
@@ -91,28 +92,28 @@ const Sidebar = ({ open }: Props) => {
                         </div>
                     </li>
                     <li>
-                        <a href="/login" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/login" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <LoginIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Login</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="/logout" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/logout" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <LogoutIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Logout</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="/changepassword" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/changepassword" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <PasswordIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Change Password</span>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="/register" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/register" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <RegisterIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Register</span>
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </div>

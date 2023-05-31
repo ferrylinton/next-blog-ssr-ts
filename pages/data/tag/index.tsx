@@ -11,11 +11,15 @@ import ArrowRightIcon from '@/icons/ArrowRightIcon';
 import DataContainer from '@/components/DataContainer';
 import * as tagService from "@/services/tag-service";
 import ErrorContainer from '@/components/ErrorContainer';
+import { deleteClientApi } from '@/services/tag-http-client';
+import { getLogger } from '@/utils/logger';
 
 type Props = {
   tags: TagType[],
   error: ErrorResponseType | null;
 }
+
+const logger = getLogger('tag-index');
 
 const Breadcrumb = <div className='flex-none flex justify-start items-center text-sm gap-2 ps-7 py-4 uppercase mt-[50px] lg:mt-0'>
   <Link className='flex justify-start items-center gap-2' href="/"><HomeIcon className='w-4 h-4' /><span>Home</span></Link>
@@ -35,45 +39,10 @@ const TagPage = ({ tags, error }: Props) => {
 
   const [message, setMessage] = React.useState('');
 
-  const onClickEditHandler = (id: string) => {
-    router.push(`/tag/form/${id}`)
-  }
-
-  const onClickDeleteHandler = (id: string) => {
+  const showDeleteConfirmation = (id: string) => {
     setMessage(`Delete tag with id = ${id}`);
     setId(id);
     setOpen(true);
-  }
-
-  const callDeleteApi = async () => {
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/tagss/${id}`, { method: 'DELETE' });
-      const contentType = response.headers.get("content-type");
-
-      console.log(contentType);
-
-      if (response.status === 200) {
-        refreshData();
-        showSuccessToast(`Data is deleted`);
-      } else {
-        if (contentType && contentType.indexOf("application/json") !== -1) {
-          let error = await response.json();
-          console.log(error.message);
-          showErrorToast(error.message);
-        } else {
-          let error = await response.text();
-          showErrorToast(error);
-        }
-      }
-
-    } catch (error: any) {
-      console.log(error.message);
-      showErrorToast(error?.message);
-    }
-  }
-
-  const refreshData = () => {
-    router.replace(router.asPath);
   }
 
   if (error) {
@@ -102,7 +71,7 @@ const TagPage = ({ tags, error }: Props) => {
                   tags.length === 0 ?
                     <tr>
                       <td className='actions' colSpan={3}>
-                        <div className='mx-2 sm:mx-0 mt-10 sm:mt-2 py-2 text-center bg-red-50 text-red-700 border border-red-300'>Data is not found</div>
+                        <div className='mx-2 sm:mx-0 mt-10 sm:mt-2 py-2 text-center bg-red-50 text-red-700 border border-red-300'>Data is empty</div>
                       </td>
                     </tr> :
                     tags.map((tag, index) => {
@@ -111,8 +80,8 @@ const TagPage = ({ tags, error }: Props) => {
                         <td data-label="Name">{tag.name}</td>
                         <td className='actions'>
                           <div className='btn-box'>
-                            <button className='btn-edit' onClick={() => onClickEditHandler(tag.id)}><EditIcon /></button>
-                            <button className='btn-delete' onClick={() => onClickDeleteHandler(tag.id)}><DeleteIcon /></button>
+                            <button className='btn-edit' onClick={() => router.push(`/data/tag/form/${tag.id}`)}><EditIcon /></button>
+                            <button className='btn-delete' onClick={() => showDeleteConfirmation(tag.id)}><DeleteIcon /></button>
                           </div>
                         </td>
                       </tr>
@@ -129,7 +98,7 @@ const TagPage = ({ tags, error }: Props) => {
             </Link>
           </div>
         </DataContainer>
-        <ConfirmDialog open={open} setOpen={setOpen} message={message} callback={callDeleteApi} />
+        <ConfirmDialog open={open} setOpen={setOpen} message={message} callback={() => deleteClientApi({ id, refreshData: () => router.replace(router.asPath), showSuccessToast, showErrorToast })} />
       </>
     )
   }
@@ -137,16 +106,14 @@ const TagPage = ({ tags, error }: Props) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   try {
-
     const tags = await tagService.findAllJson();
-
     return {
       props: {
         tags
       }
     };
   } catch (error: any) {
-    console.log(error.message);
+    logger.error(error);
     return {
       props: {
         error: {

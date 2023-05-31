@@ -29,14 +29,15 @@ const UserSchema: Schema = new Schema({
     },
     role: {
         type: Types.ObjectId,
-        ref: 'Role'
+        required: true,
+        ref: 'RoleModel'
     }
 }, {
     timestamps: true,
     virtuals: {
         id: {
             get() {
-                return this._id.toHexString();
+                return this._id ? this._id.toHexString() : '';
             }
         }
     },
@@ -68,6 +69,6 @@ UserSchema.methods.comparePassword = async function (enteredPassword: string) {
 }
 
 
-const User = models.User || model('User', UserSchema, 'users');
+const UserModel = models.UserModel || model('UserModel', UserSchema, 'users');
 
-export default User
+export default UserModel

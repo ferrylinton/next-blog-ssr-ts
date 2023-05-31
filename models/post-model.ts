@@ -23,7 +23,8 @@ const PostSchema: Schema = new Schema({
     },
     tags: [{
         type: Types.ObjectId,
-        ref: 'Tag'
+        ref: 'TagModel',
+        required: true
     }]
 }, {
     timestamps: true,
@@ -39,8 +40,6 @@ const PostSchema: Schema = new Schema({
         versionKey: false,
         transform: function (doc, ret) {
             delete ret._id;
-            delete ret.createdAt;
-            delete ret.lastUpdatedAt;
         }
     },
     toObject: {
@@ -53,6 +52,6 @@ PostSchema.pre('save', function (next) {
     return next();
 });
 
-const Post = models.Post || model('Post', PostSchema, 'posts');
+const PostModel = models.PostModel || model('PostModel', PostSchema, 'posts');
 
-export default Post
+export default PostModel

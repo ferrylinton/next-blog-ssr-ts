@@ -33,6 +33,6 @@ TagSchema.pre('save', function (next) {
     return next();
 });
 
-const Tag: Model<TagType> = models.Tag || model('Tag', TagSchema, 'tags');
+const TagModel: Model<TagType> = models.TagModel || model('TagModel', TagSchema, 'tags');
 
-export default Tag
+export default TagModel

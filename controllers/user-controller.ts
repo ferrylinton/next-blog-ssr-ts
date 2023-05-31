@@ -1,24 +1,24 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import * as userService from "@/services/user-service";
 import { CreateUserApiRequest, CreateUserSchema } from "@/validations/user-schema";
+import { getLogger } from "@/utils/logger";
+import { errorResponse, errorValidation } from "@/utils/response";
 
-export const find = async (req: NextApiRequest,
-    res: NextApiResponse) => {
+const logger = getLogger('user-controller');
+
+export const find = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const keyword = req.query.keyword as string;
         const page = req.query.page as string;
 
         const users = await userService.find();
         res.status(200).json(users);
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }
 
-export const findById = async (req: NextApiRequest,
-    res: NextApiResponse) => {
+export const findById = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const id = req.query.id as string;
         const user = await userService.findById(id);
@@ -29,10 +29,8 @@ export const findById = async (req: NextApiRequest,
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
 
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }
 
@@ -53,10 +51,8 @@ export const save = async (req: CreateUserApiRequest,
             res.status(400).send({ code, errors });
         }
 
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorValidation(logger, res, error);
     }
 }
 
@@ -71,10 +67,8 @@ export const update = async (req: NextApiRequest,
         } else {
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorValidation(logger, res, error);
     }
 }
 
@@ -90,9 +84,7 @@ export const deleteById = async (req: NextApiRequest,
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
 
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }

@@ -33,6 +33,6 @@ AuthoritySchema.pre('save', function (next) {
     return next();
 });
 
-const Authority: Model<AuthorityType> = models.Authority || model('Authority', AuthoritySchema, 'authorities');
+const AuthorityModel: Model<AuthorityType> = models.AuthorityModel || model('AuthorityModel', AuthoritySchema, 'authorities');
 
-export default Authority
+export default AuthorityModel

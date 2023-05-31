@@ -9,7 +9,8 @@ const RoleSchema: Schema = new Schema({
     },
     authorities: [{
         type: Types.ObjectId,
-        ref: 'Authority'
+        required: true,
+        ref: 'AuthorityModel'
     }]
 }, {
     timestamps: true,
@@ -37,6 +38,6 @@ RoleSchema.pre('save', function (next) {
     return next();
 });
 
-const Role: Model<RoleType> = models.Role || model('Role', RoleSchema, 'roles');
+const RoleModel: Model<RoleType> = models.RoleModel || model('RoleModel', RoleSchema, 'roles');
 
-export default Role
+export default RoleModel

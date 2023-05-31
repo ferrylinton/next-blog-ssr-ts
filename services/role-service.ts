@@ -1,5 +1,5 @@
-import Authority from "@/models/Authority";
-import Role from "@/models/Role";
+import AuthorityModel from "@/models/authority-model";
+import RoleModel from "@/models/role-model";
 import connect from "@/utils/mongodb";
 import { isObjectIdOrHexString } from "mongoose";
 
@@ -20,7 +20,7 @@ export const findByIdJson = async (id: string): Promise<any> => {
 
 export const find = async () => {
     await connect();
-    return await Role.find();
+    return await RoleModel.find();
 }
 
 export const findById = async (id: string): Promise<any> => {
@@ -29,7 +29,7 @@ export const findById = async (id: string): Promise<any> => {
     }
 
     await connect();
-    return await Role.findById(id).populate({ path: 'authorities', select: 'name' });
+    return await RoleModel.findById(id).populate({ path: 'authorities', select: 'name' });
 }
 
 export const save = async (input: CreateRoleType): Promise<any> => {
@@ -38,10 +38,10 @@ export const save = async (input: CreateRoleType): Promise<any> => {
     let authorities: any = [];
 
     if (input.authorities) {
-        authorities = await Authority.find({ name: { "$in": input.authorities } });
+        authorities = await AuthorityModel.find({ name: { "$in": input.authorities } });
     }
 
-    return await Role.create({ name: input.name, authorities });
+    return await RoleModel.create({ name: input.name, authorities });
 }
 
 export const update = async (id: string, input: CreateRoleType): Promise<any> => {
@@ -49,10 +49,10 @@ export const update = async (id: string, input: CreateRoleType): Promise<any> =>
     let authorities: any = [];
 
     if (input.authorities) {
-        authorities = await Authority.find({ name: { "$in": input.authorities } });
+        authorities = await AuthorityModel.find({ name: { "$in": input.authorities } });
     }
 
-    const role = await Role.findById(id);
+    const role = await RoleModel.findById(id);
 
     if (role) {
         role.name = input.name;
@@ -66,5 +66,5 @@ export const update = async (id: string, input: CreateRoleType): Promise<any> =>
 }
 
 export const deleteById = async (id: string) => {
-    return await Role.findByIdAndRemove(id);
+    return await RoleModel.findByIdAndRemove(id);
 }
