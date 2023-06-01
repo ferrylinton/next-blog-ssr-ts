@@ -1,7 +1,9 @@
 type RoleType = {
-    id?: string,
+    id: string,
     name: string,
-    authorities: AuthorityType[]
+    authorities: AuthorityType[],
+    createdAt: string,
+    updatedAt: string
 }
 
 type CreateRoleType = {

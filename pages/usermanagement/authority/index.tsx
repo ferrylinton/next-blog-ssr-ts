@@ -13,7 +13,7 @@ import ButtonActions from '@/components/ButtonActions';
 
 type Props = {
   authorities: AuthorityType[],
-  error: ErrorInfoType | null;
+  error: ErrorInfoType | null
 }
 
 const logger = getLogger('usermanagement-authority-index');
@@ -31,7 +31,7 @@ const AuthorityPage = ({ authorities, error }: Props) => {
 
 
   if (error)
-    return <ErrorContainer code={error.code} message={error.message} items={'Authority'} />
+    return <ErrorContainer code={error.code} message={error.message} />
   else
     return (
       <>
