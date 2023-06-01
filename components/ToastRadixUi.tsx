@@ -23,8 +23,8 @@ const ToastRadixUi = ({ status, open, setOpen, message }: Props) => {
         onOpenChange={setOpen}>
         <Toast.Description asChild>
           <div className='flex justify-between items-start'>
-            <div className='grow text-sm'>{message}</div>
-            <div className={`flex-none w-[24px] h-[24px]  ${status ? 'text-green-600 ' : 'text-red-600 '} `}>{icon}</div>
+            <div className={`flex-none w-[24px] h-[24px] mr-2  ${status ? 'text-green-600 ' : 'text-red-600 '} `}>{icon}</div>
+            <div className='grow text-sm break-all'>{message}</div>
           </div>
         </Toast.Description>
       </Toast.Root>

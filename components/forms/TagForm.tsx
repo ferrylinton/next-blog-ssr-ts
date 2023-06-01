@@ -5,8 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateTagSchema } from '@/validations/tag-schema';
 import { useAppContext } from '@/context';
 import FormContainer from '@/components/forms/FormContainer';
-import { createOrUpdateClientApi } from '@/services/tag-http-client';
 import Breadcrumb from '@/components/Breadcrumb';
+import { postClientApi, putClientApi } from '@/services/http-client';
+import FormButtons from './FormButtons';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -18,23 +19,39 @@ const breadcrumbItems: BreadcrumbItem[] = [
     }
 ]
 
-const TagForm = ({ id, name = '' }: TagFromType) => {
+const TagForm = ({ id, name = '' }: TagFormType) => {
 
     const router = useRouter();
 
-    const { showSuccessToast, showErrorToast } = useAppContext();
+    const context = useAppContext();
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<TagFromType>({
+    } = useForm<TagFormType>({
         resolver: zodResolver(CreateTagSchema),
         defaultValues: { name }
     });
 
-    const onSubmit: SubmitHandler<TagFromType> = async (data) => {
-        createOrUpdateClientApi({ id, data, refreshData: () => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/tag`), showSuccessToast, showErrorToast });
+    const refreshData = () => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/tag`);
+
+    const onSubmit: SubmitHandler<TagFormType> = async (data) => {
+        if (id) {
+            putClientApi({
+                url: `${process.env.NEXT_PUBLIC_HOST}/api/tags/${id}`,
+                data: JSON.stringify(data),
+                refreshData,
+                context
+            })
+        } else {
+            postClientApi({
+                url: `${process.env.NEXT_PUBLIC_HOST}/api/tags`,
+                data: JSON.stringify(data),
+                refreshData,
+                context
+            })
+        }
     };
 
     return (
@@ -63,20 +80,7 @@ const TagForm = ({ id, name = '' }: TagFromType) => {
                                 </p>
                             )}
                         </div>
-                        <div className="mt-5 text-center flex gap-1">
-                            <button
-                                onClick={() => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/tag`)}
-                                type='button'
-                                className="group w-full bg-white hover:bg-slate-100 py-2 px-4 border border-slate-400 rounded">
-                                <span className='font-semibold text-slate-500 group-hover:text-slate-700'>Cancel</span>
-                            </button>
-
-                            <button
-                                type="submit"
-                                className="group w-full bg-blue-600 hover:bg-blue-700 py-2 px-4 border border-blue-800 rounded">
-                                <span className='font-semibold text-slate-200 group-hover:text-white'>Save</span>
-                            </button>
-                        </div>
+                        <FormButtons onCancelHandler={() => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/tag`)} />
                     </form>
                 </div>
             </FormContainer>

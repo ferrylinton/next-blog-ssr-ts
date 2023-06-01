@@ -1,6 +1,6 @@
 type Props = {
     id?: string,
-    data?: TagFromType,
+    data?: TagFormType,
     refreshData: () => void,
     showSuccessToast: (message: string) => void,
     showErrorToast: (message: string) => void

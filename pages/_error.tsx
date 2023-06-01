@@ -7,7 +7,7 @@ type Props = {
 }
 
 const Error = ({ statusCode, message }: Props) => {
-    return <ErrorContainer code={statusCode} message={message} items={'Error'} />
+    return <ErrorContainer code={statusCode} message={message}/>
 };
 
 Error.getInitialProps = ({ req, res, err }: NextPageContext) => {

@@ -7,7 +7,7 @@ const Layout = (props: PropsWithChildren) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     return (
         <>
-            <Sidebar open={sidebarOpen} />
+            <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
             <div className="ps-0 lg:ps-[250px] flex flex-col h-screen">
                 <Navbar sidebarOpen={sidebarOpen} onMenuButtonClick={() => setSidebarOpen((prev) => !prev)} />
                 <div className="flex flex-col w-full h-full min-w-[350px] ">

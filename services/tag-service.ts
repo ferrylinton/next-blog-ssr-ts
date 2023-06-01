@@ -37,7 +37,7 @@ export const findById = async (id: string): Promise<any> => {
     }
 }
 
-export const save = async (input: TagFromType): Promise<TagType> => {
+export const save = async (input: TagFormType): Promise<TagType> => {
     await connect();
     const tag = await TagModel.create(input);
 

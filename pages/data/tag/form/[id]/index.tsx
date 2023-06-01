@@ -7,7 +7,7 @@ import ErrorContainer from '@/components/ErrorContainer';
 
 type Props = {
   error: ErrorInfoType | null;
-} & TagFromType
+} & TagFormType
 
 const breadcrumbItems: BreadcrumbItem[] = [
   {

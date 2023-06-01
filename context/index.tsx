@@ -1,10 +1,5 @@
-import { PropsWithChildren, SetStateAction, createContext, useContext, useState } from 'react';
+import { PropsWithChildren, createContext, useContext, useState } from 'react';
 import ToastRadixUi from '@/components/ToastRadixUi';
-
-type AppContextType = {
-    showSuccessToast: (msg: string) => void,
-    showErrorToast: (msg: string) => void
-}
 
 export const AppContext = createContext<AppContextType>({
     showSuccessToast: (msg: string) => { console.log(msg) },

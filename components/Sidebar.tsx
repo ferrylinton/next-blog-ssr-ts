@@ -4,7 +4,6 @@ import HomeIcon from "@/icons/HomeIcon";
 import InfoIcon from "@/icons/InfoIcon";
 import TagIcon from "@/icons/TagIcon";
 import PostIcon from "@/icons/PostIcon";
-import PeopleIcon from "@/icons/PeopleIcon";
 import LoginIcon from "@/icons/LoginIcon";
 import RegisterIcon from "@/icons/RegisterIcon";
 import UsersIcon from "@/icons/UsersIcon";
@@ -15,14 +14,19 @@ import LogoutIcon from "@/icons/LogoutIcon";
 import Link from "next/link";
 
 type Props = {
-    open: boolean;
+    open: boolean,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-const Sidebar = ({ open }: Props) => {
+const Sidebar = ({ open, setOpen }: Props) => {
+
+    const onClickHandler = (e: React.MouseEvent<HTMLAnchorElement>): void => {
+        setOpen(false);
+    }
 
     return (
 
-        <nav className={classNames('z-30 w-[250px] fixed top-0 left-0 h-screen overflow-auto', {
+        <nav className={classNames('z-30 w-[250px] pt-[60px] sm:pt-0 fixed top-0 left-0 h-screen overflow-auto', {
             "bg-slate-700": true,
             "text-white": true,
             "transition-transform .3s ease-in-out lg:-translate-x-0": true,
@@ -35,13 +39,13 @@ const Sidebar = ({ open }: Props) => {
                 </div>
                 <ul className="flex flex-col py-4 space-y-1">
                     <li>
-                        <Link href="/" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <HomeIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Home</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/about" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/about" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <InfoIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">About</span>
                         </Link>
@@ -52,13 +56,13 @@ const Sidebar = ({ open }: Props) => {
                         </div>
                     </li>
                     <li>
-                        <Link href="/data/post" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/data/post" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <PostIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Post</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/data/tag" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/data/tag" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <TagIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Tag</span>
                         </Link>
@@ -69,19 +73,19 @@ const Sidebar = ({ open }: Props) => {
                         </div>
                     </li>
                     <li>
-                        <Link href="/usermanagement/user" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/usermanagement/user" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <UsersIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">User</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/usermanagement/role" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/usermanagement/role" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <RoleIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Role</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/usermanagement/authority" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/usermanagement/authority" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <AuthorityIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Authority</span>
                         </Link>
@@ -92,25 +96,25 @@ const Sidebar = ({ open }: Props) => {
                         </div>
                     </li>
                     <li>
-                        <Link href="/login" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/login" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <LoginIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Login</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/logout" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/logout" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <LogoutIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Logout</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/changepassword" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/changepassword" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <PasswordIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Change Password</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/register" className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/register" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <RegisterIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Register</span>
                         </Link>
