@@ -5,27 +5,26 @@ import * as authorityService from "@/services/authority-service";
 
 
 type Props = {
-  authorityNames: string[]
+  allAuthorities: string[]
 }
 
-const RoleFormPage = ({ authorityNames }: Props) => {
+const RoleFormPage = ({ allAuthorities }: Props) => {
 
   return (
-    <RoleForm name={''} authorities={[]} authorityNames={authorityNames} />
-
+    <RoleForm allAuthorities={allAuthorities} />
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   try {
-    const authorityNames = await authorityService.findAllNamesJson();
+    const allAuthorities = await authorityService.findAllNamesJson();
     return {
-      props: { authorityNames }
+      props: { allAuthorities }
     };
   } catch {
     return {
       props: {
-        authorityNames: []
+        allAuthorities: []
       }
     };
   }

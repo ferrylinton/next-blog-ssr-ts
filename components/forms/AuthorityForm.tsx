@@ -29,12 +29,12 @@ const AuthorityForm = ({ id, name }: AuthorityFormType) => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<AuthorityType>({
+    } = useForm<AuthorityFormType>({
         resolver: zodResolver(CreateAuthoritySchema),
         defaultValues: { name }
     });
 
-    const refreshData = () => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/authority`);
+    const refreshData = () => router.push(`${process.env.NEXT_PUBLIC_HOST}/usermanagement/authority`);
 
     const onSubmit: SubmitHandler<AuthorityFormType> = async (data) => {
         if (id) {

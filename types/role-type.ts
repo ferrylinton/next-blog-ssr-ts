@@ -6,8 +6,9 @@ type RoleType = {
     updatedAt: string
 }
 
-type CreateRoleType = {
+type RoleFormType = {
     id?: string,
-    name: string,
-    authorities: string[]
+    name?: string,
+    authorities?: string[],
+    allAuthorities: string[]
 }
