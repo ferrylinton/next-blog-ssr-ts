@@ -1,4 +1,5 @@
 type ErrorInfoType = {
     code: number,
-    message: string
+    message: string,
+    label: string
 }

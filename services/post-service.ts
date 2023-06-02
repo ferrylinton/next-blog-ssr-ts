@@ -4,6 +4,20 @@ import connect from "@/utils/mongodb";
 import { CreatePostType } from "@/validations/post-schema";
 import { isObjectIdOrHexString } from "mongoose";
 
+export const findAllJson = async (): Promise<any> => {
+    const users = await find();
+    return users.map(user => JSON.parse(JSON.stringify(user.toJSON())))
+}
+
+export const findByIdJson = async (id: string): Promise<any> => {
+    const post = await findById(id);
+
+    if (post) {
+        return JSON.parse(JSON.stringify(post.toJSON()));
+    } else {
+        return null;
+    }
+}
 
 export const find = async () => {
     await connect();
@@ -16,13 +30,7 @@ export const findById = async (id: string): Promise<any> => {
     }
 
     await connect();
-    const post = await PostModel.findById(id).populate({ path: 'tags', select: 'name' });
-
-    if (post) {
-        return post.toJSON();
-    } else {
-        return null;
-    }
+    return await PostModel.findById(id).populate({ path: 'tags', select: 'name' });
 }
 
 export const save = async (input: CreatePostType): Promise<PostType> => {
@@ -36,7 +44,7 @@ export const save = async (input: CreatePostType): Promise<PostType> => {
     }
 
 
-    const post = await PostModel.create({slug, title, description, content, tags});
+    const post = await PostModel.create({ slug, title, description, content, tags });
 
     return post.toJSON();
 }

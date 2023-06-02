@@ -32,7 +32,7 @@ export const findById = async (id: string): Promise<any> => {
     return await RoleModel.findById(id).populate({ path: 'authorities', select: 'name' });
 }
 
-export const save = async (input: CreateRoleType): Promise<any> => {
+export const save = async (input: RoleFormType): Promise<any> => {
     await connect();
 
     let authorities: any = [];
@@ -44,7 +44,7 @@ export const save = async (input: CreateRoleType): Promise<any> => {
     return await RoleModel.create({ name: input.name, authorities });
 }
 
-export const update = async (id: string, input: CreateRoleType): Promise<any> => {
+export const update = async (id: string, input: RoleFormType): Promise<any> => {
     await connect();
     let authorities: any = [];
 

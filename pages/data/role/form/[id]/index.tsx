@@ -6,7 +6,7 @@ import * as roleService from "@/services/role-service";
 
 type Props = {
   allAuthorities: string[]
-} & CreateRoleType
+} & RoleFormType
 
 const RoleFormPage = ({id, name, authorities, allAuthorities} : Props) => {
 

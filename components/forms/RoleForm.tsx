@@ -13,14 +13,14 @@ import FormButtons from './FormButtons';
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         label: 'Role',
-        link: `${process.env.NEXT_PUBLIC_HOST}/usermanagement/role`
+        link: `${process.env.NEXT_PUBLIC_HOST}/data/role`
     },
     {
         label: 'Form'
     }
 ]
 
-const RoleForm = ({ id, name='', authorities=[], allAuthorities }: RoleFormType) => {
+const RoleForm = ({ id, name, authorities, allAuthorities }: RoleFormType) => {
 
     const router = useRouter();
 
@@ -35,7 +35,7 @@ const RoleForm = ({ id, name='', authorities=[], allAuthorities }: RoleFormType)
         defaultValues: { name, authorities }
     });
 
-    const refreshData = () => router.push(`${process.env.NEXT_PUBLIC_HOST}/usermanagement/role`);
+    const refreshData = () => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/role`);
 
     const onSubmit: SubmitHandler<RoleFormType> = async (data) => {
         if (id) {
@@ -82,16 +82,16 @@ const RoleForm = ({ id, name='', authorities=[], allAuthorities }: RoleFormType)
                             )}
                         </div>
                         <div className="mb-8 uppercase">
-                            <div className={`flex justify-start flex-wrap border rounded p-2 bg-white ${errors.name ? 'border-red-500' : 'border-slate-400'}`}>
+                            <div className={`flex justify-start flex-wrap border rounded p-2 bg-white ${errors.authorities ? 'border-red-500' : 'border-slate-400'}`}>
                                 {
-                                    allAuthorities?.map((authorityName, _index) => {
-                                        return <div className="min-w-[190px] mb-[1rem] min-h-[1.5rem] pl-[1.5rem] flex justify-start items-center" key={authorityName}>
+                                    allAuthorities?.map((authority, _index) => {
+                                        return <div className="min-w-[190px] mb-[1rem] min-h-[1.5rem] pl-[1.5rem] flex justify-start items-center" key={authority}>
                                             <input
-                                                type="checkbox" {...register("authorities")} value={authorityName}
+                                                type="checkbox" {...register("authorities")} value={authority}
                                                 className="relative float-left -ml-[1.5rem] mr-[3px] mt-[0.15rem] h-[1.5rem] w-[1.5rem] rounded-[0.25rem] border-[0.125rem] border-solid border-neutral-300 "
                                             />
                                             <label className="inline-block pl-[0.15rem] hover:cursor-pointer me-5 text-sm">
-                                                {authorityName}
+                                                {authority}
                                             </label>
                                         </div>
                                     })
@@ -103,7 +103,7 @@ const RoleForm = ({ id, name='', authorities=[], allAuthorities }: RoleFormType)
                                 </p>
                             )}
                         </div>
-                        <FormButtons onCancelHandler={() => router.push(`${process.env.NEXT_PUBLIC_HOST}/usermanagement/role`)} />
+                        <FormButtons onCancelHandler={() => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/role`)} />
                     </form>
                 </div>
             </FormContainer>

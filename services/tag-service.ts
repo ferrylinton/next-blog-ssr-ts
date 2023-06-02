@@ -7,6 +7,11 @@ export const findAllJson = async (): Promise<TagType[]> => {
     return tags.map(tag => JSON.parse(JSON.stringify(tag.toJSON())))
 }
 
+export const findAllNamesJson = async (): Promise<any> => {
+    const tags = await find();
+    return tags.map(tag => tag.name)
+}
+
 export const findByIdJson = async (id: string): Promise<TagType | null> => {
     const tag = await findById(id);
 

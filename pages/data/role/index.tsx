@@ -29,7 +29,7 @@ const RolePage = ({ roles, error }: Props) => {
   }
 
   if (error) {
-    return <ErrorContainer code={error.code} message={error.message} />
+    return <ErrorContainer code={error.code} message={error.message} label='Role' />
   } else {
     return (
       <>
@@ -52,7 +52,7 @@ const RolePage = ({ roles, error }: Props) => {
                     <td data-label="Name">{role.name}</td>
                     <td className='actions'>
                       <ButtonActions
-                        editPageUrl={`${process.env.NEXT_PUBLIC_HOST}/usermanagement/role/form/${role.id}`}
+                        editPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/role/form/${role.id}`}
                         showDeleteConfirmation={() => showDeleteConfirmation(role.id)} />
                     </td>
                   </tr>
@@ -60,7 +60,7 @@ const RolePage = ({ roles, error }: Props) => {
               }
             </tbody>
           </table>
-          <DataToolbar totalData={roles.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/usermanagement/role/form`} />
+          <DataToolbar totalData={roles.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/role/form`} />
         </DataContainer>
         <DeleteConfirmDialog
           showConfirm={showConfirm}

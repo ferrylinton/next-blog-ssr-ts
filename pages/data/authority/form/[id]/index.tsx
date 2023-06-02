@@ -11,7 +11,7 @@ type Props = {
 const breadcrumbItems: BreadcrumbItem[] = [
   {
     label: 'Authority',
-    link: `${process.env.NEXT_PUBLIC_HOST}/usermanagement/authority`
+    link: `${process.env.NEXT_PUBLIC_HOST}/data/authority`
   },
   {
     label: 'Form'

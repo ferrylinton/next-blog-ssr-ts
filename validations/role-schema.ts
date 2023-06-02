@@ -1,6 +1,5 @@
 import { NextApiRequest } from "next";
-import { array, object, string, TypeOf, z } from "zod";
-import { CreateAuthoritySchema } from "./authority-schema";
+import {  object, string, TypeOf, z } from "zod";
 
 export const CreateRoleSchema = object({
     id: string().optional(),
@@ -15,5 +14,3 @@ export const CreateRoleSchema = object({
 export interface CreateRoleApiRequest extends NextApiRequest {
     body: TypeOf<typeof CreateRoleSchema>;
 }
-
-//export type CreateRoleType = z.infer <typeof CreateRoleSchema>;

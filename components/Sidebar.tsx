@@ -73,19 +73,19 @@ const Sidebar = ({ open, setOpen }: Props) => {
                         </div>
                     </li>
                     <li>
-                        <Link href="/usermanagement/user" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/data/user" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <UsersIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">User</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/usermanagement/role" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/data/role" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <RoleIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Role</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/usermanagement/authority" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                        <Link href="/data/authority" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <AuthorityIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Authority</span>
                         </Link>

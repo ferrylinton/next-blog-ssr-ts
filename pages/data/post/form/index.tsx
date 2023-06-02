@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
+import PostForm from '@/components/forms/PostForm';
+import { GetServerSideProps } from 'next';
+import React from 'react';
+import * as tagService from "@/services/tag-service";
 
-type Props = {}
-
-const PostForm = (props: Props) => {
-
-  const onChange = ({ currentTarget: { value } }: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(value);
-  };
-
-  return (
-    <>
-      <div className='flex justify-center'>
-        <div className='w-full max-w-3xl'>
-          <form noValidate autoComplete='off' className='w-full'>
-            <textarea rows={15}
-
-              onChange={onChange}
-              className=" p-2
-          font-mono
-          overflow-auto
-          whitespace-pre
-          border-solid
-          border
-          border-gray-300
-          resize
-          w-full
-        "
-            />
-          </form>
-        </div>
-      </div>
-    </>
-  );
+type Props = {
+  allTags: string[]
 }
 
-export default PostForm
+const PostPageForm = ({ allTags }: Props) => {
+  return (
+    <PostForm
+      slug=''
+      title=''
+      description=''
+      content=''
+      tags={[]}
+      allTags={allTags} />
+  )
+}
+
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
+  try {
+    const allTags = await tagService.findAllNamesJson();
+    return {
+      props: { allTags }
+    };
+  } catch {
+    return {
+      props: {
+        allAuthorities: []
+      }
+    };
+  }
+};
+
+export default PostPageForm

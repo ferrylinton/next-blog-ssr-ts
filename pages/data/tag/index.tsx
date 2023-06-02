@@ -29,7 +29,7 @@ const TagPage = ({ tags, error }: Props) => {
   }
 
   if (error)
-    return <ErrorContainer code={error.code} message={error.message} items={'Tag'} />
+    return <ErrorContainer code={error.code} message={error.message} label={'Tag'} />
   else
     return (
       <>

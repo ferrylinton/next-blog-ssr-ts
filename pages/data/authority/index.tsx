@@ -54,7 +54,7 @@ const AuthorityPage = ({ authorities, error }: Props) => {
                       <td data-label="Name">{authority.name}</td>
                       <td className='actions'>
                         <ButtonActions
-                          editPageUrl={`${process.env.NEXT_PUBLIC_HOST}/usermanagement/authority/form/${authority.id}`}
+                          editPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/authority/form/${authority.id}`}
                           showDeleteConfirmation={() => showDeleteConfirmation(authority.id)} />
                       </td>
                     </tr>
@@ -62,7 +62,7 @@ const AuthorityPage = ({ authorities, error }: Props) => {
               }
             </tbody>
           </table>
-          <DataToolbar totalData={authorities.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/usermanagement/authority/form`} />
+          <DataToolbar totalData={authorities.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/authority/form`} />
         </DataContainer>
         <DeleteConfirmDialog
           showConfirm={showConfirm}

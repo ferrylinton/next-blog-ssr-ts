@@ -12,7 +12,7 @@ import FormButtons from './FormButtons';
 const breadcrumbItems: BreadcrumbItem[] = [
     {
         label: 'Authority',
-        link: `${process.env.NEXT_PUBLIC_HOST}/usermanagement/authority`
+        link: `${process.env.NEXT_PUBLIC_HOST}/data/authority`
     },
     {
         label: 'Form'
@@ -34,7 +34,7 @@ const AuthorityForm = ({ id, name }: AuthorityFormType) => {
         defaultValues: { name }
     });
 
-    const refreshData = () => router.push(`${process.env.NEXT_PUBLIC_HOST}/usermanagement/authority`);
+    const refreshData = () => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/authority`);
 
     const onSubmit: SubmitHandler<AuthorityFormType> = async (data) => {
         if (id) {
@@ -80,7 +80,7 @@ const AuthorityForm = ({ id, name }: AuthorityFormType) => {
                                 </p>
                             )}
                         </div>
-                        <FormButtons onCancelHandler={() => router.push(`${process.env.NEXT_PUBLIC_HOST}/usermanagement/authority`)} />
+                        <FormButtons onCancelHandler={() => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/authority`)} />
                     </form>
                 </div>
             </FormContainer>

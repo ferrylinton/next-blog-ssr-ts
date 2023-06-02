@@ -8,7 +8,7 @@ type RoleType = {
 
 type RoleFormType = {
     id?: string,
-    name?: string,
-    authorities?: string[],
+    name: string,
+    authorities: string[],
     allAuthorities: string[]
 }

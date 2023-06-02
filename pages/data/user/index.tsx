@@ -14,7 +14,7 @@ type Props = {
   error: ErrorInfoType | null
 }
 
-const logger = getLogger('usermanagement-role-index');
+const logger = getLogger('usermanagement-user-index');
 
 const UserPage = ({ users, error }: Props) => {
 
@@ -28,7 +28,7 @@ const UserPage = ({ users, error }: Props) => {
   }
 
   if (error) {
-    return <ErrorContainer code={error.code} message={error.message} />
+    return <ErrorContainer code={error.code} message={error.message} label='User' />
   } else {
     return (
       <>
@@ -50,7 +50,7 @@ const UserPage = ({ users, error }: Props) => {
                       <td data-label="Email">{user.email}</td>
                       <td className='actions'>
                       <ButtonActions
-                        editPageUrl={`${process.env.NEXT_PUBLIC_HOST}/usermanagement/user/form/${user.id}`}
+                        editPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/user/form/${user.id}`}
                         showDeleteConfirmation={() => showDeleteConfirmation(user.id)} />
                       </td>
                     </tr>
@@ -58,7 +58,7 @@ const UserPage = ({ users, error }: Props) => {
                 }
               </tbody>
             </table>
-            <DataToolbar totalData={users.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/usermanagement/user/form`} />
+            <DataToolbar totalData={users.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/user/form`} />
         </DataContainer>
         <DeleteConfirmDialog
           showConfirm={showConfirm}

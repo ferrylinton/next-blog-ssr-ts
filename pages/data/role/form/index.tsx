@@ -11,7 +11,7 @@ type Props = {
 const RoleFormPage = ({ allAuthorities }: Props) => {
 
   return (
-    <RoleForm allAuthorities={allAuthorities} />
+    <RoleForm name='' authorities={[]} allAuthorities={allAuthorities} />
   )
 }
 
