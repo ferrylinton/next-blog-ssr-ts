@@ -16,7 +16,7 @@ export const CreatePostSchema = object({
         .min(3, { message: "content min 3 chars and max 50 chars" })
         .max(250, { message: "content min 3 chars and max 50 chars" }),
     tags: string().array().nonempty({
-        message: "tags can't be empty",
+        message: "tags can't be empty"
     })
 });
 

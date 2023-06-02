@@ -1,7 +1,6 @@
 import RoleModel from "@/models/role-model";
 import UserModel from "@/models/user-model";
 import connect from "@/utils/mongodb";
-import { CreateUserType } from "@/validations/user-schema";
 import { isObjectIdOrHexString } from "mongoose";
 
 export const findAllJson = async (): Promise<any> => {

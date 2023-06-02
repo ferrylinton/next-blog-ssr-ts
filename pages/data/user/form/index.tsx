@@ -1,13 +1,34 @@
 import React from 'react';
-import TagForm from '@/components/forms/TagForm';
-import Link from 'next/link';
+import CreateUserForm from '@/components/forms/CreateUserForm';
+import { GetServerSideProps } from 'next';
+import * as roleService from "@/services/role-service";
 
-const TagFormPage = () => {
+type Props = {
+  allRoles: string[]
+}
+
+const TagFormPage = ({allRoles} : Props) => {
 
   return (
-    <TagForm name={''} />
+    <CreateUserForm
+      email=''
+      password=''
+      passwordConfirm=''
+      role=''
+      allRoles={allRoles} />
 
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const allRoles = await roleService.findAllNamesJson();
+
+  return {
+    props: {
+      allRoles
+    }
+  }
+}
+
 
 export default TagFormPage

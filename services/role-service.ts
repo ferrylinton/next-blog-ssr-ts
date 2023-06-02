@@ -8,6 +8,11 @@ export const findAllJson = async (): Promise<any> => {
     return roles.map(role => JSON.parse(JSON.stringify(role.toJSON())))
 }
 
+export const findAllNamesJson = async (): Promise<any> => {
+    const roles = await find();
+    return roles.map(role => role.name)
+}
+
 export const findByIdJson = async (id: string): Promise<any> => {
     const role = await findById(id);
 

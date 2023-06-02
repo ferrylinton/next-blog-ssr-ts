@@ -1,29 +1,41 @@
 import React from 'react';
-import TagForm from '@/components/forms/TagForm';
 import { GetServerSideProps } from 'next';
-import * as tagService from "@/services/tag-service";
+import * as roleService from "@/services/role-service";
+import * as userService from "@/services/user-service";
+import UpdateUserForm from '@/components/forms/UpdateUserForm';
 
 type Props = {
-  id: string,
-  name: string
-}
+  allRoles: string[]
+} & UpdateUserType
 
-const TagFormPage = ({id, name} : Props) => {
+const UpdateUserFormPage = ({id, email, role, allRoles} : Props) => {
 
   return (
-    <TagForm id={id} name={name} />
+    <UpdateUserForm
+      id={id}
+      email={email}
+      role={role}
+      allRoles={allRoles} />
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
-  const { name } = await tagService.findById(id);
+  const user = await userService.findByIdJson(id);
+  console.log(user);
+  const email = user ? user.email : '';
+  const role = user ? user.role.name : '';
+  const allRoles = await roleService.findAllNamesJson();
+
   return {
-      props: {
-          id,
-          name
-      }
+    props: {
+      id,
+      user,
+      email,
+      role,
+      allRoles
+    }
   }
 }
 
-export default TagFormPage
+export default UpdateUserFormPage
