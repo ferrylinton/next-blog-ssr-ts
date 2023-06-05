@@ -39,7 +39,7 @@ export const save = async (req: CreateRoleApiRequest, res: NextApiResponse) => {
         const result = CreateRoleSchema.safeParse(req.body);
 
         if (result.success) {
-            const role = await roleService.save(req.body);
+            const role = await roleService.save(result.data);
             res.status(200).json(role);
         } else {
             const code = 400;

@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
+import { getLogger } from './logger';
 
+const logger = getLogger('mongodb');
 const { MONGODB_URI } = process.env;
 
 if (!MONGODB_URI) throw new Error('MONGODB_URI not defined');
@@ -23,9 +25,18 @@ async function connect() {
                 family: 4 // Use IPv4, skip trying IPv6
             };
 
+            mongoose.set("debug", (collectionName, method, query, _doc) => {
+                if(query){
+                    delete query['password'];
+                    delete query['passwordConfirm'];
+                }
+                logger.debug(`${collectionName}, ${method}, ${JSON.stringify(query)}`);
+            });
+
             cached.promise = mongoose.connect(`${MONGODB_URI}`, options).then(mongoose => mongoose);
-            console.log('Server connected to MongoDb');
+            logger.info('Server connected to MongoDb');
         } catch (error) {
+            logger.error(error);
             console.log(error);
         }
     }

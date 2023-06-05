@@ -8,11 +8,9 @@ const logger = getLogger('authority-controller');
 
 export const find = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const keyword = req.query.keyword as string;
-        const page = req.query.page as string;
-
-        const authoritys = await authorityService.find();
-        res.status(200).json(authoritys);
+        const { keyword, page } = req.query;
+        const pageable = await authorityService.find({ keyword, page });
+        res.status(200).json(pageable);
     } catch (error: any) {
         errorResponse(logger, res, error);
     }
@@ -20,7 +18,7 @@ export const find = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export const findById = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const id = req.query.id as string;
+        const id = (req.query.id || '') as string;
         const authority = await authorityService.findById(id);
 
         if (authority) {
@@ -39,7 +37,7 @@ export const save = async (req: CreateAuthorityApiRequest, res: NextApiResponse)
         const result = CreateAuthoritySchema.safeParse(req.body);
 
         if (result.success) {
-            const authority = await authorityService.save(req.body);
+            const authority = await authorityService.save(result.data);
             res.status(200).json(authority);
         } else {
             const code = 400;
@@ -57,11 +55,11 @@ export const save = async (req: CreateAuthorityApiRequest, res: NextApiResponse)
 
 export const update = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const { id } = req.query;
-        const authority = await authorityService.update(id as string, req.body);
+        const id = (req.query.id || '') as string;
+        const authority = await authorityService.update(id, req.body);
 
         if (authority) {
-            res.status(200).json({authority });
+            res.status(200).json({ authority });
         } else {
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
@@ -72,8 +70,8 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export const deleteById = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const { id } = req.query;
-        const authority = await authorityService.deleteById(id as string);
+        const id = (req.query.id || '') as string;
+        const authority = await authorityService.deleteById(id);
 
         if (authority) {
             res.status(200).json({ message: `Data with id=${id} is deleted`, authority });

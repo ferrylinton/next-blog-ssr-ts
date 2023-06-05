@@ -9,23 +9,26 @@ import EmptyDataRow from '@/components/EmptyDataRow';
 import DataToolbar from '@/components/DataToolbar';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import ButtonActions from '@/components/ButtonActions';
+import { IAuthorityType } from '@/models/authority-model';
+import SearchIcon from '@/icons/SearchIcon';
+import Searchbox from '@/components/Searchbox';
 
 
 type Props = {
-  authorities: AuthorityType[],
-  error: ErrorInfoType | null
+  pageable: Pageable<IAuthorityType>,
+  error: ErrorInfoType | null,
 }
 
 const logger = getLogger('usermanagement-authority-index');
 
-const AuthorityPage = ({ authorities, error }: Props) => {
+const AuthorityPage = ({ pageable, error }: Props) => {
 
   const [showConfirm, setShowConfirm] = useState(false);
 
   const [deleteApiUrl, setDeleteApiUrl] = useState('');
 
   const showDeleteConfirmation = (id: string) => {
-    setDeleteApiUrl(`${process.env.NEXT_PUBLIC_HOST}/api/authorities/${id}`)
+    setDeleteApiUrl(`${process.env.NEXT_PUBLIC_HOST}/api/pageable.items/${id}`)
     setShowConfirm(true);
   }
 
@@ -37,6 +40,7 @@ const AuthorityPage = ({ authorities, error }: Props) => {
       <>
         <Breadcrumb label={'Authority'} />
         <DataContainer>
+          <Searchbox keyword={pageable.keyword} />
           <table className='table-responsive w-full'>
             <thead>
               <tr>
@@ -47,10 +51,10 @@ const AuthorityPage = ({ authorities, error }: Props) => {
             </thead>
             <tbody>
               {
-                (authorities.length === 0) ? <EmptyDataRow colSpan={3} /> :
-                  (authorities.map((authority, index) => {
+                (pageable.items.length === 0) ? <EmptyDataRow colSpan={3} /> :
+                  (pageable.items.map((authority, index) => {
                     return <tr key={authority.id}>
-                      <td data-label="#">{index + 1}</td>
+                      <td data-label="#">{((pageable.page - 1) * pageable.perPage) + index + 1}</td>
                       <td data-label="Name">{authority.name}</td>
                       <td className='actions'>
                         <ButtonActions
@@ -62,7 +66,7 @@ const AuthorityPage = ({ authorities, error }: Props) => {
               }
             </tbody>
           </table>
-          <DataToolbar totalData={authorities.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/authority/form`} />
+          <DataToolbar keyword={pageable.keyword} page={pageable.page} totalPage={pageable.totalPage} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/authority/form`} />
         </DataContainer>
         <DeleteConfirmDialog
           showConfirm={showConfirm}
@@ -73,12 +77,14 @@ const AuthorityPage = ({ authorities, error }: Props) => {
 }
 
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   try {
-    const authorities = await authorityService.findAllJson();
+    const { keyword, page } = query;
+    const pageable = await authorityService.find({ keyword, page });
+
     return {
       props: {
-        authorities
+        pageable: JSON.parse(JSON.stringify(pageable))
       }
     };
   } catch (error: any) {

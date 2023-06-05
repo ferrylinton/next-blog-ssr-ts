@@ -14,7 +14,7 @@ type CreateUserType = {
     password: string,
     passwordConfirm: string,
     role: string,
-    allRoles: string[]
+    allRoles?: string[]
 }
 
 type UpdateUserType = {

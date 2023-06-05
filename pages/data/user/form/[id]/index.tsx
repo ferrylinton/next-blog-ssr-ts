@@ -22,7 +22,6 @@ const UpdateUserFormPage = ({id, email, role, allRoles} : Props) => {
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
   const user = await userService.findByIdJson(id);
-  console.log(user);
   const email = user ? user.email : '';
   const role = user ? user.role.name : '';
   const allRoles = await roleService.findAllNamesJson();

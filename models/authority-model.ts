@@ -1,6 +1,21 @@
-import { models, model, Schema, Model } from 'mongoose';
+import { Document, models, model, Schema, Model } from 'mongoose';
 
-const AuthoritySchema: Schema = new Schema({
+export interface IAuthority {
+    name: string,
+    createdAt: string,
+    updatedAt: string
+}
+
+export interface IAuthorityType extends IAuthority{
+    id: string,
+    __v: number
+}
+
+export interface IAuthorityDocument extends IAuthority, Document { }
+
+export interface IAuthorityModel extends Model<IAuthorityDocument> { }
+
+const AuthoritySchema: Schema<IAuthorityDocument> = new Schema({
     name: {
         type: String,
         required: true,
@@ -33,6 +48,6 @@ AuthoritySchema.pre('save', function (next) {
     return next();
 });
 
-const AuthorityModel: Model<AuthorityType> = models.AuthorityModel || model('AuthorityModel', AuthoritySchema, 'authorities');
+const AuthorityModel = models.AuthorityModel || model<IAuthorityDocument, IAuthorityModel>('AuthorityModel', AuthoritySchema, 'authorities');
 
 export default AuthorityModel
