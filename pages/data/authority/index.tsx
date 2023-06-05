@@ -28,7 +28,7 @@ const AuthorityPage = ({ pageable, error }: Props) => {
   const [deleteApiUrl, setDeleteApiUrl] = useState('');
 
   const showDeleteConfirmation = (id: string) => {
-    setDeleteApiUrl(`${process.env.NEXT_PUBLIC_HOST}/api/pageable.items/${id}`)
+    setDeleteApiUrl(`${process.env.NEXT_PUBLIC_HOST}/api/authorities/${id}`)
     setShowConfirm(true);
   }
 
@@ -46,7 +46,7 @@ const AuthorityPage = ({ pageable, error }: Props) => {
               <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Action</th>
+                <th className='actions'>Action</th>
               </tr>
             </thead>
             <tbody>

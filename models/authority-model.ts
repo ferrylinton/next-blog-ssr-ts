@@ -45,6 +45,7 @@ const AuthoritySchema: Schema<IAuthorityDocument> = new Schema({
 
 AuthoritySchema.pre('save', function (next) {
     this.increment();
+    this.name = this.name.toUpperCase();
     return next();
 });
 

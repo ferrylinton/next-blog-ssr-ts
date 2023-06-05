@@ -8,6 +8,7 @@ import FormContainer from './FormContainer';
 import { postClientApi, putClientApi } from '@/services/http-client';
 import Breadcrumb from '../Breadcrumb';
 import FormButtons from './FormButtons';
+import { valueToUppercase } from '@/utils/form';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -72,7 +73,7 @@ const AuthorityForm = ({ id, name }: AuthorityFormType) => {
                                 type="text"
                                 placeholder="NAME"
                                 maxLength={50}
-                                {...register("name")}
+                                {...register("name", { onChange: valueToUppercase })}
                             />
                             {errors.name && (
                                 <p className="text-xs text-red-500 mt-2">

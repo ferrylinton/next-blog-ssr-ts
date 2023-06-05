@@ -38,19 +38,19 @@ function DataToolbar({ keyword, page, totalPage, formPageUrl }: Props) {
             <div className='flex flex-row gap-1 justify-between items-center'>
                 <button
                     onClick={() => handleOnClickPrevious()}
-                    type="button" className={`group flex justify-center items-center w-[90px] h-[35px] leading-none border rounded ${page > 1 ? `bg-white hover:bg-gray-100  border-slate-400` : `bg-slate-100  border-slate-300  cursor-not-allowed`} `}>
+                    type="button" className={`group flex justify-center items-center w-[90px] h-10 leading-none border rounded ${page > 1 ? `bg-white hover:bg-gray-100  border-slate-400` : `bg-slate-100  border-slate-300  cursor-not-allowed`} `}>
                     <PreviousIcon className={`h-[22px] ${page > 1 ? 'text-slate-500 group-hover:text-slate-700' : 'text-slate-400'}`} />
                 </button>
                 <button
                     onClick={() => handleOnClickNext()}
-                    type="button" className={`group flex justify-center items-center w-[90px] h-[35px] leading-none border rounded ${page < totalPage ? `bg-white hover:bg-gray-100  border-slate-400` : `bg-slate-100  border-slate-300  cursor-not-allowed`} `}>
+                    type="button" className={`group flex justify-center items-center w-[90px] h-10 leading-none border rounded ${page < totalPage ? `bg-white hover:bg-gray-100  border-slate-400` : `bg-slate-100  border-slate-300  cursor-not-allowed`} `}>
                     <NextIcon className={`h-[22px] ${page < totalPage ? 'text-slate-500 group-hover:text-slate-700' : 'text-slate-400'}`} />
                 </button>
                 <div className='ps-3'>Page {page} of {totalPage}</div>
             </div>
 
             <Link href={formPageUrl}
-                className="group text-center w-[120px] bg-white hover:bg-slate-100 py-2 leading-none border border-slate-400 rounded">
+                className="group flex justify-center items-center w-[120px] h-10 bg-white hover:bg-slate-100 py-2 leading-none border border-slate-400 rounded">
                 <span className='text-slate-500 group-hover:text-slate-700'>Add</span>
             </Link>
         </div>
