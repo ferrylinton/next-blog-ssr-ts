@@ -1,19 +1,19 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import * as postService from "@/services/post-service";
+import { getLogger } from "@/utils/logger";
+import { errorResponse } from "@/utils/response";
 import { CreatePostApiRequest, CreatePostSchema } from "@/validations/post-schema";
+import { NextApiRequest, NextApiResponse } from "next";
+
+const logger = getLogger('post-controller');
 
 export const find = async (req: NextApiRequest,
     res: NextApiResponse) => {
     try {
-        const keyword = req.query.keyword as string;
-        const page = req.query.page as string;
-
-        const posts = await postService.find();
-        res.status(200).json(posts);
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+        const { keyword, page } = req.query;
+        const pageable = await postService.find({ keyword, page });
+        res.status(200).json(pageable);
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }
 
@@ -29,10 +29,8 @@ export const findById = async (req: NextApiRequest,
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
 
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }
 
@@ -53,10 +51,8 @@ export const save = async (req: CreatePostApiRequest,
             res.status(400).send({ code, errors });
         }
 
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }
 
@@ -71,10 +67,8 @@ export const update = async (req: NextApiRequest,
         } else {
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }
 
@@ -90,9 +84,7 @@ export const deleteById = async (req: NextApiRequest,
             res.status(404).json({ message: `Data with id=${id} is not found` });
         }
 
-    } catch (err: any) {
-        console.error(err);
-        const message = err.message;
-        res.status(500).send({ message });
+    } catch (error: any) {
+        errorResponse(logger, res, error);
     }
 }

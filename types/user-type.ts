@@ -1,15 +1,28 @@
-type UserType = {
-    id: string,
+import { Document, Model } from 'mongoose';
+import { RoleType } from './role-type';
+
+
+export type BasicUserType = {
     email: string,
     password: string,
     loginAttempt: number,
     activated: boolean,
     locked: boolean,
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    role: RoleType
 }
 
-type CreateUserType = {
+export type UserType = {
+    id: string,
+    __v: number
+} & BasicUserType
+
+export type UserDocumentType = BasicUserType & Document;
+
+export type UserModelType = Model<UserDocumentType>;
+
+export type CreateUserType = {
     email: string
     password: string,
     passwordConfirm: string,
@@ -17,7 +30,7 @@ type CreateUserType = {
     allRoles?: string[]
 }
 
-type UpdateUserType = {
+export type UpdateUserType = {
     id: string,
     email: string
     role: string,

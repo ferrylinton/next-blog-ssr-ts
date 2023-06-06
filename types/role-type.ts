@@ -1,12 +1,23 @@
-type RoleType = {
-    id: string,
+import { Document, Model } from 'mongoose';
+
+
+export type BasicRoleType = {
     name: string,
-    authorities: AuthorityType[],
     createdAt: string,
-    updatedAt: string
+    updatedAt: string,
+    authorities: any
 }
 
-type RoleFormType = {
+export type RoleType = {
+    id: string,
+    __v: number
+} & BasicRoleType
+
+export type RoleDocumentType = BasicRoleType & Document;
+
+export type RoleModelType = Model<RoleDocumentType>;
+
+export type RoleFormType = {
     id?: string,
     name: string,
     authorities: string[],

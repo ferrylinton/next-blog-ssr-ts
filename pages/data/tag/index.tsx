@@ -1,23 +1,25 @@
-import { useState } from 'react';
-import { GetServerSideProps } from 'next';
-import DataContainer from '@/components/DataContainer';
-import ErrorContainer from '@/components/ErrorContainer';
-import { getLogger } from '@/utils/logger';
 import Breadcrumb from '@/components/Breadcrumb';
-import * as tagService from "@/services/tag-service";
-import EmptyDataRow from '@/components/EmptyDataRow';
 import ButtonActions from '@/components/ButtonActions';
-import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
+import DataContainer from '@/components/DataContainer';
 import DataToolbar from '@/components/DataToolbar';
+import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
+import EmptyDataRow from '@/components/EmptyDataRow';
+import ErrorContainer from '@/components/ErrorContainer';
+import Searchbox from '@/components/Searchbox';
+import * as tagService from "@/services/tag-service";
+import { TagType } from '@/types/tag-type';
+import { getLogger } from '@/utils/logger';
+import { GetServerSideProps } from 'next';
+import { useState } from 'react';
 
 type Props = {
-  tags: TagType[],
-  error: ErrorInfoType | null;
+  pageable: Pageable<TagType>,
+  error: ErrorInfoType | null,
 }
 
 const logger = getLogger('data-tag-index');
 
-const TagPage = ({ tags, error }: Props) => {
+const TagPage = ({ pageable, error }: Props) => {
 
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -35,6 +37,7 @@ const TagPage = ({ tags, error }: Props) => {
       <>
         <Breadcrumb label={'Tag'} />
         <DataContainer>
+          <Searchbox keyword={pageable.keyword} />
           <table className='table-responsive w-full'>
             <thead>
               <tr>
@@ -45,8 +48,8 @@ const TagPage = ({ tags, error }: Props) => {
             </thead>
             <tbody>
               {
-                (tags.length === 0) ? <EmptyDataRow colSpan={3} /> :
-                  (tags.map((tag, index) => {
+                (pageable.items.length === 0) ? <EmptyDataRow colSpan={3} /> :
+                  (pageable.items.map((tag, index) => {
                     return <tr key={tag.id}>
                       <td data-label="#">{index + 1}</td>
                       <td data-label="Name">{tag.name}</td>
@@ -60,7 +63,11 @@ const TagPage = ({ tags, error }: Props) => {
               }
             </tbody>
           </table>
-          <DataToolbar totalData={tags.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/tag/form`} />
+          <DataToolbar
+            keyword={pageable.keyword}
+            page={pageable.page}
+            totalPage={pageable.totalPage}
+            formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/tag/form`} />
         </DataContainer>
         <DeleteConfirmDialog
           showConfirm={showConfirm}
@@ -71,12 +78,14 @@ const TagPage = ({ tags, error }: Props) => {
 
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   try {
-    const tags = await tagService.findAllJson();
+    const { keyword, page } = query;
+    const pageable = await tagService.find({ keyword, page });
+
     return {
       props: {
-        tags
+        pageable: JSON.parse(JSON.stringify(pageable))
       }
     };
   } catch (error: any) {

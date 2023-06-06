@@ -8,8 +8,9 @@ const logger = getLogger('tag-controller');
 
 export const find = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const tags = await tagService.findAllJson();
-        res.status(200).json(tags);
+        const { keyword, page } = req.query;
+        const pageable = await tagService.find({ keyword, page });
+        res.status(200).json(pageable);
     } catch (error: any) {
         errorResponse(logger, res, error);
     }

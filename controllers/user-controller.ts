@@ -8,11 +8,9 @@ const logger = getLogger('user-controller');
 
 export const find = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const keyword = req.query.keyword as string;
-        const page = req.query.page as string;
-
-        const users = await userService.find();
-        res.status(200).json(users);
+        const { keyword, page } = req.query;
+        const pageable = await userService.find({ keyword, page });
+        res.status(200).json(pageable);
     } catch (error: any) {
         errorResponse(logger, res, error);
     }

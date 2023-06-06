@@ -1,12 +1,13 @@
-import React from 'react';
+import Breadcrumb from '@/components/Breadcrumb';
+import FormContainer from '@/components/forms/FormContainer';
+import { useAppContext } from '@/context';
+import { postClientApi, putClientApi } from '@/services/http-client';
+import { TagFormType } from '@/types/tag-type';
+import { valueToUppercase } from '@/utils/form';
+import { CreateTagSchema } from '@/validations/tag-schema';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateTagSchema } from '@/validations/tag-schema';
-import { useAppContext } from '@/context';
-import FormContainer from '@/components/forms/FormContainer';
-import Breadcrumb from '@/components/Breadcrumb';
-import { postClientApi, putClientApi } from '@/services/http-client';
 import FormButtons from './FormButtons';
 
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -72,7 +73,7 @@ const TagForm = ({ id, name = '' }: TagFormType) => {
                                 type="text"
                                 placeholder="NAME"
                                 maxLength={50}
-                                {...register("name")}
+                                {...register("name", { onChange: valueToUppercase })}
                             />
                             {errors.name && (
                                 <p className="text-xs text-red-500 mt-2">

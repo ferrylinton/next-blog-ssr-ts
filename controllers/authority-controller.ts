@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import * as authorityService from '@/services/authority-service';
-import { CreateAuthorityApiRequest, CreateAuthoritySchema } from '@/validations/authority-schema';
 import { getLogger } from '@/utils/logger';
 import { errorResponse, errorValidation } from '@/utils/response';
+import { CreateAuthorityApiRequest, CreateAuthoritySchema } from '@/validations/authority-schema';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const logger = getLogger('authority-controller');
 

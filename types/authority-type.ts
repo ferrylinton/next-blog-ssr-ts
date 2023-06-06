@@ -1,11 +1,22 @@
-type AuthorityType = {
-    id: string,
+import { Document, Model } from 'mongoose';
+
+
+export type BasicAuthorityType = {
     name: string,
     createdAt: string,
     updatedAt: string
 }
 
-type AuthorityFormType = {
+export type AuthorityType = {
+    id: string,
+    __v: number
+} & BasicAuthorityType
+
+export type AuthorityDocumentType = BasicAuthorityType & Document;
+
+export type AuthorityModelType = Model<AuthorityDocumentType>;
+
+export type AuthorityFormType = {
     id?: string,
     name?: string
 }

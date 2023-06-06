@@ -8,15 +8,18 @@ import ButtonActions from '@/components/ButtonActions';
 import DataToolbar from '@/components/DataToolbar';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import { getLogger } from '@/utils/logger';
+import { UserType } from '@/types/user-type';
+import Searchbox from '@/components/Searchbox';
+import EmptyDataRow from '@/components/EmptyDataRow';
 
 type Props = {
-  users: UserType[],
+  pageable: Pageable<UserType>,
   error: ErrorInfoType | null
 }
 
 const logger = getLogger('usermanagement-user-index');
 
-const UserPage = ({ users, error }: Props) => {
+const UserPage = ({ pageable, error }: Props) => {
 
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -34,31 +37,37 @@ const UserPage = ({ users, error }: Props) => {
       <>
         <Breadcrumb label={'User'} />
         <DataContainer>
-            <table className='table-responsive w-full'>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  users.map((user, index) => {
-                    return <tr key={user.id}>
-                      <td data-label="#">{index + 1}</td>
-                      <td data-label="Email">{user.email}</td>
-                      <td className='actions'>
+          <Searchbox keyword={pageable.keyword} />
+          <table className='table-responsive w-full'>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                (pageable.items.length === 0) ? <EmptyDataRow colSpan={3} /> :
+                (pageable.items.map((user, index) => {
+                  return <tr key={user.id}>
+                    <td data-label="#">{index + 1}</td>
+                    <td data-label="Email">{user.email}</td>
+                    <td className='actions'>
                       <ButtonActions
                         editPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/user/form/${user.id}`}
                         showDeleteConfirmation={() => showDeleteConfirmation(user.id)} />
-                      </td>
-                    </tr>
-                  })
-                }
-              </tbody>
-            </table>
-            <DataToolbar totalData={users.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/user/form`} />
+                    </td>
+                  </tr>
+                }))
+              }
+            </tbody>
+          </table>
+          <DataToolbar
+            keyword={pageable.keyword}
+            page={pageable.page}
+            totalPage={pageable.totalPage}
+            formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/user/form`} />
         </DataContainer>
         <DeleteConfirmDialog
           showConfirm={showConfirm}
@@ -69,12 +78,14 @@ const UserPage = ({ users, error }: Props) => {
   }
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   try {
-    const users = await userService.findAllJson();
+    const { keyword, page } = query;
+    const pageable = await userService.find({ keyword, page });
+
     return {
       props: {
-        users
+        pageable: JSON.parse(JSON.stringify(pageable))
       }
     };
   } catch (error: any) {

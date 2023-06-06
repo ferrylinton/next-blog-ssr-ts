@@ -1,13 +1,14 @@
-import React from 'react';
+import { useAppContext } from '@/context';
+import { putClientApi } from '@/services/http-client';
+import { UpdateUserType } from '@/types/user-type';
+import { valueToLowercase } from '@/utils/form';
+import { UpdateUserSchema } from '@/validations/user-schema';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { UpdateUserSchema } from '@/validations/user-schema';
-import { useAppContext } from '@/context';
-import FormContainer from './FormContainer';
-import { postClientApi, putClientApi } from '@/services/http-client';
 import Breadcrumb from '../Breadcrumb';
 import FormButtons from './FormButtons';
+import FormContainer from './FormContainer';
 
 
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -57,13 +58,13 @@ const UpdateUserForm = ({ id, email, role, allRoles = [] }: UpdateUserType) => {
                         noValidate
                         autoComplete='off' >
                         <div className="mb-8 uppercase">
-                            <label className="block mb-2 text-sm" htmlFor="name">Email</label>
+                            <label className="block mb-2 text-xs" htmlFor="name">Email</label>
                             <input
                                 className={`w-full p-3 text-sm leading-tight border ${errors.email ? 'border-red-500' : 'border-slate-400'} rounded appearance-none focus:outline-none focus:ring-4`}
                                 type="text"
                                 placeholder="Email"
                                 maxLength={50}
-                                {...register("email")}
+                                {...register("email", { onChange: valueToLowercase })}
                             />
                             {errors.email && (
                                 <p className="text-xs text-red-500 mt-2">
@@ -72,6 +73,7 @@ const UpdateUserForm = ({ id, email, role, allRoles = [] }: UpdateUserType) => {
                             )}
                         </div>
                         <div className="mb-8 uppercase">
+                            <label className="block mb-2 text-sm" htmlFor="name">Role</label>
                             <select
                                 className={`w-full flex justify-start flex-wrap border rounded p-2 bg-white ${errors.role ? 'border-red-500' : 'border-slate-400'}`}
                                 {...register("role")}>

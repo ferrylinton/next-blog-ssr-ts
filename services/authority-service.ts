@@ -1,12 +1,13 @@
-import AuthorityModel, { IAuthority, IAuthorityDocument, IAuthorityType } from "@/models/authority-model";
+import AuthorityModel from "@/models/authority-model";
+import { AuthorityDocumentType, AuthorityType } from "@/types/authority-type";
 import connect from "@/utils/mongodb";
 import { PER_PAGE, getTotalPage } from "@/utils/page";
 import { CreateAuthorityType } from "@/validations/authority-schema";
 import { isObjectIdOrHexString } from "mongoose";
 
-export const findAllJson = async (): Promise<Array<IAuthorityType>> => {
+export const findAllJson = async (): Promise<Array<AuthorityType>> => {
     await connect();
-    const authorities: Array<IAuthorityDocument> = await AuthorityModel.find();
+    const authorities: Array<AuthorityDocumentType> = await AuthorityModel.find();
     return authorities.map(doc => {
         return JSON.parse(JSON.stringify(doc.toJSON()))
     })
@@ -18,7 +19,7 @@ export const findAllNamesJson = async (): Promise<Array<string>> => {
     return authorities.map(authority => authority.name)
 }
 
-export const findByIdJson = async (id: string): Promise<IAuthorityType | null> => {
+export const findByIdJson = async (id: string): Promise<AuthorityType | null> => {
     const authority = await findById(id);
 
     if (authority) {
@@ -28,7 +29,7 @@ export const findByIdJson = async (id: string): Promise<IAuthorityType | null> =
     }
 }
 
-export const find = async ({ keyword, page }: PageParamsType): Promise<Pageable<IAuthorityDocument>> => {
+export const find = async ({ keyword, page }: PageParamsType): Promise<Pageable<AuthorityDocumentType>> => {
     await connect();
     const listQuery = AuthorityModel.find();
     const countQuery = AuthorityModel.count();
@@ -58,23 +59,24 @@ export const find = async ({ keyword, page }: PageParamsType): Promise<Pageable<
     };
 }
 
-export const findById = async (id: string): Promise<IAuthorityDocument | null> => {
+export const findById = async (id: string): Promise<AuthorityDocumentType | null> => {
+    await connect();
+
     if (!isObjectIdOrHexString(id)) {
         return null;
     }
 
-    await connect();
     return await AuthorityModel.findById(id);
 }
 
-export const save = async (input: CreateAuthorityType): Promise<IAuthorityDocument> => {
+export const save = async (input: CreateAuthorityType): Promise<AuthorityDocumentType> => {
     await connect();
     const authority = await AuthorityModel.create(input);
 
     return authority;
 }
 
-export const update = async (id: string, input: CreateAuthorityType): Promise<IAuthorityDocument | null> => {
+export const update = async (id: string, input: CreateAuthorityType): Promise<AuthorityDocumentType | null> => {
     await connect();
     const authority = await AuthorityModel.findById(id);
 
@@ -86,6 +88,6 @@ export const update = async (id: string, input: CreateAuthorityType): Promise<IA
     }
 }
 
-export const deleteById = async (id: string): Promise<IAuthorityDocument | null> => {
+export const deleteById = async (id: string): Promise<AuthorityDocumentType | null> => {
     return await AuthorityModel.findByIdAndRemove(id);
 }

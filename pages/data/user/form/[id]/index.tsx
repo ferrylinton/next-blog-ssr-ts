@@ -3,6 +3,7 @@ import { GetServerSideProps } from 'next';
 import * as roleService from "@/services/role-service";
 import * as userService from "@/services/user-service";
 import UpdateUserForm from '@/components/forms/UpdateUserForm';
+import { UpdateUserType } from '@/types/user-type';
 
 type Props = {
   allRoles: string[]
@@ -23,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
   const user = await userService.findByIdJson(id);
   const email = user ? user.email : '';
-  const role = user ? user.role.name : '';
+  const role = (user && user.role) ? user.role.name : '';
   const allRoles = await roleService.findAllNamesJson();
 
   return {

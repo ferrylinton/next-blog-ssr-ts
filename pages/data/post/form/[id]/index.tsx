@@ -3,10 +3,11 @@ import PostForm from '@/components/forms/PostForm';
 import { GetServerSideProps } from 'next';
 import * as tagService from "@/services/tag-service";
 import * as postService from "@/services/post-service";
+import { PostFormType } from '@/types/post-type';
 
 type Props = {
   allTags: string[]
-} & PostFormType
+} & PostFormType;
 
 const PostFormPage = ({ id, slug, title, description, content, tags, allTags }: Props) => {
 

@@ -1,15 +1,22 @@
 import PostModel from "@/models/post-model";
 import TagModel from "@/models/tag-model";
+import { PostDocumentType, PostType } from "@/types/post-type";
+import { TagType } from "@/types/tag-type";
 import connect from "@/utils/mongodb";
+import { PER_PAGE, getPageParams, getTotalPage } from "@/utils/page";
 import { CreatePostType } from "@/validations/post-schema";
 import { isObjectIdOrHexString } from "mongoose";
 
-export const findAllJson = async (): Promise<any> => {
-    const users = await find();
-    return users.map(user => JSON.parse(JSON.stringify(user.toJSON())))
+
+export const findAllJson = async (): Promise<Array<PostType>> => {
+    await connect();
+    const posts: Array<PostDocumentType> = await PostModel.find();
+    return posts.map(doc => {
+        return JSON.parse(JSON.stringify(doc.toJSON()))
+    })
 }
 
-export const findByIdJson = async (id: string): Promise<any> => {
+export const findByIdJson = async (id: string): Promise<PostType | null> => {
     const post = await findById(id);
 
     if (post) {
@@ -19,9 +26,33 @@ export const findByIdJson = async (id: string): Promise<any> => {
     }
 }
 
-export const find = async () => {
+export const find = async (pageParams: PageParamsType): Promise<Pageable<PostDocumentType>> => {
     await connect();
-    return await PostModel.find().populate('tags');
+    const { page, keyword } = getPageParams(pageParams);
+    const listQuery = PostModel.find();
+    const countQuery = PostModel.count();
+
+    if (keyword.length > 0) {
+        const regex: RegExp = RegExp(keyword as string, 'i');
+        listQuery.regex("name", regex);
+        countQuery.regex("name", regex);
+    }
+
+    listQuery
+        .skip(((page - 1) * PER_PAGE))
+        .limit(PER_PAGE).sort({ name: 1 })
+        .allowDiskUse(true);
+
+    const [items, total] = await Promise.all([listQuery.exec(), countQuery.exec()]);
+
+    return {
+        keyword,
+        items,
+        total,
+        page,
+        totalPage: getTotalPage(total),
+        perPage: PER_PAGE
+    };
 }
 
 export const findById = async (id: string): Promise<any> => {
@@ -41,6 +72,7 @@ export const save = async (input: CreatePostType): Promise<PostType> => {
 
     if (input.tags) {
         tags = await TagModel.find({ name: { "$in": input.tags } });
+        console.log(tags);
     }
 
 
@@ -49,14 +81,22 @@ export const save = async (input: CreatePostType): Promise<PostType> => {
     return post.toJSON();
 }
 
-export const update = async (id: string, body: any): Promise<any> => {
+export const update = async (id: string, input: CreatePostType): Promise<any> => {
     await connect();
-    const { name } = body;
-
+    let tags: TagType[] = [];
+    const { slug, title, description, content } = input;
     const post = await PostModel.findById(id);
 
     if (post) {
-        post.name = name;
+        if (input.tags) {
+            tags = await TagModel.find({ name: { "$in": input.tags } });
+            post.tags = tags;
+        }
+
+        post.slug = slug;
+        post.title = title;
+        post.description = description;
+        post.content = content;
         post.save();
 
         return post;

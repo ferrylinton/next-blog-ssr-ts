@@ -1,12 +1,13 @@
 import AuthorityModel from "@/models/authority-model";
-import RoleModel, { IRoleDocument, IRoleType } from "@/models/role-model";
+import RoleModel from "@/models/role-model";
+import { RoleDocumentType, RoleFormType, RoleType } from "@/types/role-type";
 import connect from "@/utils/mongodb";
 import { PER_PAGE, getPageParams, getTotalPage } from "@/utils/page";
 import { isObjectIdOrHexString } from "mongoose";
 
-export const findAllJson = async (): Promise<Array<IRoleType>> => {
+export const findAllJson = async (): Promise<Array<RoleType>> => {
     await connect();
-    const roles: Array<IRoleDocument> = await RoleModel.find();
+    const roles: Array<RoleDocumentType> = await RoleModel.find();
     return roles.map(doc => {
         return JSON.parse(JSON.stringify(doc.toJSON()))
     })
@@ -14,11 +15,11 @@ export const findAllJson = async (): Promise<Array<IRoleType>> => {
 
 export const findAllNamesJson = async (): Promise<Array<string>> => {
     await connect();
-    const roles = await RoleModel.find();
+    const roles = await RoleModel.find().sort({ name: 1 });
     return roles.map(role => role.name)
 }
 
-export const findByIdJson = async (id: string): Promise<IRoleType | null> => {
+export const findByIdJson = async (id: string): Promise<RoleType | null> => {
     const role = await findById(id);
 
     if (role) {
@@ -28,7 +29,7 @@ export const findByIdJson = async (id: string): Promise<IRoleType | null> => {
     }
 }
 
-export const find = async (pageParams: PageParamsType): Promise<Pageable<IRoleDocument>> => {
+export const find = async (pageParams: PageParamsType): Promise<Pageable<RoleDocumentType>> => {
     await connect();
     const { page, keyword } = getPageParams(pageParams);
     const listQuery = RoleModel.find();
@@ -58,16 +59,17 @@ export const find = async (pageParams: PageParamsType): Promise<Pageable<IRoleDo
 }
 
 
-export const findById = async (id: string): Promise<IRoleDocument | null> => {
+export const findById = async (id: string): Promise<any> => {
+    await connect();
+
     if (!isObjectIdOrHexString(id)) {
         return null;
     }
 
-    await connect();
     return await RoleModel.findById(id).populate({ path: 'authorities', select: 'name' });
 }
 
-export const save = async (input: RoleFormType): Promise<IRoleDocument | null> => {
+export const save = async (input: RoleFormType): Promise<RoleDocumentType | null> => {
     await connect();
 
     let authorities: any = [];
@@ -79,7 +81,7 @@ export const save = async (input: RoleFormType): Promise<IRoleDocument | null> =
     return await RoleModel.create({ name: input.name, authorities });
 }
 
-export const update = async (id: string, input: RoleFormType): Promise<IRoleDocument | null> => {
+export const update = async (id: string, input: RoleFormType): Promise<RoleDocumentType | null> => {
     await connect();
     let authorities: any = [];
 
@@ -100,6 +102,6 @@ export const update = async (id: string, input: RoleFormType): Promise<IRoleDocu
     }
 }
 
-export const deleteById = async (id: string): Promise<IRoleDocument | null> => {
+export const deleteById = async (id: string): Promise<RoleDocumentType | null> => {
     return await RoleModel.findByIdAndRemove(id);
 }

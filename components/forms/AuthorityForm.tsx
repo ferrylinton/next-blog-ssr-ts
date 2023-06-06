@@ -1,5 +1,6 @@
 import { useAppContext } from '@/context';
 import { postClientApi, putClientApi } from '@/services/http-client';
+import { AuthorityFormType } from '@/types/authority-type';
 import { valueToUppercase } from '@/utils/form';
 import { CreateAuthoritySchema } from '@/validations/authority-schema';
 import { zodResolver } from "@hookform/resolvers/zod";

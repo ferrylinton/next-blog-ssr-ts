@@ -1,21 +1,8 @@
-import { Document, models, model, Schema, Types, Model } from 'mongoose';
+import { RoleDocumentType, RoleModelType } from '@/types/role-type';
+import { Schema, Types, model, models } from 'mongoose';
 
-export type IRole = {
-    name: string,
-    createdAt: string,
-    updatedAt: string
-}
 
-export type IRoleType = {
-    id: string,
-    __v: number
-} & IRole
-
-export type IRoleDocument = IRole & Document
-
-export interface IRoleModel extends Model<IRoleDocument> { }
-
-const RoleSchema: Schema = new Schema({
+const RoleSchema: Schema<RoleDocumentType> = new Schema({
     name: {
         type: String,
         required: true,
@@ -50,9 +37,10 @@ const RoleSchema: Schema = new Schema({
 
 RoleSchema.pre('save', function (next) {
     this.increment();
+    this.name = this.name.toUpperCase();
     return next();
 });
 
-const RoleModel: Model<RoleType> = models.RoleModel || model('RoleModel', RoleSchema, 'roles');
+const RoleModel = models.RoleModel || model<RoleDocumentType, RoleModelType>('RoleModel', RoleSchema, 'roles');
 
 export default RoleModel

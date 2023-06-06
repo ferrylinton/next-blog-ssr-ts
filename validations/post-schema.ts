@@ -13,8 +13,7 @@ export const CreatePostSchema = object({
         .min(3, { message: "description min 3 chars and max 50 chars" })
         .max(250, { message: "description min 3 chars and max 50 chars" }),
     content: string({ required_error: "content is required" })
-        .min(3, { message: "content min 3 chars and max 50 chars" })
-        .max(250, { message: "content min 3 chars and max 50 chars" }),
+        .min(3, { message: "content min 3 chars" }),
     tags: string().array().nonempty({
         message: "tags can't be empty"
     })

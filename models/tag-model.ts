@@ -1,6 +1,8 @@
-import { models, model, Schema, Model } from 'mongoose';
+import { TagDocumentType, TagModelType } from '@/types/tag-type';
+import { models, model, Schema } from 'mongoose';
 
-const TagSchema: Schema = new Schema({
+
+const TagSchema: Schema<TagDocumentType> = new Schema({
     name: {
         type: String,
         required: true,
@@ -30,9 +32,10 @@ const TagSchema: Schema = new Schema({
 
 TagSchema.pre('save', function (next) {
     this.increment();
+    this.name = this.name.toUpperCase();
     return next();
 });
 
-const TagModel: Model<TagType> = models.TagModel || model('TagModel', TagSchema, 'tags');
+const TagModel = models.TagModel || model<TagDocumentType, TagModelType>('TagModel', TagSchema, 'tags');
 
 export default TagModel

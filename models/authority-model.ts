@@ -1,21 +1,8 @@
-import { Document, models, model, Schema, Model } from 'mongoose';
+import { AuthorityDocumentType, AuthorityModelType } from '@/types/authority-type';
+import { Schema, model, models } from 'mongoose';
 
-export interface IAuthority {
-    name: string,
-    createdAt: string,
-    updatedAt: string
-}
 
-export interface IAuthorityType extends IAuthority{
-    id: string,
-    __v: number
-}
-
-export interface IAuthorityDocument extends IAuthority, Document { }
-
-export interface IAuthorityModel extends Model<IAuthorityDocument> { }
-
-const AuthoritySchema: Schema<IAuthorityDocument> = new Schema({
+const AuthoritySchema: Schema<AuthorityDocumentType> = new Schema({
     name: {
         type: String,
         required: true,
@@ -49,6 +36,6 @@ AuthoritySchema.pre('save', function (next) {
     return next();
 });
 
-const AuthorityModel = models.AuthorityModel || model<IAuthorityDocument, IAuthorityModel>('AuthorityModel', AuthoritySchema, 'authorities');
+const AuthorityModel = models.AuthorityModel || model<AuthorityDocumentType, AuthorityModelType>('AuthorityModel', AuthoritySchema, 'authorities');
 
 export default AuthorityModel

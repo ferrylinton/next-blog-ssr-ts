@@ -1,13 +1,13 @@
-import React from 'react';
-import TagForm from '@/components/forms/TagForm';
-import { GetServerSideProps } from 'next';
-import * as tagService from "@/services/tag-service";
-import { getLogger } from '@/utils/logger';
 import ErrorContainer from '@/components/ErrorContainer';
+import TagForm from '@/components/forms/TagForm';
+import * as tagService from "@/services/tag-service";
+import { TagFormType } from '@/types/tag-type';
+import { getLogger } from '@/utils/logger';
+import { GetServerSideProps } from 'next';
 
 type Props = {
   error: ErrorInfoType | null;
-} & TagFormType
+} & TagFormType;
 
 const breadcrumbItems: BreadcrumbItem[] = [
   {

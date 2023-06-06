@@ -3,6 +3,7 @@ import RoleForm from '@/components/forms/RoleForm';
 import { GetServerSideProps } from 'next';
 import * as authorityService from "@/services/authority-service";
 import * as roleService from "@/services/role-service";
+import { RoleFormType } from '@/types/role-type';
 
 type Props = {
   allAuthorities: string[]

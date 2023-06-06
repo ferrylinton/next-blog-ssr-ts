@@ -1,6 +1,8 @@
+import { PostDocumentType, PostModelType } from '@/types/post-type';
 import { models, model, Schema, Types } from 'mongoose';
 
-const PostSchema: Schema = new Schema({
+
+const PostSchema: Schema<PostDocumentType> = new Schema({
     slug: {
         type: String,
         required: true,
@@ -52,6 +54,6 @@ PostSchema.pre('save', function (next) {
     return next();
 });
 
-const PostModel = models.PostModel || model('PostModel', PostSchema, 'posts');
+const PostModel = models.PostModel || model<PostDocumentType, PostModelType>('PostModel', PostSchema, 'posts');
 
 export default PostModel

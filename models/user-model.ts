@@ -1,7 +1,9 @@
-import { models, model, Schema, Types } from 'mongoose';
+import { UserDocumentType, UserModelType } from '@/types/user-type';
 import bcrypt from 'bcrypt';
+import { Schema, Types, model, models } from 'mongoose';
 
-const UserSchema: Schema = new Schema({
+
+const UserSchema: Schema<UserDocumentType> = new Schema({
     email: {
         type: String,
         required: true,
@@ -55,7 +57,7 @@ const UserSchema: Schema = new Schema({
 
 UserSchema.pre('save', async function (next) {
     this.increment();
-    
+
     if (!this.isModified('password')) {
         next()
     }
@@ -69,6 +71,6 @@ UserSchema.methods.comparePassword = async function (enteredPassword: string) {
 }
 
 
-const UserModel = models.UserModel || model('UserModel', UserSchema, 'users');
+const UserModel = models.UserModel || model<UserDocumentType, UserModelType>('UserModel', UserSchema, 'users');
 
 export default UserModel

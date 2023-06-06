@@ -6,15 +6,15 @@ import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import EmptyDataRow from '@/components/EmptyDataRow';
 import ErrorContainer from '@/components/ErrorContainer';
 import Searchbox from '@/components/Searchbox';
-import { IAuthorityType } from '@/models/authority-model';
 import * as authorityService from "@/services/authority-service";
+import { AuthorityType } from '@/types/authority-type';
 import { getLogger } from '@/utils/logger';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 
 
 type Props = {
-  pageable: Pageable<IAuthorityType>,
+  pageable: Pageable<AuthorityType>,
   error: ErrorInfoType | null,
 }
 

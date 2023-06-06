@@ -1,13 +1,14 @@
-import React from 'react';
+import { useAppContext } from '@/context';
+import { postClientApi } from '@/services/http-client';
+import { CreateUserType } from '@/types/user-type';
+import { valueToLowercase } from '@/utils/form';
+import { CreateUserSchema } from '@/validations/user-schema';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateUserSchema } from '@/validations/user-schema';
-import { useAppContext } from '@/context';
-import FormContainer from './FormContainer';
-import { postClientApi, putClientApi } from '@/services/http-client';
 import Breadcrumb from '../Breadcrumb';
 import FormButtons from './FormButtons';
+import FormContainer from './FormContainer';
 
 
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -56,14 +57,14 @@ const CreateUserForm = ({ email, password, passwordConfirm, role, allRoles = [] 
                         onSubmit={handleSubmit(onSubmit)}
                         noValidate
                         autoComplete='off' >
-                        <div className="mb-8 uppercase">
-                            <label className="block mb-2 text-sm" htmlFor="name">Email</label>
+                        <div className="mb-6 uppercase">
+                            <label className="block mb-1 text-xs" htmlFor="email">Email</label>
                             <input
                                 className={`w-full p-3 text-sm leading-tight border ${errors.email ? 'border-red-500' : 'border-slate-400'} rounded appearance-none focus:outline-none focus:ring-4`}
                                 type="text"
                                 placeholder="Email"
                                 maxLength={50}
-                                {...register("email")}
+                                {...register("email", { onChange: valueToLowercase })}
                             />
                             {errors.email && (
                                 <p className="text-xs text-red-500 mt-2">
@@ -71,11 +72,11 @@ const CreateUserForm = ({ email, password, passwordConfirm, role, allRoles = [] 
                                 </p>
                             )}
                         </div>
-                        <div className="mb-8 uppercase">
-                            <label className="block mb-2 text-sm" htmlFor="name">Password</label>
+                        <div className="mb-6 uppercase">
+                            <label className="block mb-1 text-xs" htmlFor="password">Password</label>
                             <input
                                 className={`w-full p-3 text-sm leading-tight border ${errors.password ? 'border-red-500' : 'border-slate-400'} rounded appearance-none focus:outline-none focus:ring-4`}
-                                type="text"
+                                type="password"
                                 placeholder="Password"
                                 maxLength={50}
                                 {...register("password")}
@@ -86,12 +87,12 @@ const CreateUserForm = ({ email, password, passwordConfirm, role, allRoles = [] 
                                 </p>
                             )}
                         </div>
-                        <div className="mb-8 uppercase">
-                            <label className="block mb-2 text-sm" htmlFor="name">Password Description</label>
+                        <div className="mb-6 uppercase">
+                            <label className="block mb-1 text-xs" htmlFor="passwordConfirm">Password Confirm</label>
                             <input
                                 className={`w-full p-3 text-sm leading-tight border ${errors.passwordConfirm ? 'border-red-500' : 'border-slate-400'} rounded appearance-none focus:outline-none focus:ring-4`}
-                                type="text"
-                                placeholder="Password Description"
+                                type="passwordd"
+                                placeholder="Password Confirm"
                                 maxLength={50}
                                 {...register("passwordConfirm")}
                             />
@@ -101,7 +102,8 @@ const CreateUserForm = ({ email, password, passwordConfirm, role, allRoles = [] 
                                 </p>
                             )}
                         </div>
-                        <div className="mb-8 uppercase">
+                        <div className="mb-6 uppercase">
+                            <label className="block mb-1 text-xs" htmlFor="role">Role</label>
                             <select
                                 className={`w-full flex justify-start flex-wrap border rounded p-2 bg-white ${errors.role ? 'border-red-500' : 'border-slate-400'}`}
                                 {...register("role")}>

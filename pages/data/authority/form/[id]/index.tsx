@@ -3,6 +3,7 @@ import AuthorityForm from '@/components/forms/AuthorityForm';
 import { GetServerSideProps } from 'next';
 import * as authorityService from "@/services/authority-service";
 import ErrorContainer from '@/components/ErrorContainer';
+import { AuthorityFormType } from '@/types/authority-type';
 
 type Props = {
   error: ErrorInfoType | null;
@@ -29,11 +30,11 @@ const AuthorityFormPage = ({ id, name, error }: Props) => {
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
-  const { name } = await authorityService.findById(id);
+  const authority = await authorityService.findById(id);
   return {
     props: {
       id,
-      name
+      name: authority ? authority.name : ''
     }
   }
 }
