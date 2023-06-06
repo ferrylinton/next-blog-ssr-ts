@@ -1,14 +1,13 @@
-import React from 'react';
+import { useAppContext } from '@/context';
+import { postClientApi, putClientApi } from '@/services/http-client';
+import { valueToUppercase } from '@/utils/form';
+import { CreateAuthoritySchema } from '@/validations/authority-schema';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateAuthoritySchema } from '@/validations/authority-schema';
-import { useAppContext } from '@/context';
-import FormContainer from './FormContainer';
-import { postClientApi, putClientApi } from '@/services/http-client';
 import Breadcrumb from '../Breadcrumb';
 import FormButtons from './FormButtons';
-import { valueToUppercase } from '@/utils/form';
+import FormContainer from './FormContainer';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {

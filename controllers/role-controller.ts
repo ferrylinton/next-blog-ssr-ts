@@ -8,11 +8,9 @@ const logger = getLogger('role-controller');
 
 export const find = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const keyword = req.query.keyword as string;
-        const page = req.query.page as string;
-
-        const roles = await roleService.find();
-        res.status(200).json(roles);
+        const { keyword, page } = req.query;
+        const pageable = await roleService.find({ keyword, page });
+        res.status(200).json(pageable);
     } catch (error: any) {
         errorResponse(logger, res, error);
     }
@@ -20,13 +18,13 @@ export const find = async (req: NextApiRequest, res: NextApiResponse) => {
 
 export const findById = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const id = req.query.id as string;
+        const id = (req.query.id || '') as string;
         const role = await roleService.findById(id);
 
         if (role) {
             res.status(200).json(role);
         } else {
-            res.status(404).json({ message: `Data with id=${id} is not found` });
+            res.status(404).json({ message: `Data Role with id=${id} is not found` });
         }
 
     } catch (error: any) {
@@ -61,9 +59,9 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
         const role = await roleService.update(id as string, req.body);
 
         if (role) {
-            res.status(200).json({ message: `Data with id=${id} is updated`, role });
+            res.status(200).json({ message: `Data Role with id=${id} is updated`, role });
         } else {
-            res.status(404).json({ message: `Data with id=${id} is not found` });
+            res.status(404).json({ message: `Data Role with id=${id} is not found` });
         }
     } catch (error: any) {
         errorValidation(logger, res, error);
@@ -76,9 +74,9 @@ export const deleteById = async (req: NextApiRequest, res: NextApiResponse) => {
         const role = await roleService.deleteById(id as string);
 
         if (role) {
-            res.status(200).json({ message: `Data with id=${id} is deleted`, role });
+            res.status(200).json({ message: `Data Role with id=${id} is deleted`, role });
         } else {
-            res.status(404).json({ message: `Data with id=${id} is not found` });
+            res.status(404).json({ message: `Data Role with id=${id} is not found` });
         }
 
     } catch (error: any) {

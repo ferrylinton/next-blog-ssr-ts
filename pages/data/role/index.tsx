@@ -1,23 +1,25 @@
-import React, { useState } from 'react';
-import { GetServerSideProps } from 'next';
-import DataContainer from '@/components/DataContainer';
-import ErrorContainer from '@/components/ErrorContainer';
 import Breadcrumb from '@/components/Breadcrumb';
 import ButtonActions from '@/components/ButtonActions';
+import DataContainer from '@/components/DataContainer';
 import DataToolbar from '@/components/DataToolbar';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
+import EmptyDataRow from '@/components/EmptyDataRow';
+import ErrorContainer from '@/components/ErrorContainer';
+import Searchbox from '@/components/Searchbox';
+import { IRoleType } from '@/models/role-model';
 import * as roleService from "@/services/role-service";
 import { getLogger } from '@/utils/logger';
-import EmptyDataRow from '@/components/EmptyDataRow';
+import { GetServerSideProps } from 'next';
+import { useState } from 'react';
 
 type Props = {
-  roles: RoleType[],
-  error: ErrorInfoType | null
+  pageable: Pageable<IRoleType>,
+  error: ErrorInfoType | null,
 }
 
 const logger = getLogger('usermanagement-role-index');
 
-const RolePage = ({ roles, error }: Props) => {
+const RolePage = ({ pageable, error }: Props) => {
 
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -35,6 +37,7 @@ const RolePage = ({ roles, error }: Props) => {
       <>
         <Breadcrumb label={'Role'} />
         <DataContainer>
+        <Searchbox keyword={pageable.keyword} />
           <table className='table-responsive w-full'>
             <thead>
               <tr>
@@ -45,8 +48,8 @@ const RolePage = ({ roles, error }: Props) => {
             </thead>
             <tbody>
               {
-                (roles.length === 0) ? <EmptyDataRow colSpan={3} /> :
-                (roles.map((role, index) => {
+                (pageable.items.length === 0) ? <EmptyDataRow colSpan={3} /> :
+                (pageable.items.map((role, index) => {
                   return <tr key={role.id}>
                     <td data-label="#">{index + 1}</td>
                     <td data-label="Name">{role.name}</td>
@@ -60,7 +63,11 @@ const RolePage = ({ roles, error }: Props) => {
               }
             </tbody>
           </table>
-          <DataToolbar totalData={roles.length} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/role/form`} />
+          <DataToolbar 
+            keyword={pageable.keyword} 
+            page={pageable.page} 
+            totalPage={pageable.totalPage} 
+            formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/role/form`} />
         </DataContainer>
         <DeleteConfirmDialog
           showConfirm={showConfirm}
@@ -71,12 +78,14 @@ const RolePage = ({ roles, error }: Props) => {
   }
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   try {
-    const roles = await roleService.findAllJson();
+    const { keyword, page } = query;
+    const pageable = await roleService.find({ keyword, page });
+
     return {
       props: {
-        roles
+        pageable: JSON.parse(JSON.stringify(pageable))
       }
     };
   } catch (error: any) {

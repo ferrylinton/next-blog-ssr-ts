@@ -14,7 +14,7 @@ export const findAllJson = async (): Promise<Array<IAuthorityType>> => {
 
 export const findAllNamesJson = async (): Promise<Array<string>> => {
     await connect();
-    const authorities = await AuthorityModel.find();
+    const authorities = await AuthorityModel.find().sort({ name: 1 });
     return authorities.map(authority => authority.name)
 }
 

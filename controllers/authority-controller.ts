@@ -24,7 +24,7 @@ export const findById = async (req: NextApiRequest, res: NextApiResponse) => {
         if (authority) {
             res.status(200).json(authority);
         } else {
-            res.status(404).json({ message: `Data with id=${id} is not found` });
+            res.status(404).json({ message: `Data Authority with id=${id} is not found` });
         }
 
     } catch (error: any) {
@@ -61,7 +61,7 @@ export const update = async (req: NextApiRequest, res: NextApiResponse) => {
         if (authority) {
             res.status(200).json({ authority });
         } else {
-            res.status(404).json({ message: `Data with id=${id} is not found` });
+            res.status(404).json({ message: `Data Authority with id=${id} is not found` });
         }
     } catch (error: any) {
         errorValidation(logger, res, error);
@@ -74,9 +74,9 @@ export const deleteById = async (req: NextApiRequest, res: NextApiResponse) => {
         const authority = await authorityService.deleteById(id);
 
         if (authority) {
-            res.status(200).json({ message: `Data with id=${id} is deleted`, authority });
+            res.status(200).json({ message: `Data Authority with id=${id} is deleted`, authority });
         } else {
-            res.status(404).json({ message: `Data with id=${id} is not found` });
+            res.status(404).json({ message: `Data Authority with id=${id} is not found` });
         }
 
     } catch (error: any) {

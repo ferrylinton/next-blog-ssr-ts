@@ -1,17 +1,16 @@
-import { useState } from 'react';
-import { GetServerSideProps } from 'next';
-import DataContainer from '@/components/DataContainer';
-import ErrorContainer from '@/components/ErrorContainer';
-import { getLogger } from '@/utils/logger';
 import Breadcrumb from '@/components/Breadcrumb';
-import * as authorityService from "@/services/authority-service";
-import EmptyDataRow from '@/components/EmptyDataRow';
+import ButtonActions from '@/components/ButtonActions';
+import DataContainer from '@/components/DataContainer';
 import DataToolbar from '@/components/DataToolbar';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
-import ButtonActions from '@/components/ButtonActions';
-import { IAuthorityType } from '@/models/authority-model';
-import SearchIcon from '@/icons/SearchIcon';
+import EmptyDataRow from '@/components/EmptyDataRow';
+import ErrorContainer from '@/components/ErrorContainer';
 import Searchbox from '@/components/Searchbox';
+import { IAuthorityType } from '@/models/authority-model';
+import * as authorityService from "@/services/authority-service";
+import { getLogger } from '@/utils/logger';
+import { GetServerSideProps } from 'next';
+import { useState } from 'react';
 
 
 type Props = {
@@ -66,7 +65,11 @@ const AuthorityPage = ({ pageable, error }: Props) => {
               }
             </tbody>
           </table>
-          <DataToolbar keyword={pageable.keyword} page={pageable.page} totalPage={pageable.totalPage} formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/authority/form`} />
+          <DataToolbar 
+            keyword={pageable.keyword} 
+            page={pageable.page} 
+            totalPage={pageable.totalPage} 
+            formPageUrl={`${process.env.NEXT_PUBLIC_HOST}/data/authority/form`} />
         </DataContainer>
         <DeleteConfirmDialog
           showConfirm={showConfirm}

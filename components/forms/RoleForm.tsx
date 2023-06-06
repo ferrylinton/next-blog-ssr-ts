@@ -1,13 +1,13 @@
-import React from 'react';
+import { useAppContext } from '@/context';
+import { postClientApi, putClientApi } from '@/services/http-client';
+import { valueToUppercase } from '@/utils/form';
+import { CreateRoleSchema } from '@/validations/role-schema';
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateRoleSchema } from '@/validations/role-schema';
-import { useAppContext } from '@/context';
-import FormContainer from './FormContainer';
-import { postClientApi, putClientApi } from '@/services/http-client';
 import Breadcrumb from '../Breadcrumb';
 import FormButtons from './FormButtons';
+import FormContainer from './FormContainer';
 
 
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -73,7 +73,7 @@ const RoleForm = ({ id, name, authorities, allAuthorities }: RoleFormType) => {
                                 type="text"
                                 placeholder="NAME"
                                 maxLength={50}
-                                {...register("name")}
+                                {...register("name", { onChange: valueToUppercase })}
                             />
                             {errors.name && (
                                 <p className="text-xs text-red-500 mt-2">
@@ -82,6 +82,7 @@ const RoleForm = ({ id, name, authorities, allAuthorities }: RoleFormType) => {
                             )}
                         </div>
                         <div className="mb-8 uppercase">
+                            <label className="block mb-2 text-sm" htmlFor="name">Authorities</label>
                             <div className={`flex justify-start flex-wrap border rounded p-2 bg-white ${errors.authorities ? 'border-red-500' : 'border-slate-400'}`}>
                                 {
                                     allAuthorities?.map((authority, _index) => {

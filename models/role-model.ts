@@ -1,4 +1,19 @@
-import { models, model, Schema, Types, Model } from 'mongoose';
+import { Document, models, model, Schema, Types, Model } from 'mongoose';
+
+export type IRole = {
+    name: string,
+    createdAt: string,
+    updatedAt: string
+}
+
+export type IRoleType = {
+    id: string,
+    __v: number
+} & IRole
+
+export type IRoleDocument = IRole & Document
+
+export interface IRoleModel extends Model<IRoleDocument> { }
 
 const RoleSchema: Schema = new Schema({
     name: {
