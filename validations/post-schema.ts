@@ -5,7 +5,7 @@ export const CreatePostSchema = object({
     id: string().optional(),
     slug: string({ required_error: "slug is required" })
         .min(3, { message: "slug min 3 chars and max 50 chars" })
-        .max(50, { message: "slug min 3 chars and max 50 chars" }),
+        .max(100, { message: "slug min 3 chars and max 100 chars" }),
     title: string({ required_error: "title is required" })
         .min(3, { message: "title min 3 chars and max 50 chars" })
         .max(150, { message: "title min 3 chars and max 50 chars" }),

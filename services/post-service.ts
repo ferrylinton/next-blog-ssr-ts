@@ -26,6 +26,17 @@ export const findByIdJson = async (id: string): Promise<PostType | null> => {
     }
 }
 
+export const findBySlugJson = async (slug: string): Promise<PostType | null> => {
+    await connect();
+    const post = await PostModel.findOne({slug});
+
+    if (post) {
+        return JSON.parse(JSON.stringify(post.toJSON()));
+    } else {
+        return null;
+    }
+}
+
 export const find = async (pageParams: PageParamsType): Promise<Pageable<PostDocumentType>> => {
     await connect();
     const { page, keyword } = getPageParams(pageParams);

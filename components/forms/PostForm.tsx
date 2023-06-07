@@ -59,9 +59,9 @@ const PostForm = ({ id, slug, title, description, content, tags, allTags }: Post
         <>
             <Breadcrumb items={breadcrumbItems} />
             <FormContainer>
-                <div className='flex w-full  sm:bg-slate-50 sm:border border-slate-300 rounded-lg mx-4 my-6 sm:mx-0 px-5 py-0 sm:py-6 '>
+
                     <form
-                        className='w-full flex flex-col'
+                        className='w-full flex flex-col px-2 py-4 sm:py-8'
                         onSubmit={handleSubmit(onSubmit)}
                         noValidate
                         autoComplete='off' >
@@ -74,7 +74,7 @@ const PostForm = ({ id, slug, title, description, content, tags, allTags }: Post
                                         className={`w-full p-3 text-sm leading-tight border ${errors.slug ? 'border-red-500' : 'border-slate-400'} rounded appearance-none focus:outline-none focus:ring-4`}
                                         type="text"
                                         placeholder="Slug"
-                                        maxLength={50}
+                                        maxLength={100}
                                         {...register("slug")}
                                     />
                                     {errors.slug && (
@@ -137,7 +137,7 @@ const PostForm = ({ id, slug, title, description, content, tags, allTags }: Post
                                     )}
                                 </div>
                             </div>
-                            <div className='w-full sm:w-[calc(56%)] flex flex-col'>
+                            <div className='w-full sm:w-[calc(60%-20px)] flex flex-col'>
                                 <div className="mb-5 uppercase">
                                     <label className="block mb-1 text-xs ps-1" htmlFor="name">Content</label>
                                     <textarea
@@ -156,12 +156,12 @@ const PostForm = ({ id, slug, title, description, content, tags, allTags }: Post
 
                             </div>
                         </div>
-                        <div className='w-[400px]'>
+                        <div className='w-[400px] mb-5'>
                             <FormButtons onCancelHandler={() => router.push(`${process.env.NEXT_PUBLIC_HOST}/data/post`)} />
                         </div>
 
                     </form>
-                </div>
+
             </FormContainer>
         </>
     )

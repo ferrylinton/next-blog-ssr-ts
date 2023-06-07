@@ -1,17 +1,24 @@
 import React from 'react'
 import PostItem from './PostItem';
+import { PostType } from '@/types/post-type';
 
-type Props = {}
+type Props = {
+    pageable: Pageable<PostType>
+}
 
-function PostList({ }: Props) {
+function PostList({ pageable }: Props) {
 
-    const postItems = [];
-    for (let i = 0; i < 10; i++) {
-        postItems.push(<PostItem key={i}/>);
-    }
 
     return (
-        <div className="flex flex-wrap gap-2 justify-evenly items-center px-3">{postItems}</div>
+        <div className="w-full flex justify-start items-start flex-wrap gap-2 px-3">
+            {
+                (pageable.items.length === 0) ? <div>Data is empty</div> :
+                    (pageable.items.map((post) => {
+                        return <PostItem key={post.id} post={post} />
+                    }))
+            }
+
+        </div>
     )
 }
 

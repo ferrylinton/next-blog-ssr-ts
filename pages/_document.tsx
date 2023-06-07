@@ -9,6 +9,7 @@ export default function Document() {
         <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Alkatra&display=swap" rel="stylesheet"></link>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.8.0/build/styles/a11y-dark.min.css"></link>
       </Head>
       <body>
         <Main />

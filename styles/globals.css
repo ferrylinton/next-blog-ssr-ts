@@ -22,6 +22,9 @@ svg {
     word-wrap: break-word;
 }
 
+.prose :where(pre):not(:where([class~="not-prose"] *)) {
+    background-color: #2b384a;
+}
 
 @layer components {
 

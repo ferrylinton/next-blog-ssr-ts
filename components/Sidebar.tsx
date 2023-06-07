@@ -26,8 +26,8 @@ const Sidebar = ({ open, setOpen }: Props) => {
 
     return (
 
-        <nav className={classNames('z-30 w-[250px] pt-[60px] sm:pt-0 fixed top-0 left-0 h-screen overflow-auto', {
-            "bg-slate-700": true,
+        <nav className={classNames('z-30 w-[250px] pt-[60px] sm:pt-0 fixed top-0 left-0 h-screen overflow-auto shadow-xl shadow-slate-700 border-r border-slate-700 lg:shadow-none lg:border-r-0', {
+            "bg-slate-600 lg:bg-slate-700": true,
             "text-white": true,
             "transition-transform .3s ease-in-out lg:-translate-x-0": true,
             "-translate-x-full ": !open

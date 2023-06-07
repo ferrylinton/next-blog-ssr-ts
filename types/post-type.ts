@@ -6,6 +6,8 @@ export type BasicPostType = {
     title: string,
     description: string,
     content: string,
+    createdAt: string,
+    updatedAt: string,
     tags: any
 }
 

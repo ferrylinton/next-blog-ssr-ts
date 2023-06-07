@@ -11,6 +11,7 @@ const Error = ({ statusCode, message }: Props) => {
 };
 
 Error.getInitialProps = ({ req, res, err }: NextPageContext) => {
+    console.log(res?.statusCode)
     const statusCode: number = res?.statusCode || (err?.statusCode || 500);
     const message: string = (statusCode === 404) ? 'Not Found' : (err?.message || `An error ${statusCode} occurred on server`);
 
