@@ -11,6 +11,13 @@ type FormApiProps = {
     context: AppContextType
 }
 
+type FormDataApiProps = {
+    url: string,
+    data: any,
+    refreshData: () => void,
+    context: AppContextType
+}
+
 type HandleResponseProps = {
     url: string,
     message: string,
@@ -58,6 +65,42 @@ export const putClientApi = async ({ url, data, refreshData, context }: FormApiP
             method: 'PUT'
         });
         const message = 'Data is updated';
+        await handleResponse({ url, message, response, refreshData, context });
+
+    } catch (error: any) {
+        context.showErrorToast(error?.message);
+    }
+}
+
+export const postFormDataClientApi = async ({ url, data, refreshData, context }: FormDataApiProps) => {
+    try {
+        const formData = new FormData();
+        formData.append("slug", data.slug);
+        formData.append("file", data.file[0]);
+
+        const response = await fetch(url, {
+            body: formData,
+            method: 'POST'
+        });
+        const message = 'Data is created';
+        await handleResponse({ url, message, response, refreshData, context });
+
+    } catch (error: any) {
+        context.showErrorToast(error?.message);
+    }
+}
+
+export const putFormDataClientApi = async ({ url, data, refreshData, context }: FormDataApiProps) => {
+    try {
+        const formData = new FormData();
+        formData.append("slug", data.slug);
+        formData.append("file", data.file[0]);
+
+        const response = await fetch(url, {
+            body: formData,
+            method: 'PUT'
+        });
+        const message = 'Data is created';
         await handleResponse({ url, message, response, refreshData, context });
 
     } catch (error: any) {

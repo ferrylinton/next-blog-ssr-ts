@@ -12,6 +12,7 @@ import RoleIcon from "@/icons/RoleIcon";
 import AuthorityIcon from "@/icons/AuthorityIcon";
 import LogoutIcon from "@/icons/LogoutIcon";
 import Link from "next/link";
+import ImageIcon from "@/icons/ImageIcon";
 
 type Props = {
     open: boolean,
@@ -65,6 +66,12 @@ const Sidebar = ({ open, setOpen }: Props) => {
                         <Link href="/data/tag" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <TagIcon className="w-4 h-4 ml-4" />
                             <span className="ml-2 text-sm tracking-wide truncate">Tag</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/data/image" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
+                            <ImageIcon className="w-4 h-4 ml-4" />
+                            <span className="ml-2 text-sm tracking-wide truncate">Image</span>
                         </Link>
                     </li>
                     <li className="px-5">
