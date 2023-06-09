@@ -37,13 +37,14 @@ export const find = async (pageParams: PageParamsType): Promise<Pageable<ImageDo
 
     if (keyword.length > 0) {
         const regex: RegExp = RegExp(keyword as string, 'i');
-        listQuery.regex("name", regex);
-        countQuery.regex("name", regex);
+        listQuery.regex("slug", regex);
+        countQuery.regex("slug", regex);
     }
 
     listQuery
         .skip(((page - 1) * PER_PAGE))
         .limit(PER_PAGE).sort({ name: 1 })
+        .sort({ slug: 1 })
         .allowDiskUse(true);
 
     const [items, total] = await Promise.all([listQuery.exec(), countQuery.exec()]);
@@ -80,14 +81,18 @@ export const save = async (input: any): Promise<ImageDocumentType> => {
     return image;
 }
 
-export const update = async (id: string, body: any): Promise<ImageType | null> => {
+export const update = async (id: string, body: any): Promise<ImageDocumentType | null> => {
     await connect();
-    const { name } = body;
-
+    const { slug, imageBuffer, imageType } = body;
     const image = await ImageModel.findById(id);
 
     if (image) {
-        image.name = name;
+        if (imageBuffer && imageType) {
+            image.imageBuffer = imageBuffer;
+            image.imageType = imageType;
+        }
+
+        image.slug = slug;
         image.updatedAt = new Date().toISOString();
         await image.save();
         return image;

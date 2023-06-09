@@ -11,6 +11,7 @@ export type BasicImageType = {
 
 export type ImageType = {
     id: string,
+    url: string,
     __v: number
 } & BasicImageType
 

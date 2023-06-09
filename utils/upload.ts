@@ -24,7 +24,9 @@ export const checkImageUploadDir = async () => {
 
 export const deleteFile = (path: string) => {
     try {
-        fs.unlinkSync(path);
+        setTimeout(function(){
+            fs.unlinkSync(path);
+        }, 5000);
     } catch (error: any) {
         logger.error(error);
     }

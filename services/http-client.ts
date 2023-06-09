@@ -100,7 +100,7 @@ export const putFormDataClientApi = async ({ url, data, refreshData, context }: 
             body: formData,
             method: 'PUT'
         });
-        const message = 'Data is created';
+        const message = 'Data is updated';
         await handleResponse({ url, message, response, refreshData, context });
 
     } catch (error: any) {

@@ -4,7 +4,7 @@ import UploadIcon from '@/icons/UploadIcon';
 import { postFormDataClientApi, putFormDataClientApi } from '@/services/http-client';
 import { ImageFormType } from '@/types/image-type';
 import { valueToLowercase, valueToUppercase } from '@/utils/form';
-import { CreateImageSchema } from '@/validations/image-schema';
+import { CreateImageSchema, UpdateImageSchema } from '@/validations/image-schema';
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from 'next/image';
 import { useRouter } from "next/router";
@@ -37,7 +37,7 @@ const ImageForm = ({ id, slug, file }: ImageFormType) => {
         handleSubmit,
         formState: { errors },
     } = useForm<ImageFormType>({
-        resolver: zodResolver(CreateImageSchema),
+        resolver: zodResolver(id ? UpdateImageSchema : CreateImageSchema),
         defaultValues: { slug, file }
     });
 
@@ -59,7 +59,6 @@ const ImageForm = ({ id, slug, file }: ImageFormType) => {
     };
 
     const onSubmit: SubmitHandler<ImageFormType> = async (data) => {
-        console.log(data);
         if (id) {
             putFormDataClientApi({
                 url: `${process.env.NEXT_PUBLIC_HOST}/api/images/${id}/upload`,
@@ -93,7 +92,7 @@ const ImageForm = ({ id, slug, file }: ImageFormType) => {
                             <input
                                 className={`w-full p-3 text-sm leading-tight border ${errors.slug ? 'border-red-500' : 'border-slate-400'} rounded appearance-none focus:outline-none focus:ring-4`}
                                 type="text"
-                                placeholder="NAME"
+                                placeholder="SLUG"
                                 maxLength={50}
                                 {...register("slug", { onChange: valueToLowercase })}
                             />
@@ -105,7 +104,7 @@ const ImageForm = ({ id, slug, file }: ImageFormType) => {
                         </div>
                         <div className="mb-8">
                             <div className="block mb-2 text-sm uppercase">Image</div>
-                            <label htmlFor='file' className="h-[50px] flex justify-center items-center gap-2 border border-slate-400 rounded cursor-pointer hover:bg-slate-100">
+                            <label htmlFor='file' className={`h-[50px] flex justify-center items-center gap-2 border rounded cursor-pointer hover:bg-slate-100 ${errors.file ? 'border-red-500' : 'border-slate-400'} rounded appearance-none focus:outline-none focus:ring-4`}>
                                 <UploadIcon className='w-[24px] h-[24px]' />
                                 <span className="leading-none">Select an image</span>
                                 <input
@@ -117,11 +116,16 @@ const ImageForm = ({ id, slug, file }: ImageFormType) => {
                                     {...register("file", { onChange: onFileChange })}
                                 />
                             </label>
+                            {errors.file && (
+                                <p className="text-xs text-red-500 my-2 uppercase">
+                                    File is required and max 5MB
+                                </p>
+                            )}
                             <div className='flex justify-center items-center w-full mt-1  p-2 border border-slate-400 rounded bg-white'>
                                 {
                                     (selectedFile) ?
                                         (<div className='flex flex-col justify-center items-center w-full'>
-                                            <div className='w-full h-[300px] relative'>
+                                            <div className='w-[300px] h-[300px] relative'>
                                                 <Image src={URL.createObjectURL(selectedFile)} fill className="object-cover rounded" alt="Uploaded Image" />
                                             </div>
                                             <div className='mt-2 text-xs'>{selectedFile?.name}</div>
@@ -133,6 +137,7 @@ const ImageForm = ({ id, slug, file }: ImageFormType) => {
                                         </div>)
                                 }
                             </div>
+
 
                         </div>
 

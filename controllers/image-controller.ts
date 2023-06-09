@@ -90,14 +90,46 @@ export const save = async (req: CreateImageApiRequest, res: NextApiResponse) => 
 
 export const update = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const { id } = req.query;
-        const image = await imageService.update(id as string, req.body);
+        checkImageUploadDir();
+        const form = imageFormidable();
 
-        if (image) {
-            res.status(200).json(image);
-        } else {
-            res.status(404).json({ message: `Data with id=${id} is not found` });
-        }
+        form.parse(req, async (err, fields, files) => {
+            const file = files.file as formidable.File;
+
+            if (err) {
+                logger.error(err);
+                res.status(400).json({ message: String(err) });
+            } else {
+                try {
+                    let imageBuffer = null;
+                    let imageType = null;
+
+                    if(file){
+                        imageType = file.mimetype;
+                        const imageContent = await imageToBase64(file.filepath);
+                        imageBuffer = Buffer.from(imageContent, 'base64');
+                    }
+                    
+                    const slug = fields.slug as string;
+                    const { id } = req.query;
+                    const image = await imageService.update(id as string, { slug, imageBuffer, imageType });
+
+                    if (image) {
+                        
+                        if(file){
+                            deleteFile(file.filepath);
+                        }
+
+                        return res.status(200).json(image);
+                    } else {
+                        return res.status(404).json({ message: `Data with id=${id} is not found` });
+                    }
+                } catch (error) {
+                    logger.error(error);
+                    return res.status(500).send(error);
+                }
+            }
+        });
     } catch (error: any) {
         errorValidation(logger, res, error);
     }
