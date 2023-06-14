@@ -1,6 +1,7 @@
 import PostModel from "@/models/post-model";
 import TagModel from "@/models/tag-model";
 import { PostDocumentType, PostType } from "@/types/post-type";
+import { RoleDocumentType } from "@/types/role-type";
 import { TagType } from "@/types/tag-type";
 import connect from "@/utils/mongodb";
 import { PER_PAGE, getPageParams, getTotalPage } from "@/utils/page";
@@ -28,7 +29,7 @@ export const findByIdJson = async (id: string): Promise<PostType | null> => {
 
 export const findBySlugJson = async (slug: string): Promise<PostType | null> => {
     await connect();
-    const post = await PostModel.findOne({slug});
+    const post = await PostModel.findOne({ slug });
 
     if (post) {
         return JSON.parse(JSON.stringify(post.toJSON()));
@@ -50,14 +51,75 @@ export const find = async (pageParams: PageParamsType): Promise<Pageable<PostDoc
     }
 
     listQuery
+        .populate({
+            path: 'tags',
+            select: 'name',
+        })
+        .select('-content')
         .skip(((page - 1) * PER_PAGE))
         .limit(PER_PAGE).sort({ name: 1 })
         .allowDiskUse(true);
 
-    const [items, total] = await Promise.all([listQuery.exec(), countQuery.exec()]);
+    const [items, total] = await Promise.all([
+        listQuery.exec().then(docs => {
+            return docs.map(doc => {
+                const json = doc.toJSON({ virtuals: false });
+                json.tags = doc.tags.map((tag: any) => tag.name);
+                return json;
+            })
+        }),
+        countQuery.exec()
+    ]);
 
     return {
         keyword,
+        items,
+        total,
+        page,
+        totalPage: getTotalPage(total),
+        perPage: PER_PAGE
+    };
+}
+
+export const findByTag = async (pageParams: PageTagParamsType): Promise<Pageable<PostDocumentType> | null> => {
+    await connect();
+
+    if (!isObjectIdOrHexString(pageParams.id)) {
+        return null;
+    }
+
+    const tag = await TagModel.findById(pageParams.id);
+
+    if (!tag) {
+        return null;
+    }
+
+    const page = (pageParams.page && typeof pageParams.page === 'string') ? parseInt(pageParams.page as string) : 1;
+    const listQuery = PostModel.find({ tags: pageParams.id });
+    const countQuery = PostModel.count({ tags: pageParams.id });
+
+    listQuery
+        .populate({
+            path: 'tags',
+            select: 'name',
+        })
+        .select('-content')
+        .skip(((page - 1) * PER_PAGE))
+        .limit(PER_PAGE).sort({ name: 1 })
+        .allowDiskUse(true);
+
+    const [items, total] = await Promise.all([
+        listQuery.exec().then(docs => {
+            return docs.map(doc => {
+                const json = doc.toJSON({ virtuals: false });
+                json.tags = doc.tags.map((tag: any) => tag.name);
+                return json;
+            })
+        }),
+        countQuery.exec()
+    ]);
+
+    return {
         items,
         total,
         page,

@@ -31,6 +31,11 @@ const ImagePage = ({ pageable, error }: Props) => {
     setShowConfirm(true);
   }
 
+  const convertBase64 = (data: any) => {
+    const buffer = Buffer.from(data, 'base64');
+    return buffer.toString()
+  }
+
   if (error)
     return <ErrorContainer code={error.code} message={error.message} label={'Image'} />
   else
@@ -46,17 +51,20 @@ const ImagePage = ({ pageable, error }: Props) => {
                 (pageable.items.map((image, _index) => {
                   return (<div key={image.id} className='flex flex-col border border-slate-300 rounded  hover:outline outline-4 outline-blue-300'>
                     <div className='p-1'>
-                      <div className='w-[200px] h-[200px] relative'>
-                        <Image src={image.url}
-                          fill
-                          quality={65}
-                          priority={false}
-                          sizes="(max-width: 768px) 100vw"
-                          style={{
-                            objectFit: 'cover',
-                          }}
-                          alt='loading...'
-                        />
+                      <div className='flex justify-center items-center bg-white w-[200px] h-[200px] relative'>
+                        {
+                          (image.imageType === 'image/svg+xml') ?
+                            <img src={image.url}></img>
+                            :
+                            <Image src={image.url}
+                              fill
+                              quality={65}
+                              priority={false}
+                              sizes="(max-width: 768px) 100vw"
+                              className='break-words bg-white object-contain'
+                              alt={image.url}
+                            />
+                        }
                       </div>
                     </div>
                     <div className='flex flex-col justify-center items-center border-t border-slate-300 bg-slate-100 py-1 '>

@@ -27,7 +27,7 @@ const Sidebar = ({ open, setOpen }: Props) => {
 
     return (
 
-        <nav className={classNames('z-30 w-[250px] pt-[60px] sm:pt-0 fixed top-0 left-0 h-screen overflow-auto shadow-xl shadow-slate-700 border-r border-slate-700 lg:shadow-none lg:border-r-0', {
+        <nav className={classNames('z-30 w-[250px] pt-[60px] lg:pt-0 fixed top-0 left-0 h-screen overflow-auto shadow-xl shadow-slate-700 border-r border-slate-700 lg:shadow-none lg:border-r-0', {
             "bg-slate-600 lg:bg-slate-700": true,
             "text-white": true,
             "transition-transform .3s ease-in-out lg:-translate-x-0": true,
@@ -38,7 +38,7 @@ const Sidebar = ({ open, setOpen }: Props) => {
                     <span className="text-3xl font-bold">marmeam</span>
                     <span className="text-xl text-green-400">.com</span>
                 </div>
-                <ul className="flex flex-col py-4 space-y-1">
+                <ul className="flex flex-col space-y-1">
                     <li>
                         <Link href="/" onClick={onClickHandler} className="relative flex flex-row items-center h-10 focus:outline-none hover:bg-slate-800 text-slate-100 hover:text-white border-l-4 border-transparent hover:border-green-400 pr-6">
                             <HomeIcon className="w-4 h-4 ml-4" />

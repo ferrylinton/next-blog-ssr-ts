@@ -7,6 +7,7 @@ import { CreateImageApiRequest } from '@/validations/image-schema';
 import formidable from 'formidable';
 import imageToBase64 from 'image-to-base64';
 import { NextApiRequest, NextApiResponse } from 'next';
+import fs from 'fs';
 
 
 const logger = getLogger('image-controller');
@@ -44,7 +45,7 @@ export const viewById = async (req: NextApiRequest, res: NextApiResponse) => {
         if (image) {
             const buffer = Buffer.from(image.imageBuffer, 'base64');
             res.writeHead(200, {
-                'Content-Type': 'image/png',
+                'Content-Type': image.imageType,
                 'Content-Length': buffer.length
             });
             res.end(buffer);
@@ -69,10 +70,13 @@ export const save = async (req: CreateImageApiRequest, res: NextApiResponse) => 
                 res.status(400).json({ message: String(err) });
             } else {
                 try {
+                    console.log(file);
                     const imageType = file.mimetype;
                     const slug = fields.slug as string;
-                    const imageContent = await imageToBase64(file.filepath);
-                    const imageBuffer = Buffer.from(imageContent, 'base64');
+                    //const imageContent = await imageToBase64(file.filepath);
+                    //const imageBuffer = Buffer.from(imageContent, 'base64');
+                    const imageBase64 = fs.readFileSync(file.filepath, 'base64');
+                    const imageBuffer = Buffer.from(imageBase64, "base64");
                     const image = await imageService.save({ slug, imageBuffer, imageType });
 
                     deleteFile(file.filepath);

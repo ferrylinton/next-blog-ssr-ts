@@ -4,14 +4,14 @@ import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
 type Props = {
-    keyword: string | null
+    keyword?: string
 }
 
 const Searchbox = (props: Props) => {
 
     const router = useRouter();
 
-    const [keyword, setKeyword] = useState(props.keyword || '');
+    const [keyword, setKeyword] = useState(props.keyword);
 
     const handleOnChange = ({ currentTarget: { value } }: React.ChangeEvent<HTMLInputElement>) => {
         setKeyword(value);
@@ -23,7 +23,7 @@ const Searchbox = (props: Props) => {
     }
 
     return (
-        <div className='w-full max-w-xl flex justify-center items-center gap-2 border-b border-slate-300 p-3 sm:p-0 sm:border-b-0 mb-3'>
+        <div className='w-full md:w-[400px] flex justify-center items-center gap-1 py-4 px-3 sm:px-0'>
             <form
                 action={router.pathname}
                 method='GET'

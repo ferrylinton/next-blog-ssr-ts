@@ -21,31 +21,34 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
 const logger = getLogger('tag-form-index');
 
-const TagFormPage = ({ id, name, error }: Props) => {
+const TagFormPage = ({ id, name, logo, error }: Props) => {
   if (error)
     return <ErrorContainer code={error.code} message={error.message} items={breadcrumbItems} />
   else
-    return <TagForm id={id} name={name} />
+    return <TagForm id={id} name={name} logo={logo} />
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   try {
     const id = params?.id as string;
-    const { name } = await tagService.findById(id);
-    return {
-      props: {
-        id,
-        name
+    const tag = await tagService.findById(id);
+
+    if (tag) {
+      const { name, logo } = tag
+      return {
+        props: { id, name, logo }
+      }
+    } else {
+      return {
+        notFound: true
       }
     }
+
   } catch (error: any) {
     logger.error(error);
     return {
       props: {
-        error: {
-          code: 500,
-          message: error.message
-        }
+        error: { code: 500, message: error.message }
       }
     };
   }

@@ -8,13 +8,17 @@ const TagSchema: Schema<TagDocumentType> = new Schema({
         required: true,
         unique: true,
         index: true
+    },
+    logo: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true,
     virtuals: {
         id: {
             get() {
-                return this._id.toHexString();
+                return this._id?.toHexString();
             }
         }
     },
@@ -32,7 +36,6 @@ const TagSchema: Schema<TagDocumentType> = new Schema({
 
 TagSchema.pre('save', function (next) {
     this.increment();
-    this.name = this.name.toUpperCase();
     return next();
 });
 

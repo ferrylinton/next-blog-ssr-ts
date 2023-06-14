@@ -10,7 +10,7 @@ type Props = {
 };
 const Navbar = ({ sidebarOpen, onMenuButtonClick }: Props) => {
   return (
-    <nav className={`lg:hidden fixed top-0 left-0 z-30  w-full h-[48px] flex justify-between lg:justify-center items-center bg-slate-700 `} >
+    <nav className={`lg:hidden fixed top-0 left-0 z-30  w-full h-[50px] flex justify-between lg:justify-center items-center bg-slate-700 `} >
       <Link className='text-3xl font-bold ml-5 lg:ml-0 lowercase leading-none tracking-wide font-alkatra' href="#">
         <span className="text-3xl font-bold text-white">marmeam</span>
         <span className="text-xl text-green-400">.com</span>

@@ -38,102 +38,58 @@ svg {
 
 }
 
-.table-responsive thead {
-    display: none;
-}
-
-.table-responsive tr {
-    display: block;
-}
-
-.table-responsive td {
-    display: block;
-    position: relative;
-    padding-left: 50%;
-    text-align: left;
-    min-height: 30px;
-    line-height: 30px;
-}
-
-.table-responsive td:not(.actions)::before {
-    position: absolute;
-    content: attr(data-label) ' : ';
-    width: 50%;
-    left: 0;
-    text-align: right;
-    padding-right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-@media (min-width: 640px) {
-
-    .table-responsive thead {
-        display: table-header-group;
-        vertical-align: middle;
-    }
-
-    .table-responsive tr {
-        display: table-row;
-    }
-    
-    .table-responsive td, .table-responsive th {
-        display: table-cell;
-        padding: 1px;
-        text-align: left;
-    }
-    
-    .table-responsive td::before {
-        display: none;
-    }
-
-}
-
 @layer components {
 
-
-    .table-responsive thead th{
-        @apply px-2 py-3 uppercase text-sm bg-slate-500 text-slate-100
+    .table-responsive{
+        @apply w-full text-sm border-t border-slate-300
     }
 
-    .table-responsive thead th:first-child{
-        @apply rounded-l
+    .table-responsive thead {
+        @apply hidden sm:table-header-group
     }
 
-    .table-responsive thead th:last-child{
-        @apply rounded-r
+    .table-responsive tr{
+        @apply  border-b border-slate-300 rounded hover:bg-slate-100
     }
 
-    .table-responsive tbody td::before{
-        @apply uppercase text-sm font-bold
+    .table-responsive tr{
+        @apply sm:table-row sm:border-t-0
     }
 
-    .table-responsive tbody td{
-        @apply sm:pl-2
+    .table-responsive th, .table-responsive td{
+        @apply text-start sm:first:w-[50px] sm:last:w-[80px] px-1 
     }
 
-    .table-responsive tbody tr{
-        @apply border-b border-slate-300 hover:bg-slate-100
+    .table-responsive th{
+        @apply py-3 bg-slate-300 text-slate-700
     }
 
-    .table-responsive tr td:first-child{
-        @apply sm:w-[40px] 
+    .table-responsive td{
+        @apply py-1 block relative pl-[calc(30%+10px)] hover:bg-slate-100
     }
 
-    .table-responsive td.actions, .table-responsive th.actions {
-        @apply p-0 sm:w-[75px]
+    .table-responsive td{
+        @apply sm:table-cell sm:pl-1
+    }
+
+    .table-responsive td::before{
+        @apply content-[attr(data-label)] absolute top-0 left-0 w-[30%] h-full flex justify-end items-center pe-3 text-right font-bold bg-slate-200 text-slate-700
+    }
+
+    .table-responsive td::before{
+        @apply sm:hidden
     }
 
    .btn-box {
-        @apply flex justify-center items-center gap-1 px-1 py-3 sm:py-1 sm:justify-start
+        @apply flex justify-start items-center gap-1
     }
 
     .btn-box .btn-edit {
-        @apply w-[30px] h-[30px] leading-none p-1 border border-green-600 rounded-sm text-green-600 hover:text-green-700 hover:bg-green-200
+        @apply w-[30px] h-[30px] leading-none  rounded-sm text-green-600 hover:text-green-700 hover:bg-green-200
     }
 
     .btn-box .btn-delete {
-        @apply w-[30px] h-[30px] leading-none p-1  border border-red-600 rounded-sm text-red-600 hover:text-red-700 hover:bg-red-200
+        @apply w-[30px] h-[30px] leading-none  rounded-sm text-red-600 hover:text-red-700 hover:bg-red-200
     }
 
 }

@@ -1,3 +1,3 @@
 export default function WarningIcon({ className }: IconType) {
-    return <svg xmlns="http://www.w3.org/2000/svg" className={`${className}`} viewBox="0 0 24 24"><path d="M12 5.177l8.631 15.823h-17.262l8.631-15.823zm0-4.177l-12 22h24l-12-22zm-1 9h2v6h-2v-6zm1 9.75c-.689 0-1.25-.56-1.25-1.25s.561-1.25 1.25-1.25 1.25.56 1.25 1.25-.561 1.25-1.25 1.25z"/></svg>
+    return <svg xmlns="http://www.w3.org/2000/svg" className={`${className}`} viewBox="0 0 24 24" fillRule="evenodd" clipRule="evenodd"><path d="M24 23h-24l12-22 12 22zm-22.315-1h20.63l-10.315-18.912-10.315 18.912zm10.315-2c.466 0 .845-.378.845-.845 0-.466-.379-.844-.845-.844-.466 0-.845.378-.845.844 0 .467.379.845.845.845zm.5-11v8h-1v-8h1z"/></svg>
 }

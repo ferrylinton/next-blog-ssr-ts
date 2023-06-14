@@ -77,7 +77,6 @@ export const findById = async (id: string): Promise<any> => {
         })
         .then(doc => doc.toJSON({ virtuals: true }))
         .then(doc => {
-            console.log(doc);
             const role = doc.role.name;
             const authorities = doc.role.authorities.map((authority: any) => authority.name)
             doc.role = role;

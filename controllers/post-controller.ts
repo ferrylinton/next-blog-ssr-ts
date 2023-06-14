@@ -17,6 +17,22 @@ export const find = async (req: NextApiRequest,
     }
 }
 
+export const findByTag = async (req: NextApiRequest, res: NextApiResponse) => {
+    try {
+        const { id, page } = req.query;
+        const pageable = await postService.findByTag({id, page});
+
+        if (pageable) {
+            return res.status(200).json(pageable);
+        } else {
+            return res.status(404).json({ message: `Data with id=${id} is not found` });
+        }
+    } catch (error: any) {
+        errorResponse(logger, res, error);
+    }
+}
+
+
 export const findById = async (req: NextApiRequest,
     res: NextApiResponse) => {
     try {

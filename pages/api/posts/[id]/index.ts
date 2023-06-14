@@ -7,26 +7,30 @@ const handler = async (
     res: NextApiResponse
 ) => {
 
-    const method = req.method;
+    const { id } = req.query;
 
-    switch (method) {
-        case 'GET':
-            await postController.findById(req, res);
-            break;
+    res.status(200).json({id});
 
-        case 'PUT':
-            await postController.update(req, res);
-            break;
+    // const method = req.method;
 
-        case 'DELETE':
-            await postController.deleteById(req, res);
-            break;
+    // switch (method) {
+    //     case 'GET':
+    //         await postController.findById(req, res);
+    //         break;
 
-        default:
-            res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
-            res.status(405).end(`${method} Not Allowed`);
-            break;
-    }
+    //     case 'PUT':
+    //         await postController.update(req, res);
+    //         break;
+
+    //     case 'DELETE':
+    //         await postController.deleteById(req, res);
+    //         break;
+
+    //     default:
+    //         res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
+    //         res.status(405).end(`${method} Not Allowed`);
+    //         break;
+    // }
 
 }
 

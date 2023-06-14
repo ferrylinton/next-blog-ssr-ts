@@ -30,6 +30,7 @@
     "highlight.js": "^11.8.0",
     "highlightjs-cypher": "^1.1.5",
     "image-to-base64": "^2.2.0",
+    "is-svg": "^5.0.0",
     "markdown-it": "^13.0.1",
     "markdown-it-highlightjs": "^4.0.1",
     "mime": "^3.0.0",

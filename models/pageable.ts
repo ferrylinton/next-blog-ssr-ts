@@ -1,5 +1,5 @@
 interface Pageable<T> {
-    keyword: string,
+    keyword?: string,
     items: Array<T>,
     total: number,
     page: number,

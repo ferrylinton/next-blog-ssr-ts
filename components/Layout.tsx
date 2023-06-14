@@ -14,7 +14,7 @@ const Layout = (props: PropsWithChildren) => {
                     <div className="w-full grow flex flex-col justify-center">
                         {props.children}
                     </div>
-                    <footer className="w-full flex-none pt-4 ">
+                    <footer className="w-full flex-none">
                         <div className="w-full bg-white border-t border-slate-300">
                             <div className="text-center p-3">&copy; Copyright 2023 marmeam.com</div>
                         </div>

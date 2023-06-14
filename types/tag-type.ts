@@ -3,6 +3,7 @@ import { Document, Model } from 'mongoose';
 
 export type BasicTagType = {
     name: string,
+    logo: string,
     createdAt: string,
     updatedAt: string
 }
@@ -18,5 +19,6 @@ export type TagModelType = Model<TagDocumentType>;
 
 export type TagFormType = {
     id?: string,
-    name?: string
+    name?: string,
+    logo?: string
 }

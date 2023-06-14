@@ -33,7 +33,7 @@ const PostSchema: Schema<PostDocumentType> = new Schema({
     virtuals: {
         id: {
             get() {
-                return this._id.toHexString();
+                return this._id?.toHexString();
             }
         }
     },

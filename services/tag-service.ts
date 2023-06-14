@@ -76,19 +76,16 @@ export const findById = async (id: string): Promise<any> => {
 
 export const save = async (input: TagFormType): Promise<TagType> => {
     await connect();
-    const tag = await TagModel.create(input);
-
-    return tag;
+    return await TagModel.create(input);
 }
 
-export const update = async (id: string, body: any): Promise<TagType | null> => {
+export const update = async (id: string, {name, logo}: TagFormType): Promise<TagType | null> => {
     await connect();
-    const { name } = body;
-
     const tag = await TagModel.findById(id);
 
     if (tag) {
         tag.name = name;
+        tag.logo = logo;
         tag.updatedAt = new Date().toISOString();
         await tag.save();
         return tag;

@@ -1,0 +1,55 @@
+.table-responsive thead {
+    display: none;
+}
+
+.table-responsive tr {
+    display: block;
+}
+
+.table-responsive td {
+    display: block;
+    position: relative;
+    padding-left: calc(30% + 10px);
+    text-align: left;
+    background: linear-gradient(90deg, #b6cae7 30%, #ffffff 30%);
+    border: solid 1px red;
+    border-width: 0 0 1px 0;
+}
+
+.table-responsive td::before {
+    position: absolute;
+    content: attr(data-label);
+    width: 30%;
+    text-align: right;
+    padding-right: 10px;
+    left: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+@media (min-width: 640px) {
+
+    .table-responsive thead {
+        display: table-header-group;
+        vertical-align: middle;
+    }
+
+    .table-responsive tr {
+        display: table-row;
+    }
+
+    .table-responsive td,
+    .table-responsive th {
+        display: table-cell;
+        padding: 1px;
+        text-align: left;
+    }
+
+    .table-responsive td::before {
+        display: none;
+    }
+
+}

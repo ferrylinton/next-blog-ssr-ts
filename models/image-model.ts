@@ -36,7 +36,8 @@ const ImageSchema: Schema<ImageDocumentType> = new Schema({
         versionKey: true,
         transform: function (_doc, ret) {
             delete ret._id;
-            delete ret.imageBuffer;
+            if (ret.imageType !== 'image/svg+xml')
+                delete ret.imageBuffer;
         }
     },
     toObject: {
